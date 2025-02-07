@@ -16,7 +16,7 @@ class Hike(EnhancedApp[None]):
 
     HELP_TITLE = f"Hike {__version__}"
     HELP_ABOUT = """
-    `Jike` is a terminal-based Markdown viewer; it was created
+    `Hike` is a terminal-based Markdown viewer; it was created
     by and is maintained by [Dave Pearson](https://www.davep.org/); it is
     Free Software and can be [found on
     GitHub](https://github.com/davep/hike).
