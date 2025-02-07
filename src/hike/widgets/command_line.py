@@ -50,7 +50,7 @@ class OpenDirectoryCommand(InputCommand):
         Args:
             text: The text to check.
         """
-        return Path(text).is_dir()
+        return Path(text).expanduser().is_dir()
 
     @classmethod
     def handle(cls, text: str, checker: Widget) -> None:
@@ -59,7 +59,7 @@ class OpenDirectoryCommand(InputCommand):
         Args:
             text: The text of the command.
         """
-        checker.post_message(OpenFrom(Path(text)))
+        checker.post_message(OpenFrom(Path(text).expanduser()))
 
 
 ##############################################################################
@@ -73,7 +73,7 @@ class OpenFileCommand(InputCommand):
         Args:
             text: The text to check.
         """
-        return Path(text).is_file()
+        return Path(text).expanduser().is_file()
 
     @classmethod
     def handle(cls, text: str, checker: Widget) -> None:
@@ -82,7 +82,7 @@ class OpenFileCommand(InputCommand):
         Args:
             text: The text of the command.
         """
-        checker.post_message(OpenFile(Path(text)))
+        checker.post_message(OpenFile(Path(text).expanduser()))
 
 
 ##############################################################################
