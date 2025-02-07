@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Textual imports.
-from textual import on
+from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Footer, Header
@@ -14,8 +14,13 @@ from textual_enhanced.dialogs import HelpScreen
 from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
+# Textual fspicker imports.
+from textual_fspicker import FileOpen
+
+##############################################################################
 # Local imports.
 from .. import __version__
+from ..messages import OpenFile, OpenFrom
 from ..providers import MainCommands
 from ..widgets import CommandLine
 
@@ -58,6 +63,26 @@ class Main(EnhancedScreen[None]):
         yield Horizontal(id="workspace", classes="panel")
         yield CommandLine(classes="panel")
         yield Footer()
+
+    @on(OpenFile)
+    def open_file(self, message: OpenFile) -> None:
+        """Open a file for viewing.
+
+        Args:
+            message: The message requesting the file be opened.
+        """
+        self.notify(str(message.to_open))
+
+    @on(OpenFrom)
+    @work
+    async def browse_for_file(self, message: OpenFrom) -> None:
+        """Browse for a markdown file with a file open dialog.
+
+        Args:
+            message: The message requesting the operation.
+        """
+        if chosen := await self.app.push_screen_wait(FileOpen(message.location)):
+            self.post_message(OpenFile(chosen))
 
     @on(Help)
     def action_help_command(self) -> None:
