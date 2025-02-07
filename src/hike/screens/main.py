@@ -1,6 +1,10 @@
 """The main screen for the application."""
 
 ##############################################################################
+# Python imports.
+from pathlib import Path
+
+##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
@@ -35,6 +39,9 @@ class Main(EnhancedScreen[None]):
     DEFAULT_CSS = """
     Main {
         #workspace {
+            border-top: blank $panel;
+            border-title-align: right;
+            border-title-color: $text;
             hatch: right $boost;
         }
 
@@ -58,16 +65,20 @@ class Main(EnhancedScreen[None]):
 
     COMMANDS = {MainCommands}
 
-    markdown: var[str] = var("")
-    """The markdown to view."""
+    source: var[str | Path | None] = var(None)
+    """The source of the markdown being displayed."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
         with Horizontal(id="workspace", classes="panel"):
-            yield Viewer().data_bind(Main.markdown)
+            yield Viewer().data_bind(Main.source)
         yield CommandLine(classes="panel")
         yield Footer()
+
+    def watch_source(self) -> None:
+        """React to the source changing."""
+        self.query_one("#workspace").border_title = str(self.source or "")
 
     @on(OpenFile)
     def open_file(self, message: OpenFile) -> None:
@@ -76,10 +87,7 @@ class Main(EnhancedScreen[None]):
         Args:
             message: The message requesting the file be opened.
         """
-        try:
-            self.markdown = message.to_open.read_text(encoding="utf8")
-        except IOError as error:
-            self.notify(str(error), title="Error", severity="error")
+        self.source = message.to_open
 
     @on(OpenFrom)
     @work
