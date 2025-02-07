@@ -5,6 +5,7 @@
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
+from textual.reactive import var
 from textual.widgets import Footer, Header
 
 ##############################################################################
@@ -22,7 +23,7 @@ from textual_fspicker import FileOpen
 from .. import __version__
 from ..messages import OpenFile, OpenFrom
 from ..providers import MainCommands
-from ..widgets import CommandLine
+from ..widgets import CommandLine, Viewer
 
 
 ##############################################################################
@@ -57,10 +58,14 @@ class Main(EnhancedScreen[None]):
 
     COMMANDS = {MainCommands}
 
+    markdown: var[str] = var("")
+    """The markdown to view."""
+
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        yield Horizontal(id="workspace", classes="panel")
+        with Horizontal(id="workspace", classes="panel"):
+            yield Viewer().data_bind(Main.markdown)
         yield CommandLine(classes="panel")
         yield Footer()
 
@@ -71,7 +76,10 @@ class Main(EnhancedScreen[None]):
         Args:
             message: The message requesting the file be opened.
         """
-        self.notify(str(message.to_open))
+        try:
+            self.markdown = message.to_open.read_text(encoding="utf8")
+        except IOError as error:
+            self.notify(str(error), title="Error", severity="error")
 
     @on(OpenFrom)
     @work

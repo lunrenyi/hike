@@ -3,9 +3,10 @@
 ##############################################################################
 # Local imports.
 from .command_line import CommandLine
+from .viewer import Viewer
 
 ##############################################################################
 # Exports.
-__all__ = ["CommandLine"]
+__all__ = ["CommandLine", "Viewer"]
 
 ### __init__.py ends here
