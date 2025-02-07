@@ -5,7 +5,9 @@ description = "Coming eventually"
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
-dependencies = []
+dependencies = [
+    "textual>=1.0.0",
+]
 readme = "README.md"
 requires-python = ">= 3.9"
 
@@ -20,6 +22,7 @@ managed = true
 dev-dependencies = [
     "mypy>=1.15.0",
     "pre-commit>=4.1.0",
+    "textual-dev>=1.7.0",
 ]
 
 [tool.hatch.metadata]
