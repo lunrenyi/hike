@@ -41,6 +41,8 @@ class InputCommand:
 
 ##############################################################################
 class OpenDirectoryCommand(InputCommand):
+    """Input command for browsing for a file in a directory."""
+
     @classmethod
     def can_handle(cls, text: str) -> bool:
         """Can the class handle the given input?
@@ -62,6 +64,8 @@ class OpenDirectoryCommand(InputCommand):
 
 ##############################################################################
 class OpenFileCommand(InputCommand):
+    """Input command for opening a file."""
+
     @classmethod
     def can_handle(cls, text: str) -> bool:
         """Can the class handle the given input?
