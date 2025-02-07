@@ -28,6 +28,9 @@ rich==13.9.4
     # via textual
 textual==1.0.0
     # via hike
+    # via textual-enhanced
+textual-enhanced==0.4.0
+    # via hike
 typing-extensions==4.12.2
     # via textual
 uc-micro-py==1.0.3

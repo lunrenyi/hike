@@ -79,8 +79,11 @@ rich==13.9.4
 textual==1.0.0
     # via hike
     # via textual-dev
+    # via textual-enhanced
     # via textual-serve
 textual-dev==1.7.0
+textual-enhanced==0.4.0
+    # via hike
 textual-serve==1.1.1
     # via textual-dev
 typing-extensions==4.12.2
