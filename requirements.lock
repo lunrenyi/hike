@@ -29,7 +29,10 @@ rich==13.9.4
 textual==1.0.0
     # via hike
     # via textual-enhanced
+    # via textual-fspicker
 textual-enhanced==0.4.0
+    # via hike
+textual-fspicker==0.2.0
     # via hike
 typing-extensions==4.12.2
     # via textual
