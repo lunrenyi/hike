@@ -4,6 +4,7 @@
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
+from textual.containers import Horizontal
 from textual.widgets import Footer, Header
 
 ##############################################################################
@@ -14,12 +15,31 @@ from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
 # Local imports.
+from .. import __version__
 from ..providers import MainCommands
+from ..widgets import CommandLine
 
 
 ##############################################################################
 class Main(EnhancedScreen[None]):
     """The main screen for the application."""
+
+    TITLE = f"Hike v{__version__}"
+
+    DEFAULT_CSS = """
+    Main {
+        #workspace {
+            hatch: right $boost;
+        }
+
+        .panel {
+            background: $surface;
+            &:focus, &:focus-within {
+                background: $panel 80%;
+            }
+        }
+    }
+    """
 
     COMMAND_MESSAGES = (
         # Keep these together as they're bound to function keys and destined
@@ -35,6 +55,8 @@ class Main(EnhancedScreen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
+        yield Horizontal(id="workspace", classes="panel")
+        yield CommandLine(classes="panel")
         yield Footer()
 
     @on(Help)
