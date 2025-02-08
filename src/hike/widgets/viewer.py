@@ -75,7 +75,7 @@ class Viewer(VerticalScroll):
         try:
             self.post_message(self.Loaded(self, Path(source).read_text(encoding="utf-8")))
         except OSError as error:
-            self.notify(str(error), title="Load error", severity="error")
+            self.notify(str(error), title="Load error", severity="error", timeout=8)
 
     @work(exclusive=True)
     async def _load_from_url(self, source: URL) -> None:
