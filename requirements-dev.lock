@@ -97,5 +97,7 @@ uc-micro-py==1.0.3
     # via linkify-it-py
 virtualenv==20.29.1
     # via pre-commit
+xdg-base-dirs==6.0.2
+    # via hike
 yarl==1.18.3
     # via aiohttp
