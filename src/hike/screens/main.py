@@ -5,6 +5,10 @@
 from pathlib import Path
 
 ##############################################################################
+# httpx imports.
+from httpx import URL
+
+##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
@@ -25,7 +29,7 @@ from textual_fspicker import FileOpen
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..messages import OpenFile, OpenFrom
+from ..messages import OpenFile, OpenFrom, OpenURL
 from ..providers import MainCommands
 from ..widgets import CommandLine, Viewer
 
@@ -66,7 +70,7 @@ class Main(EnhancedScreen[None]):
 
     COMMANDS = {MainCommands}
 
-    source: var[str | Path | None] = var(None)
+    source: var[Path | URL | None] = var(None)
     """The source of the markdown being displayed."""
 
     def compose(self) -> ComposeResult:
@@ -82,7 +86,8 @@ class Main(EnhancedScreen[None]):
         self.query_one("#workspace").border_title = str(self.source or "")
 
     @on(OpenFile)
-    def open_file(self, message: OpenFile) -> None:
+    @on(OpenURL)
+    def open_markdown(self, message: OpenFile | OpenURL) -> None:
         """Open a file for viewing.
 
         Args:

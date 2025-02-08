@@ -6,6 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ##############################################################################
+# httpx imports.
+from httpx import URL
+
+##############################################################################
 # Textual imports.
 from textual.message import Message
 
@@ -27,5 +31,13 @@ class OpenFile(Message):
     to_open: Path
     """The file to open."""
 
+
+##############################################################################
+@dataclass
+class OpenURL(Message):
+    """Open a given URL for viewing."""
+
+    to_open: URL
+    """The URL to open."""
 
 ### opening.py ends here

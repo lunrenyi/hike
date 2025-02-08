@@ -5,6 +5,10 @@
 from pathlib import Path
 
 ##############################################################################
+# httpx imports.
+from httpx import URL
+
+##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
@@ -14,7 +18,7 @@ from textual.widgets import Input, Label
 
 ##############################################################################
 # Local imports.
-from ..messages import OpenFile, OpenFrom
+from ..messages import OpenFile, OpenFrom, OpenURL
 
 
 ##############################################################################
@@ -86,6 +90,30 @@ class OpenFileCommand(InputCommand):
 
 
 ##############################################################################
+class OpenURLCommand(InputCommand):
+    """Input command for opening a URL."""
+
+    @classmethod
+    def can_handle(cls, text: str) -> bool:
+        """Can the class handle the given input?
+
+        Args:
+            text: The text to check.
+        """
+        return (url := URL(text)).is_absolute_url and url.scheme in ("http", "https")
+
+    @classmethod
+    def handle(cls, text: str, checker: Widget) -> None:
+        """Handle the command.
+
+        Args:
+            text: The text of the command.
+        """
+        checker.post_message(OpenURL(URL(text)))
+
+
+
+##############################################################################
 class CommandLine(Horizontal):
     """A command line for getting input from the user."""
 
@@ -122,7 +150,7 @@ class CommandLine(Horizontal):
             message: The message requesting input is handled.
         """
         message.stop()
-        for candidate in (OpenDirectoryCommand, OpenFileCommand):
+        for candidate in (OpenDirectoryCommand, OpenFileCommand, OpenURLCommand):
             if candidate.can_handle(message.value):
                 candidate.handle(message.value, self)
                 message.input.value = ""
