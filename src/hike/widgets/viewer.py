@@ -36,6 +36,9 @@ class Viewer(VerticalScroll):
 
     DEFAULT_CSS = """
     Viewer {
+        border-top: blank;
+        border-title-align: right;
+        border-title-color: $foreground;
         display: block;
         &.empty {
             display: none;
@@ -190,6 +193,7 @@ class Viewer(VerticalScroll):
         Args:
             message: The message requesting the update.
         """
+        self.border_title = str(self.location or "")
         self.query_one(Markdown).update(message.markdown)
         if message.remember and self.location != self._history.current_item:
             self._history += self.location

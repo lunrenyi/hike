@@ -20,10 +20,10 @@ from textual_fspicker import FileOpen
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..commands import Backward, Forward
+from ..commands import Backward, Forward, ToggleNavigation
 from ..messages import OpenFile, OpenFrom, OpenURL
 from ..providers import MainCommands
-from ..widgets import CommandLine, Viewer
+from ..widgets import CommandLine, Navigation, Viewer
 
 
 ##############################################################################
@@ -35,17 +35,21 @@ class Main(EnhancedScreen[None]):
     DEFAULT_CSS = """
     Main {
         #workspace {
-            border-top: blank $panel;
-            border-title-align: right;
-            border-title-color: $text;
-            hatch: right $boost;
+            hatch: right $surface;
         }
 
         .panel {
             background: $surface;
-            &:focus, &:focus-within {
+            &:focus {
                 background: $panel 80%;
             }
+        }
+
+        Navigation {
+            display: none;
+        }
+        &.navigation Navigation {
+            display: block;
         }
     }
     """
@@ -54,6 +58,7 @@ class Main(EnhancedScreen[None]):
         # Keep these together as they're bound to function keys and destined
         # for the footer.
         Help,
+        ToggleNavigation,
         ChangeTheme,
         Quit,
         # Everything else.
@@ -67,19 +72,11 @@ class Main(EnhancedScreen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        with Horizontal(id="workspace", classes="panel"):
-            yield Viewer()
+        with Horizontal(id="workspace"):
+            yield Navigation(classes="panel")
+            yield Viewer(classes="panel")
         yield CommandLine(classes="panel")
         yield Footer()
-
-    @on(Viewer.Loaded)
-    def new_location(self, message: Viewer.Loaded) -> None:
-        """Handle movement to a new location.
-
-        Args:
-            message: The message to handle.
-        """
-        self.query_one("#workspace").border_title = str(message.viewer.location or "")
 
     @on(OpenFile)
     @on(OpenURL)
@@ -106,6 +103,11 @@ class Main(EnhancedScreen[None]):
     def action_help_command(self) -> None:
         """Toggle the display of the help panel."""
         self.app.push_screen(HelpScreen(self))
+
+    @on(ToggleNavigation)
+    def action_toggle_navigation_command(self) -> None:
+        """Toggle the display of the navigation panel."""
+        self.toggle_class("navigation")
 
     @on(Quit)
     def action_quit_command(self) -> None:

@@ -12,7 +12,7 @@ from textual_enhanced.commands import (
 
 ##############################################################################
 # Local imports.
-from ..commands import Backward, Forward
+from ..commands import Backward, Forward, ToggleNavigation
 
 
 ##############################################################################
@@ -26,10 +26,11 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield Backward()
+        yield ChangeTheme()
         yield Forward()
         yield Help()
-        yield ChangeTheme()
         yield Quit()
+        yield ToggleNavigation()
 
 
 ### main.py ends here
