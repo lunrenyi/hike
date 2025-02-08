@@ -1,19 +1,10 @@
 """The main screen for the application."""
 
 ##############################################################################
-# Python imports.
-from pathlib import Path
-
-##############################################################################
-# httpx imports.
-from httpx import URL
-
-##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
-from textual.reactive import var
 from textual.widgets import Footer, Header
 
 ##############################################################################
