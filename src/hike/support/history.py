@@ -81,7 +81,6 @@ class History(Generic[HistoryItem]):
         return self
 
     def __len__(self) -> int:
-        """The size of history."""
         """The length of the history."""
         return len(self._history)
 
