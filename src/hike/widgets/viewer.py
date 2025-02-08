@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import singledispatchmethod
 from pathlib import Path
-from typing import Final
+from typing import Callable, Final
 
 ##############################################################################
 # httpx imports.
@@ -195,11 +195,23 @@ class Viewer(VerticalScroll):
             self._history += self.location
             self.post_message(self.HistoryUpdated(self))
 
-    def backward(self) -> None:
-        """Go backward through the history."""
-        if self._history.backward():
+    def _move(self, movement: Callable[[], bool]) -> None:
+        """Move in the given direction through history.
+
+        Args:
+            movement: The function that performs the movement.
+        """
+        if movement():
             self.set_reactive(Viewer.location, self._history.current_item)
             self._visit(self.location, remember=False)
+
+    def backward(self) -> None:
+        """Go backward through the history."""
+        self._move(self._history.backward)
+
+    def forward(self) -> None:
+        """Go forward through the history."""
+        self._move(self._history.forward)
 
 
 ### viewer.py ends here
