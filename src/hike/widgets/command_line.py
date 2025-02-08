@@ -54,7 +54,7 @@ class OpenDirectoryCommand(InputCommand):
         Returns:
             `True` if the command was handled; `False` if not.
         """
-        if (path := Path(text).expanduser()).is_dir():
+        if (path := Path(text).expanduser().resolve()).is_dir():
             for_widget.post_message(OpenFrom(path))
             return True
         return False
@@ -75,7 +75,7 @@ class OpenFileCommand(InputCommand):
         Returns:
             `True` if the command was handled; `False` if not.
         """
-        if (path := Path(text).expanduser()).is_file():
+        if (path := Path(text).expanduser().resolve()).is_file():
             for_widget.post_message(OpenFile(path))
             return True
         return False
