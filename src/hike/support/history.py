@@ -13,11 +13,14 @@ from typing_extensions import Self
 HistoryItem = TypeVar("HistoryItem")
 """The type of an item in history."""
 
+
 ##############################################################################
 class History(Generic[HistoryItem]):
     """A class for handling and tracking history."""
 
-    def __init__(self, history: Sequence[HistoryItem] | None = None, max_length: int=500) -> None:
+    def __init__(
+        self, history: Sequence[HistoryItem] | None = None, max_length: int = 500
+    ) -> None:
         """Initialise the history object.
 
         Args:
@@ -36,7 +39,7 @@ class History(Generic[HistoryItem]):
         If there is no valid location the value is `None`.
         """
         try:
-           _ = self._history[self._current]
+            _ = self._history[self._current]
         except IndexError:
             return None
         return self._current
@@ -83,5 +86,6 @@ class History(Generic[HistoryItem]):
     def __len__(self) -> int:
         """The length of the history."""
         return len(self._history)
+
 
 ### history.py ends here

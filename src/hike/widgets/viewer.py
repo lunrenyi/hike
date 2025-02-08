@@ -13,7 +13,7 @@ from typing import Final
 
 ##############################################################################
 # httpx imports.
-from httpx import AsyncClient, HTTPStatusError, RequestError, URL
+from httpx import URL, AsyncClient, HTTPStatusError, RequestError
 
 ##############################################################################
 # Textual imports.
@@ -27,6 +27,7 @@ from textual.widgets import Markdown
 ##############################################################################
 # Local imports.
 from .. import __version__
+
 
 ##############################################################################
 class Viewer(VerticalScroll):
@@ -64,7 +65,6 @@ class Viewer(VerticalScroll):
         markdown: str
         """The markdown content."""
 
-
     @work(thread=True, exclusive=True)
     def _load_from_file(self, source: Path) -> None:
         """Load up markdown content from a file.
@@ -73,7 +73,9 @@ class Viewer(VerticalScroll):
             source: The path to load the content from.
         """
         try:
-            self.post_message(self.Loaded(self, Path(source).read_text(encoding="utf-8")))
+            self.post_message(
+                self.Loaded(self, Path(source).read_text(encoding="utf-8"))
+            )
         except OSError as error:
             self.notify(str(error), title="Load error", severity="error", timeout=8)
 
@@ -91,7 +93,7 @@ class Viewer(VerticalScroll):
                 response = await client.get(
                     source,
                     follow_redirects=True,
-                    headers={"user-agent": self.USER_AGENT}
+                    headers={"user-agent": self.USER_AGENT},
                 )
         except RequestError as error:
             self.notify(str(error), title="Request error", severity="error", timeout=8)
@@ -108,8 +110,10 @@ class Viewer(VerticalScroll):
         # what we got back is something that admits to being markdown, or at
         # least a form of plain text we can render.
         if content_type := response.headers.get("content-type"):
-            if any(content_type.startswith(f"text/{sub_type}")
-                   for sub_type in ("plain", "markdown", "x-markdown")):
+            if any(
+                content_type.startswith(f"text/{sub_type}")
+                for sub_type in ("plain", "markdown", "x-markdown")
+            ):
                 self.post_message(self.Loaded(self, response.text))
                 return
         # TODO: Be kind and open the URL outwith the viewer.

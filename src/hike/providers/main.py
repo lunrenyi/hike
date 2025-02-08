@@ -2,7 +2,13 @@
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.commands import ChangeTheme, CommandHits, CommandsProvider, Help, Quit
+from textual_enhanced.commands import (
+    ChangeTheme,
+    CommandHits,
+    CommandsProvider,
+    Help,
+    Quit,
+)
 
 
 ##############################################################################

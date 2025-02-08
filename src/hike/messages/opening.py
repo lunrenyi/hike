@@ -40,4 +40,5 @@ class OpenURL(Message):
     to_open: URL
     """The URL to open."""
 
+
 ### opening.py ends here

@@ -38,6 +38,7 @@ class InputCommand:
         """
         return False
 
+
 ##############################################################################
 class OpenDirectoryCommand(InputCommand):
     """Input command for browsing for a file in a directory."""
@@ -99,7 +100,6 @@ class OpenURLCommand(InputCommand):
             for_widget.post_message(OpenURL(url))
             return True
         return False
-
 
 
 ##############################################################################
