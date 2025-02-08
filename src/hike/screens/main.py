@@ -67,23 +67,24 @@ class Main(EnhancedScreen[None]):
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
-
     COMMANDS = {MainCommands}
-
-    source: var[Path | URL | None] = var(None)
-    """The source of the markdown being displayed."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
         with Horizontal(id="workspace", classes="panel"):
-            yield Viewer().data_bind(Main.source)
+            yield Viewer()
         yield CommandLine(classes="panel")
         yield Footer()
 
-    def watch_source(self) -> None:
-        """React to the source changing."""
-        self.query_one("#workspace").border_title = str(self.source or "")
+    @on(Viewer.Loaded)
+    def new_location(self, message: Viewer.Loaded) -> None:
+        """Handle movement to a new location.
+
+        Args:
+            message: The message to handle.
+        """
+        self.query_one("#workspace").border_title = str(message.viewer.location or "")
 
     @on(OpenFile)
     @on(OpenURL)
@@ -93,7 +94,7 @@ class Main(EnhancedScreen[None]):
         Args:
             message: The message requesting the file be opened.
         """
-        self.source = message.to_open
+        self.query_one(Viewer).location = message.to_open
 
     @on(OpenFrom)
     @work

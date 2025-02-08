@@ -27,6 +27,7 @@ from textual.widgets import Markdown
 ##############################################################################
 # Local imports.
 from .. import __version__
+from ..support import History
 
 
 ##############################################################################
@@ -48,8 +49,26 @@ class Viewer(VerticalScroll):
     USER_AGENT: Final[str] = f"Hike v{__version__} (https://github.com/davep/hike)"
     """The user agent string for the viewer."""
 
-    source: var[Path | URL | None] = var(None)
-    """The source of the markdown being displayed."""
+    location: var[Path | URL | None] = var(None)
+    """The location of the markdown being displayed."""
+
+    def __init__(
+        self,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -> None:
+        """Initialise the viewer widget.
+
+        Args:
+            id: The ID of the widget description in the DOM.
+            classes: The CSS classes of the widget description.
+        """
+        super().__init__(
+            id=id,
+            classes=classes,
+        )
+        self._history = History[Path | URL | None]()
+        """The history for the viewer."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
@@ -65,33 +84,45 @@ class Viewer(VerticalScroll):
         markdown: str
         """The markdown content."""
 
+        remember: bool
+        """Should this load be remembered?"""
+
+    @dataclass
+    class HistoryUpdated(Message):
+        """Class posted when the history is updated."""
+
+        viewer: Viewer
+        """The viewer."""
+
     @work(thread=True, exclusive=True)
-    def _load_from_file(self, source: Path) -> None:
+    def _load_from_file(self, location: Path, remember: bool) -> None:
         """Load up markdown content from a file.
 
         Args:
-            source: The path to load the content from.
+            location: The path to load the content from.
+            remember: Should this location go into history?
         """
         try:
             self.post_message(
-                self.Loaded(self, Path(source).read_text(encoding="utf-8"))
+                self.Loaded(self, Path(location).read_text(encoding="utf-8"), remember)
             )
         except OSError as error:
             self.notify(str(error), title="Load error", severity="error", timeout=8)
 
     @work(exclusive=True)
-    async def _load_from_url(self, source: URL) -> None:
+    async def _load_from_url(self, location: URL, remember: bool) -> None:
         """Load up markdown content from a URL.
 
         Args:
-            source: The URL to load the content from.
+            location: The URL to load the content from.
+            remember: Should this location go into history?
         """
 
         # Download the data from the remote location.
         try:
             async with AsyncClient() as client:
                 response = await client.get(
-                    source,
+                    location,
                     follow_redirects=True,
                     headers={"user-agent": self.USER_AGENT},
                 )
@@ -114,42 +145,61 @@ class Viewer(VerticalScroll):
                 content_type.startswith(f"text/{sub_type}")
                 for sub_type in ("plain", "markdown", "x-markdown")
             ):
-                self.post_message(self.Loaded(self, response.text))
+                self.post_message(self.Loaded(self, response.text, remember))
                 return
         # TODO: Be kind and open the URL outwith the viewer.
         self.notify("That didn't look like markdown to me.")
 
     @singledispatchmethod
-    def _load_markdown(self, source: Path) -> None:
-        """Load markdown from a source.
+    def _load_markdown(self, location: Path, remember: bool) -> None:
+        """Load markdown from a location.
 
         Args:
-            source: The source to load the markdown from.
+            location: The location to load the markdown from.
+            remember: Should this location go into history?
         """
-        self._load_from_file(source)
+        self._load_from_file(location, remember)
 
     @_load_markdown.register
-    def _(self, source: URL) -> None:
-        self._load_from_url(source)
+    def _(self, location: URL, remember: bool) -> None:
+        self._load_from_url(location, remember)
 
     @_load_markdown.register
-    def _(self, source: None) -> None:
-        self.post_message(self.Loaded(self, ""))
+    def _(self, location: None, remember: bool) -> None:
+        self.post_message(self.Loaded(self, "", remember))
 
-    def watch_source(self) -> None:
-        """Handle changes to the markdown to view."""
-        self.can_focus = self.source is not None
-        self.set_class(self.source is None, "empty")
-        self._load_markdown(self.source)
+    def _visit(self, location: Path | URL | None, remember: bool = True) -> None:
+        """Visit the given location.
+
+        Args:
+            location: The location to visit.
+            remember: Should this location go into history?
+        """
+        self.can_focus = location is not None
+        self.set_class(location is None, "empty")
+        self._load_markdown(location, remember)
+
+    def _watch_location(self) -> None:
+        """Handle changes to the location to view."""
+        self._visit(self.location)
 
     @on(Loaded)
-    def _update_markdown(self, message: Loaded):
+    def _update_markdown(self, message: Loaded) -> None:
         """Update the markdown once some new content is loaded.
 
         Args:
             message: The message requesting the update.
         """
         self.query_one(Markdown).update(message.markdown)
+        if message.remember and self.location != self._history.current_item:
+            self._history += self.location
+            self.post_message(self.HistoryUpdated(self))
+
+    def backward(self) -> None:
+        """Go backward through the history."""
+        if self._history.backward():
+            self.set_reactive(Viewer.location, self._history.current_item)
+            self._visit(self.location, remember=False)
 
 
 ### viewer.py ends here
