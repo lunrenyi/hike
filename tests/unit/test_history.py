@@ -1,0 +1,88 @@
+"""Test the history class."""
+
+##############################################################################
+# Pytest imports.
+from pytest import mark
+
+##############################################################################
+# Local imports.
+from hike.support import History
+
+##############################################################################
+def test_empty_history_has_no_location() -> None:
+    """An empty history object should have no location."""
+    assert History().current_location is None
+
+##############################################################################
+def test_empty_history_has_no_item() -> None:
+    """An empty history object should have no item."""
+    assert History().current_item is None
+
+##############################################################################
+def test_empty_history_has_no_length() -> None:
+    """An empty history object should have zero length."""
+    assert len(History()) == 0
+
+##############################################################################
+@mark.parametrize("initial", ([1], [1, 2], list(range(100))))
+def test_pre_populate_history_has_location(initial: list[int]) -> None:
+    """A pre-populated history should be at the last location."""
+    assert History[int](initial).current_location == len(initial) - 1
+
+##############################################################################
+@mark.parametrize("initial", ([1], [1, 2], list(range(100))))
+def test_pre_populate_history_has_an_item(initial: list[int]) -> None:
+    """A pre-populated history's item should be the last item."""
+    assert History[int](initial).current_item == initial[-1]
+
+##############################################################################
+@mark.parametrize(
+    "initial, expected",
+    (
+        ([1], 1),
+        ([1, 2], 2),
+        (list(range(100)), 100),
+        (list(range(200)), 100),
+    )
+)
+def test_pre_populate_history_has_length(initial: list[int], expected: int) -> None:
+    """A pre-populated history should be the correct length."""
+    assert len(History[int](initial, max_length=100)) == expected
+
+##############################################################################
+@mark.parametrize("values", ([1], [1, 2], list(range(100))))
+def test_hand_populated_history_has_location(values: list[int]) -> None:
+    """A hand-populated history should end up at the last location."""
+    history = History[int]()
+    for value in values:
+        history += value
+    assert history.current_location == len(values) - 1
+
+##############################################################################
+@mark.parametrize("values", ([1], [1, 2], list(range(100))))
+def test_hand_populated_history_has_an_item(values: list[int]) -> None:
+    """A hand-populated history's item should be the last item."""
+    history = History[int]()
+    for value in values:
+        history += value
+    assert history.current_item == values[-1]
+
+##############################################################################
+@mark.parametrize(
+    "values, expected",
+    (
+        ([1], 1),
+        ([1, 2], 2),
+        (list(range(100)), 100),
+        (list(range(200)), 100),
+    )
+)
+def test_hand_populated_history_has_length(values: list[int], expected: int) -> None:
+    """A pre-populated history should be the correct length."""
+    history = History[int](max_length=100)
+    for value in values:
+        history += value
+    assert len(history) == expected
+
+
+### test_history.py ends here
