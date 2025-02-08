@@ -29,6 +29,7 @@ from textual_fspicker import FileOpen
 ##############################################################################
 # Local imports.
 from .. import __version__
+from ..commands import Backward, Forward
 from ..messages import OpenFile, OpenFrom, OpenURL
 from ..providers import MainCommands
 from ..widgets import CommandLine, Viewer
@@ -64,6 +65,9 @@ class Main(EnhancedScreen[None]):
         Help,
         ChangeTheme,
         Quit,
+        # Everything else.
+        Backward,
+        Forward,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
@@ -116,6 +120,16 @@ class Main(EnhancedScreen[None]):
     def action_quit_command(self) -> None:
         """Quit the application."""
         self.app.exit()
+
+    @on(Backward)
+    def action_backward_command(self) -> None:
+        """Move backward through history."""
+        self.query_one(Viewer).backward()
+
+    @on(Forward)
+    def action_forward_command(self) -> None:
+        """Move forward through history."""
+        self.query_one(Viewer).forward()
 
 
 ### main.py ends here
