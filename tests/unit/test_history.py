@@ -84,5 +84,31 @@ def test_hand_populated_history_has_length(values: list[int], expected: int) -> 
         history += value
     assert len(history) == expected
 
+##############################################################################
+def test_backward() -> None:
+    """We should be able to move backward through history until we can't."""
+    history = History[int]([1,2,3])
+    assert history.current_location == 2
+    assert history.backward() is True
+    assert history.current_location == 1
+    assert history.backward() is True
+    assert history.current_location == 0
+    assert history.backward() is False
+    assert history.current_location == 0
+
+##############################################################################
+def test_forward() -> None:
+    """We should be able to move forward through history until we can't."""
+    history = History[int]([1,2,3])
+    assert history.backward() is True
+    assert history.backward() is True
+    assert history.backward() is False
+    assert history.current_location == 0
+    assert history.forward() is True
+    assert history.current_location == 1
+    assert history.forward() is True
+    assert history.current_location == 2
+    assert history.forward() is False
+    assert history.current_location == 2
 
 ### test_history.py ends here

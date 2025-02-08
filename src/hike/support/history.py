@@ -46,6 +46,28 @@ class History(Generic[HistoryItem]):
         except IndexError:
             return None
 
+    def backward(self) -> bool:
+        """Go backward through the history.
+
+        Returns:
+            `True` if we moved through history, `False` if not.
+        """
+        if self._current:
+            self._current -= 1
+            return True
+        return False
+
+    def forward(self) -> bool:
+        """Go forward through the history.
+
+        Returns:
+            `True` if we moved through history, `False` if not.
+        """
+        if self._current < len(self._history) - 1:
+            self._current += 1
+            return True
+        return False
+
     def __iadd__(self, item: HistoryItem) -> Self:
         self._history.append(item)
         self._current = len(self._history) - 1
