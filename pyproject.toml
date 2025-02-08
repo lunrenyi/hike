@@ -11,6 +11,7 @@ dependencies = [
     "textual-fspicker>=0.2.0",
     "xdg-base-dirs>=6.0.2",
     "httpx>=0.28.1",
+    "typing-extensions>=4.12.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -30,6 +31,7 @@ dev-dependencies = [
     "mypy>=1.15.0",
     "pre-commit>=4.1.0",
     "textual-dev>=1.7.0",
+    "pytest>=8.3.4",
 ]
 
 [tool.hatch.metadata]
