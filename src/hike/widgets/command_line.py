@@ -26,44 +26,37 @@ class InputCommand:
     """Base class for input commands."""
 
     @classmethod
-    def can_handle(cls, text: str) -> bool:
-        """Can the class handle the given input?
-
-        Args:
-            text: The text to check.
-        """
-        return False
-
-    @classmethod
-    def handle(self, text: str, checker: Widget) -> None:
+    def handle(cls, text: str, for_widget: Widget) -> bool:
         """Handle the command.
 
         Args:
             text: The text of the command.
-        """
+            for_widget: The widget to handle the command for.
 
+        Returns:
+            `True` if the command was handled; `False` if not.
+        """
+        return False
 
 ##############################################################################
 class OpenDirectoryCommand(InputCommand):
     """Input command for browsing for a file in a directory."""
 
     @classmethod
-    def can_handle(cls, text: str) -> bool:
-        """Can the class handle the given input?
-
-        Args:
-            text: The text to check.
-        """
-        return Path(text).expanduser().is_dir()
-
-    @classmethod
-    def handle(cls, text: str, checker: Widget) -> None:
+    def handle(cls, text: str, for_widget: Widget) -> bool:
         """Handle the command.
 
         Args:
             text: The text of the command.
+            for_widget: The widget to handle the command for.
+
+        Returns:
+            `True` if the command was handled; `False` if not.
         """
-        checker.post_message(OpenFrom(Path(text).expanduser()))
+        if (path := Path(text).expanduser()).is_dir():
+            for_widget.post_message(OpenFrom(path))
+            return True
+        return False
 
 
 ##############################################################################
@@ -71,22 +64,20 @@ class OpenFileCommand(InputCommand):
     """Input command for opening a file."""
 
     @classmethod
-    def can_handle(cls, text: str) -> bool:
-        """Can the class handle the given input?
-
-        Args:
-            text: The text to check.
-        """
-        return Path(text).expanduser().is_file()
-
-    @classmethod
-    def handle(cls, text: str, checker: Widget) -> None:
+    def handle(cls, text: str, for_widget: Widget) -> bool:
         """Handle the command.
 
         Args:
             text: The text of the command.
+            for_widget: The widget to handle the command for.
+
+        Returns:
+            `True` if the command was handled; `False` if not.
         """
-        checker.post_message(OpenFile(Path(text).expanduser()))
+        if (path := Path(text).expanduser()).is_file():
+            for_widget.post_message(OpenFile(path))
+            return True
+        return False
 
 
 ##############################################################################
@@ -94,22 +85,20 @@ class OpenURLCommand(InputCommand):
     """Input command for opening a URL."""
 
     @classmethod
-    def can_handle(cls, text: str) -> bool:
-        """Can the class handle the given input?
-
-        Args:
-            text: The text to check.
-        """
-        return (url := URL(text)).is_absolute_url and url.scheme in ("http", "https")
-
-    @classmethod
-    def handle(cls, text: str, checker: Widget) -> None:
+    def handle(cls, text: str, for_widget: Widget) -> bool:
         """Handle the command.
 
         Args:
             text: The text of the command.
+            for_widget: The widget to handle the command for.
+
+        Returns:
+            `True` if the command was handled; `False` if not.
         """
-        checker.post_message(OpenURL(URL(text)))
+        if (url := URL(text)).is_absolute_url and url.scheme in ("http", "https"):
+            for_widget.post_message(OpenURL(url))
+            return True
+        return False
 
 
 
@@ -151,8 +140,7 @@ class CommandLine(Horizontal):
         """
         message.stop()
         for candidate in (OpenDirectoryCommand, OpenFileCommand, OpenURLCommand):
-            if candidate.can_handle(message.value):
-                candidate.handle(message.value, self)
+            if candidate.handle(message.value, self):
                 message.input.value = ""
                 return
         self.notify("Unable to handle that input", title="Error", severity="error")
