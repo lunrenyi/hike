@@ -10,7 +10,7 @@
 #   universal: false
 
 -e file:.
-aiohappyeyeballs==2.4.4
+aiohappyeyeballs==2.4.6
     # via aiohttp
 aiohttp==3.11.12
     # via aiohttp-jinja2
@@ -83,7 +83,7 @@ textual==1.0.0
     # via textual-fspicker
     # via textual-serve
 textual-dev==1.7.0
-textual-enhanced==0.4.0
+textual-enhanced==0.5.0
     # via hike
 textual-fspicker==0.2.0
     # via hike
