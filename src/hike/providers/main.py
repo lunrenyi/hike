@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.commands import CommandHits, CommandsProvider, Help, Quit
+from textual_enhanced.commands import ChangeTheme, CommandHits, CommandsProvider, Help, Quit
 
 
 ##############################################################################
@@ -16,6 +16,7 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield Help()
+        yield ChangeTheme()
         yield Quit()
 
 

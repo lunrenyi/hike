@@ -14,7 +14,7 @@ from textual.widgets import Footer, Header
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.commands import Command, Help, Quit
+from textual_enhanced.commands import ChangeTheme, Command, Help, Quit
 from textual_enhanced.dialogs import HelpScreen
 from textual_enhanced.screen import EnhancedScreen
 
@@ -58,6 +58,7 @@ class Main(EnhancedScreen[None]):
         # Keep these together as they're bound to function keys and destined
         # for the footer.
         Help,
+        ChangeTheme,
         Quit,
     )
 
