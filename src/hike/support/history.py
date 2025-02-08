@@ -31,7 +31,10 @@ class History(Generic[HistoryItem]):
 
     @property
     def current_location(self) -> int | None:
-        """The current location in the history."""
+        """The current integer location in the history.
+
+        If there is no valid location the value is `None`.
+        """
         try:
            _ = self._history[self._current]
         except IndexError:
@@ -40,7 +43,10 @@ class History(Generic[HistoryItem]):
 
     @property
     def current_item(self) -> HistoryItem | None:
-        """The current item in the history."""
+        """The current item in the history.
+
+        If there is no current item in the history the value is `None`.
+        """
         try:
             return self._history[self._current]
         except IndexError:
@@ -69,11 +75,13 @@ class History(Generic[HistoryItem]):
         return False
 
     def __iadd__(self, item: HistoryItem) -> Self:
+        """Add an item to the history."""
         self._history.append(item)
         self._current = len(self._history) - 1
         return self
 
     def __len__(self) -> int:
+        """The size of history."""
         """The length of the history."""
         return len(self._history)
 
