@@ -27,8 +27,7 @@ from textual.widgets import Markdown
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..support import History
-from ..types import HikeHistory, HikeLocation
+from ..types import HikeHistory
 
 
 ##############################################################################
