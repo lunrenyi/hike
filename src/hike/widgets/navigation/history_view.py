@@ -1,20 +1,12 @@
 """Provides the history for the navigation panel."""
 
 ##############################################################################
-# Python imports.
-from pathlib import Path
-
-##############################################################################
-# httpx imports.
-from httpx import URL
-
-##############################################################################
 # Textual-enhanced imports.
 from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
-from ...support import History
+from ...types import HikeHistory
 
 
 ##############################################################################
@@ -31,7 +23,7 @@ class HistoryView(EnhancedOptionList):
     }
     """
 
-    def update(self, history: History[Path | URL | None]) -> None:
+    def update(self, history: HikeHistory) -> None:
         """Update the content of the history view.
 
         Args:

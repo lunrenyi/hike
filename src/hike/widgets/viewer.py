@@ -28,6 +28,7 @@ from textual.widgets import Markdown
 # Local imports.
 from .. import __version__
 from ..support import History
+from ..types import HikeHistory, HikeLocation
 
 
 ##############################################################################
@@ -70,11 +71,11 @@ class Viewer(VerticalScroll):
             id=id,
             classes=classes,
         )
-        self._history = History[Path | URL | None]()
+        self._history = HikeHistory()
         """The history for the viewer."""
 
     @property
-    def history(self) -> History[Path | URL | None]:
+    def history(self) -> HikeHistory:
         """The history of the viewer."""
         return self._history
 

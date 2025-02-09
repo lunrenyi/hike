@@ -16,7 +16,7 @@ from textual.reactive import var
 
 ##############################################################################
 # Local imports.
-from ...support import History
+from ...types import HikeHistory
 from .history_view import HistoryView
 
 
@@ -49,7 +49,7 @@ class Navigation(Vertical):
         self._history = HistoryView()
         yield self._history
 
-    def update_history(self, history: History[Path | URL | None]) -> None:
+    def update_history(self, history: HikeHistory) -> None:
         """Update the history display.
 
         Args:
