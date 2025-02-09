@@ -22,6 +22,9 @@ class Configuration:
     theme: str | None = None
     """The theme for the application."""
 
+    navigation_visible: bool = True
+    """Should the navigation panel be visible?"""
+
 
 ##############################################################################
 def configuration_file() -> Path:

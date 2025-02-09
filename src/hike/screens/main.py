@@ -21,6 +21,7 @@ from textual_fspicker import FileOpen
 # Local imports.
 from .. import __version__
 from ..commands import Backward, Forward, ToggleNavigation
+from ..data import load_configuration, update_configuration
 from ..messages import OpenFile, OpenFrom, OpenURL
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
@@ -80,6 +81,10 @@ class Main(EnhancedScreen[None]):
         yield CommandLine(classes="panel")
         yield Footer()
 
+    def on_mount(self) -> None:
+        """Configure the screen once the DOM is mounted."""
+        self.set_class(load_configuration().navigation_visible, "navigation")
+
     @on(OpenFile)
     @on(OpenURL)
     def open_markdown(self, message: OpenFile | OpenURL) -> None:
@@ -110,6 +115,8 @@ class Main(EnhancedScreen[None]):
     def action_toggle_navigation_command(self) -> None:
         """Toggle the display of the navigation panel."""
         self.toggle_class("navigation")
+        with update_configuration() as config:
+            config.navigation_visible = self.has_class("navigation")
 
     @on(Quit)
     def action_quit_command(self) -> None:
