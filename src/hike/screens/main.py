@@ -69,6 +69,8 @@ class Main(EnhancedScreen[None]):
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
     COMMANDS = {MainCommands}
 
+    AUTO_FOCUS = "CommandLine *"
+
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
