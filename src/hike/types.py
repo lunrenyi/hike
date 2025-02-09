@@ -14,7 +14,7 @@ from httpx import URL
 from .support import History
 
 ##############################################################################
-HikeLocation: TypeAlias = Path | URL | None
+HikeLocation: TypeAlias = Path | URL
 """The type of a location."""
 
 ##############################################################################

@@ -27,7 +27,7 @@ from textual.widgets import Markdown
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..types import HikeHistory
+from ..types import HikeHistory, HikeLocation
 
 
 ##############################################################################
@@ -52,7 +52,7 @@ class Viewer(VerticalScroll):
     USER_AGENT: Final[str] = f"Hike v{__version__} (https://github.com/davep/hike)"
     """The user agent string for the viewer."""
 
-    location: var[Path | URL | None] = var(None)
+    location: var[HikeLocation | None] = var(None)
     """The location of the markdown being displayed."""
 
     def __init__(
@@ -176,7 +176,7 @@ class Viewer(VerticalScroll):
     def _(self, location: None, remember: bool) -> None:
         self.post_message(self.Loaded(self, "", remember))
 
-    def _visit(self, location: Path | URL | None, remember: bool = True) -> None:
+    def _visit(self, location: HikeLocation | None, remember: bool = True) -> None:
         """Visit the given location.
 
         Args:
@@ -200,7 +200,11 @@ class Viewer(VerticalScroll):
         """
         self.border_title = str(self.location or "")
         self.query_one(Markdown).update(message.markdown)
-        if message.remember and self.location != self._history.current_item:
+        if (
+            message.remember
+            and self.location
+            and self.location != self._history.current_item
+        ):
             self._history += self.location
             self.post_message(self.HistoryUpdated(self))
 
