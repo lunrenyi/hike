@@ -73,6 +73,11 @@ class Viewer(VerticalScroll):
         self._history = History[Path | URL | None]()
         """The history for the viewer."""
 
+    @property
+    def history(self) -> History[Path | URL | None]:
+        """The history of the viewer."""
+        return self._history
+
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
         yield Markdown()

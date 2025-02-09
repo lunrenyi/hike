@@ -127,4 +127,10 @@ def test_forward() -> None:
     assert history.current_location == 2
 
 
+##############################################################################
+def test_iterator() -> None:
+    """We should be able to use history as an iterator."""
+    assert list(History[int]([1, 2, 3])) == [1, 2, 3]
+
+
 ### test_history.py ends here

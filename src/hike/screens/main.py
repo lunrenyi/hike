@@ -124,5 +124,14 @@ class Main(EnhancedScreen[None]):
         """Move forward through history."""
         self.query_one(Viewer).forward()
 
+    @on(Viewer.HistoryUpdated)
+    def _update_history(self, message: Viewer.HistoryUpdated) -> None:
+        """Update the view of history when it changes.
+
+        Args:
+            message: The message to say that history changed.
+        """
+        self.query_one(Navigation).update_history(message.viewer.history)
+
 
 ### main.py ends here

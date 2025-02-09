@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from collections import deque
-from typing import Generic, Sequence, TypeVar
+from typing import Generic, Iterator, Sequence, TypeVar
 
 ##############################################################################
 # Typing extensions imports.
@@ -86,6 +86,9 @@ class History(Generic[HistoryItem]):
     def __len__(self) -> int:
         """The length of the history."""
         return len(self._history)
+
+    def __iter__(self) -> Iterator[HistoryItem]:
+        return iter(self._history)
 
 
 ### history.py ends here
