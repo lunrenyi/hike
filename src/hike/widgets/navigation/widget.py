@@ -6,7 +6,6 @@ from __future__ import annotations
 
 ##############################################################################
 # Textual imports.
-from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.reactive import var
