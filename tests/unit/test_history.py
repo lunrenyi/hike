@@ -114,6 +114,15 @@ def test_backward() -> None:
 
 
 ##############################################################################
+def test_backward_empty() -> None:
+    """We should not be able to go backward in an empty history."""
+    history = History[None]([])
+    assert history.current_location is None
+    assert history.backward() is False
+    assert history.current_location is None
+
+
+##############################################################################
 def test_forward() -> None:
     """We should be able to move forward through history until we can't."""
     history = History[int]([1, 2, 3])
@@ -127,6 +136,15 @@ def test_forward() -> None:
     assert history.current_location == 2
     assert history.forward() is False
     assert history.current_location == 2
+
+
+##############################################################################
+def test_forward_empty() -> None:
+    """We should not be able to go forward in an empty history."""
+    history = History[None]([])
+    assert history.current_location is None
+    assert history.forward() is False
+    assert history.current_location is None
 
 
 ##############################################################################
@@ -146,6 +164,18 @@ def test_goto(desired: int, achieved: int) -> None:
 def test_goto_empty() -> None:
     """Going to a location in an empty list should keep the location as `None`."""
     assert History[None](()).goto(42).current_location is None
+
+
+##############################################################################
+def test_goto_and_movement_in_empty_history() -> None:
+    """A combination of goto and movement in a empty history should be fine."""
+    history = History[None]()
+    assert history.current_location is None
+    assert history.goto(42).current_location is None
+    assert history.forward() is False
+    assert history.current_location is None
+    assert history.backward() is False
+    assert history.current_location is None
 
 
 ### test_history.py ends here
