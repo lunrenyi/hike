@@ -66,7 +66,7 @@ def test_hand_populated_history_has_location(values: Sequence[int]) -> None:
     """A hand-populated history should end up at the last location."""
     history = History[int]()
     for value in values:
-        history += value
+        history.add(value)
     assert history.current_location == len(values) - 1
 
 
@@ -76,7 +76,7 @@ def test_hand_populated_history_has_an_item(values: Sequence[int]) -> None:
     """A hand-populated history's item should be the last item."""
     history = History[int]()
     for value in values:
-        history += value
+        history.add(value)
     assert history.current_item == values[-1]
 
 
@@ -96,7 +96,7 @@ def test_hand_populated_history_has_length(
     """A pre-populated history should be the correct length."""
     history = History[int](max_length=100)
     for value in values:
-        history += value
+        history.add(value)
     assert len(history) == expected
 
 

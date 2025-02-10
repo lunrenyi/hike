@@ -21,7 +21,7 @@ from textual_fspicker import FileOpen
 # Local imports.
 from .. import __version__
 from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
-from ..data import load_configuration, update_configuration
+from ..data import load_configuration, load_history, save_history, update_configuration
 from ..messages import OpenFrom, OpenLocation
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
@@ -93,6 +93,7 @@ class Main(EnhancedScreen[None]):
         config = load_configuration()
         self.set_class(config.navigation_visible, "navigation")
         self.query_one(Navigation).dock_right = config.navigation_on_right
+        self.query_one(Viewer).history = load_history()
 
     @on(OpenLocation)
     def open_markdown(self, message: OpenLocation) -> None:
@@ -157,6 +158,7 @@ class Main(EnhancedScreen[None]):
             message: The message to say that history changed.
         """
         self.query_one(Navigation).update_history(message.viewer.history)
+        save_history(message.viewer.history)
 
 
 ### main.py ends here

@@ -76,28 +76,8 @@ class Viewer(Vertical, can_focus=False):
     location: var[HikeLocation | None] = var(None)
     """The location of the markdown being displayed."""
 
-    def __init__(
-        self,
-        id: str | None = None,
-        classes: str | None = None,
-    ) -> None:
-        """Initialise the viewer widget.
-
-        Args:
-            id: The ID of the widget description in the DOM.
-            classes: The CSS classes of the widget description.
-        """
-        super().__init__(
-            id=id,
-            classes=classes,
-        )
-        self._history = HikeHistory()
-        """The history for the viewer."""
-
-    @property
-    def history(self) -> HikeHistory:
-        """The history of the viewer."""
-        return self._history
+    history: var[HikeHistory] = var(HikeHistory)
+    """The history for the viewer."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
@@ -124,6 +104,9 @@ class Viewer(Vertical, can_focus=False):
 
         viewer: Viewer
         """The viewer."""
+
+    def _watch_history(self) -> None:
+        self.post_message(self.HistoryUpdated(self))
 
     @work(thread=True, exclusive=True)
     def _load_from_file(self, location: Path, remember: bool) -> None:
@@ -225,9 +208,9 @@ class Viewer(Vertical, can_focus=False):
         if (
             message.remember
             and self.location
-            and self.location != self._history.current_item
+            and self.location != self.history.current_item
         ):
-            self._history += self.location
+            self.history.add(self.location)
             self.post_message(self.HistoryUpdated(self))
 
     def _move(self, movement: Callable[[], bool]) -> None:
@@ -237,16 +220,16 @@ class Viewer(Vertical, can_focus=False):
             movement: The function that performs the movement.
         """
         if movement():
-            self.set_reactive(Viewer.location, self._history.current_item)
+            self.set_reactive(Viewer.location, self.history.current_item)
             self._visit(self.location, remember=False)
 
     def backward(self) -> None:
         """Go backward through the history."""
-        self._move(self._history.backward)
+        self._move(self.history.backward)
 
     def forward(self) -> None:
         """Go forward through the history."""
-        self._move(self._history.forward)
+        self._move(self.history.forward)
 
 
 ### viewer.py ends here
