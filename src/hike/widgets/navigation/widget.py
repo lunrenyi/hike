@@ -27,6 +27,9 @@ class Navigation(Vertical):
         &.--dock-right {
             dock: right;
         }
+        #tabs-list {
+            background: $panel;
+        }
     }
     """
 
