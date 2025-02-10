@@ -28,6 +28,9 @@ class CommandLine(Horizontal):
             Label, Input {
                 color: $text;
             }
+            Label {
+                text-style: bold;
+            }
         }
         Input, Input:focus {
             border: none;
@@ -41,7 +44,7 @@ class CommandLine(Horizontal):
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         yield Label("> ")
-        yield Input()
+        yield Input(placeholder="Enter a directory, file, path or command")
 
     @on(Input.Submitted)
     def _handle_input(self, message: Input.Submitted) -> None:
