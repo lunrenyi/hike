@@ -2,8 +2,10 @@
 
 ##############################################################################
 # Textual imports.
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
+from textual.events import DescendantBlur, DescendantFocus
 from textual.reactive import var
 from textual.widgets import Placeholder, TabbedContent
 
@@ -33,6 +35,13 @@ class Navigation(Vertical):
 
     _history: var[HistoryView | None] = var(None)
     """The history display."""
+
+    @on(DescendantBlur)
+    @on(DescendantFocus)
+    def _textual_5488_workaround(self) -> None:
+        """Workaround for https://github.com/Textualize/textual/issues/5488"""
+        for widget in self.query(HistoryView):
+            widget._refresh_lines()
 
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
