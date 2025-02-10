@@ -37,6 +37,12 @@ class Main(EnhancedScreen[None]):
     Main {
         #workspace {
             hatch: right $surface;
+            .panel {
+                border-left: wide $panel;
+                &:focus, &:focus-within {
+                    border-left: wide $border;
+                }
+            }
         }
 
         .panel {
