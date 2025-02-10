@@ -13,6 +13,7 @@ from httpx import URL
 from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.reactive import var
+from textual.widgets import Placeholder, TabbedContent
 
 ##############################################################################
 # Local imports.
@@ -48,7 +49,11 @@ class Navigation(Vertical):
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         self._history = HistoryView()
-        yield self._history
+        with TabbedContent("Content", "Local", "Bookmarks", "History"):
+            yield Placeholder()
+            yield Placeholder()
+            yield self._history
+            yield Placeholder()
 
     def update_history(self, history: HikeHistory) -> None:
         """Update the history display.
