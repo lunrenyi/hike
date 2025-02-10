@@ -44,8 +44,8 @@ class Navigation(Vertical):
         with TabbedContent("Content", "Local", "Bookmarks", "History"):
             yield Placeholder()
             yield Placeholder()
-            yield self._history
             yield Placeholder()
+            yield self._history
 
     def update_history(self, history: HikeHistory) -> None:
         """Update the history display.
