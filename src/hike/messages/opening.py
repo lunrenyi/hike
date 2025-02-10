@@ -6,10 +6,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ##############################################################################
-# httpx imports.
-from httpx import URL
-
-##############################################################################
 # Textual imports.
 from textual.message import Message
 
