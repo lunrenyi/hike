@@ -13,6 +13,10 @@ from httpx import URL
 # Textual imports.
 from textual.message import Message
 
+##############################################################################
+# Local imports.
+from ..types import HikeLocation
+
 
 ##############################################################################
 @dataclass
@@ -25,20 +29,11 @@ class OpenFrom(Message):
 
 ##############################################################################
 @dataclass
-class OpenFile(Message):
-    """Open a given file for viewing."""
+class OpenLocation(Message):
+    """Open a given location for viewing."""
 
-    to_open: Path
-    """The file to open."""
-
-
-##############################################################################
-@dataclass
-class OpenURL(Message):
-    """Open a given URL for viewing."""
-
-    to_open: URL
-    """The URL to open."""
+    to_open: HikeLocation
+    """The location to open."""
 
 
 ### opening.py ends here

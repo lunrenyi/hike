@@ -2,10 +2,10 @@
 
 ##############################################################################
 # Local imports.
-from .opening import OpenFile, OpenFrom, OpenURL
+from .opening import OpenFrom, OpenLocation
 
 ##############################################################################
 # Exports.
-__all__ = ["OpenFrom", "OpenFile", "OpenURL"]
+__all__ = ["OpenFrom", "OpenLocation"]
 
 ### __init__.py ends here

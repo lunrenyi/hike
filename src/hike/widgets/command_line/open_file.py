@@ -10,7 +10,7 @@ from textual.widget import Widget
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenFile
+from ...messages import OpenLocation
 from .base_command import InputCommand
 
 
@@ -30,7 +30,7 @@ class OpenFileCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         if (path := Path(text).expanduser().resolve()).is_file():
-            for_widget.post_message(OpenFile(path))
+            for_widget.post_message(OpenLocation(path))
             return True
         return False
 

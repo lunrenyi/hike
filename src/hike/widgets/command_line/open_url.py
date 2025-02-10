@@ -10,7 +10,7 @@ from textual.widget import Widget
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenURL
+from ...messages import OpenLocation
 from .base_command import InputCommand
 
 
@@ -30,7 +30,7 @@ class OpenURLCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         if (url := URL(text)).is_absolute_url and url.scheme in ("http", "https"):
-            for_widget.post_message(OpenURL(url))
+            for_widget.post_message(OpenLocation(url))
             return True
         return False
 

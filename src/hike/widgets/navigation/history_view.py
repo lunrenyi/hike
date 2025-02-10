@@ -19,7 +19,7 @@ from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenFile, OpenURL
+from ...messages import OpenLocation
 from ...types import HikeHistory, HikeLocation
 
 
@@ -49,15 +49,6 @@ class Location(Option):
                 f"\n[dim]{Path(location.path).parent}\n{location.host}[/]",
                 overflow="ellipsis",
             )
-        )
-
-    @property
-    def open_request(self) -> OpenFile | OpenURL:
-        """A message that will request the location is opened."""
-        return (
-            OpenFile(self.location)
-            if isinstance(self.location, Path)
-            else OpenURL(self.location)
         )
 
 
@@ -96,7 +87,7 @@ class HistoryView(EnhancedOptionList):
         """
         message.stop()
         assert isinstance(message.option, Location)
-        self.post_message(message.option.open_request)
+        self.post_message(OpenLocation(message.option.location))
 
 
 ### history.py ends here

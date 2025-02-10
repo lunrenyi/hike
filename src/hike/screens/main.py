@@ -22,7 +22,7 @@ from textual_fspicker import FileOpen
 from .. import __version__
 from ..commands import Backward, Forward, ToggleNavigation
 from ..data import load_configuration, update_configuration
-from ..messages import OpenFile, OpenFrom, OpenURL
+from ..messages import OpenFrom, OpenLocation
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
 
@@ -85,9 +85,8 @@ class Main(EnhancedScreen[None]):
         """Configure the screen once the DOM is mounted."""
         self.set_class(load_configuration().navigation_visible, "navigation")
 
-    @on(OpenFile)
-    @on(OpenURL)
-    def open_markdown(self, message: OpenFile | OpenURL) -> None:
+    @on(OpenLocation)
+    def open_markdown(self, message: OpenLocation) -> None:
         """Open a file for viewing.
 
         Args:
@@ -104,7 +103,7 @@ class Main(EnhancedScreen[None]):
             message: The message requesting the operation.
         """
         if chosen := await self.app.push_screen_wait(FileOpen(message.location)):
-            self.post_message(OpenFile(chosen))
+            self.post_message(OpenLocation(chosen))
 
     @on(Help)
     def action_help_command(self) -> None:
