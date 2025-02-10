@@ -16,7 +16,9 @@ from .base_command import InputCommand
 
 ##############################################################################
 class OpenURLCommand(InputCommand):
-    """Input command for opening a URL."""
+    """View the file at `<url>`"""
+
+    COMMAND = "`<url>`"
 
     @classmethod
     def handle(cls, text: str, for_widget: Widget) -> bool:

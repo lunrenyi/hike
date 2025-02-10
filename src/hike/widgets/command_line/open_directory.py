@@ -16,7 +16,9 @@ from .base_command import InputCommand
 
 ##############################################################################
 class OpenDirectoryCommand(InputCommand):
-    """Input command for browsing for a file in a directory."""
+    """Open a file browser looking at `<directory>`"""
+
+    COMMAND = "`<directory>`"
 
     @classmethod
     def handle(cls, text: str, for_widget: Widget) -> bool:

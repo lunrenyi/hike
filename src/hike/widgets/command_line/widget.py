@@ -1,6 +1,10 @@
 """Provides a widget for getting input from the user."""
 
 ##############################################################################
+# Python imports.
+from typing import Final
+
+##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
@@ -9,9 +13,18 @@ from textual.widgets import Input, Label
 
 ##############################################################################
 # Local imports.
+from .base_command import InputCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_url import OpenURLCommand
+
+##############################################################################
+COMMANDS: Final[tuple[type[InputCommand], ...]] = (
+    OpenDirectoryCommand,
+    OpenFileCommand,
+    OpenURLCommand,
+)
+"""The commands used for the input."""
 
 
 ##############################################################################
@@ -41,6 +54,18 @@ class CommandLine(Horizontal):
     }
     """
 
+    HELP = f"""
+    ## Command Line
+
+    Use this command line to enter filenames, directories or URLs. Entering
+    a filename or a URL will open that file for viewing; entering a
+    directory will open a file opening dialog starting at that location.
+
+    | Command | Aliases | Arguments | Description |
+    | --      | --      | --        | --          |
+    {'\n    '.join(command.help_text() for command in COMMANDS)}
+    """
+
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         yield Label("> ")
@@ -54,7 +79,7 @@ class CommandLine(Horizontal):
             message: The message requesting input is handled.
         """
         message.stop()
-        for candidate in (OpenDirectoryCommand, OpenFileCommand, OpenURLCommand):
+        for candidate in COMMANDS:
             if candidate.handle(message.value, self):
                 message.input.value = ""
                 return

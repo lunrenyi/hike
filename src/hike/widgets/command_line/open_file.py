@@ -16,7 +16,9 @@ from .base_command import InputCommand
 
 ##############################################################################
 class OpenFileCommand(InputCommand):
-    """Input command for opening a file."""
+    """View the file at `<file>`"""
+
+    COMMAND = "`<file>`"
 
     @classmethod
     def handle(cls, text: str, for_widget: Widget) -> bool:
