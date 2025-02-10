@@ -22,7 +22,7 @@ from textual_fspicker import FileOpen
 from .. import __version__
 from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
 from ..data import load_configuration, load_history, save_history, update_configuration
-from ..messages import OpenFrom, OpenLocation
+from ..messages import OpenFrom, OpenFromHistory, OpenLocation
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
 
@@ -115,6 +115,15 @@ class Main(EnhancedScreen[None]):
         if chosen := await self.app.push_screen_wait(FileOpen(message.location)):
             self.post_message(OpenLocation(chosen))
 
+    @on(OpenFromHistory)
+    def open_from_history(self, message: OpenFromHistory) -> None:
+        """Open a location from the history.
+
+        Args:
+            message: The message requesting the history open.
+        """
+        self.query_one(Viewer).goto(message.location)
+
     @on(Help)
     def action_help_command(self) -> None:
         """Toggle the display of the help panel."""
@@ -159,6 +168,12 @@ class Main(EnhancedScreen[None]):
         """
         self.query_one(Navigation).update_history(message.viewer.history)
         save_history(message.viewer.history)
+
+    @on(Viewer.HistoryVisit)
+    def _move_history(self, message: Viewer.HistoryVisit) -> None:
+        """React to a new location in history being visited."""
+        if (location := message.viewer.history.current_location) is not None:
+            self.query_one(Navigation).highlight_history(location)
 
 
 ### main.py ends here

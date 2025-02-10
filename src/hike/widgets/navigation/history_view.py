@@ -19,7 +19,7 @@ from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenLocation
+from ...messages import OpenFromHistory
 from ...types import HikeHistory, HikeLocation
 
 
@@ -36,8 +36,6 @@ class Location(Option):
         """
         self.location_id = location_id
         """The ID of the location within the history."""
-        self.location = location
-        """The location."""
         super().__init__(
             Text.from_markup(
                 f":page_facing_up: [bold]{location.name}[/]\n[dim]{location.parent}[/]",
@@ -48,7 +46,8 @@ class Location(Option):
                 f":globe_with_meridians: [bold]{Path(location.path).name}[/]"
                 f"\n[dim]{Path(location.path).parent}\n{location.host}[/]",
                 overflow="ellipsis",
-            )
+            ),
+            id=str(location_id),
         )
 
 
@@ -73,14 +72,18 @@ class HistoryView(EnhancedOptionList):
         Args:
             history: The history to update with.
         """
-        with self.preserved_highlight:
-            self.clear_options().add_options(
-                Location(location_id, location)
-                for location_id, location in reversed(list(enumerate(history)))
-            )
+        self.clear_options().add_options(
+            Location(location_id, location)
+            for location_id, location in reversed(list(enumerate(history)))
+        )
+        # If history has been updated, that implies something new has been
+        # added to the start; so in that case we jump the highlight to the
+        # top.
+        if self.option_count:
+            self.highlighted = 0
 
-    @on(EnhancedOptionList.OptionSelected)
-    def visit_from_history(self, message: EnhancedOptionList.OptionSelected) -> None:
+    @on(EnhancedOptionList.OptionHighlighted)
+    def visit_from_history(self, message: EnhancedOptionList.OptionHighlighted) -> None:
         """Visit a location from history.
 
         Args:
@@ -88,7 +91,15 @@ class HistoryView(EnhancedOptionList):
         """
         message.stop()
         assert isinstance(message.option, Location)
-        self.post_message(OpenLocation(message.option.location))
+        self.post_message(OpenFromHistory(message.option.location_id))
+
+    def highlight_location(self, location: int) -> None:
+        """Highlight an item in the history.
+
+        Args:
+            location: The ID of the location to highlight.
+        """
+        self.highlighted = self.get_option_index(str(location))
 
 
 ### history.py ends here

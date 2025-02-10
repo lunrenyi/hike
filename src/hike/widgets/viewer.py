@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import singledispatchmethod
 from pathlib import Path
-from typing import Callable, Final
+from typing import Final
 
 ##############################################################################
 # httpx imports.
@@ -105,8 +105,21 @@ class Viewer(Vertical, can_focus=False):
         viewer: Viewer
         """The viewer."""
 
+    @dataclass
+    class HistoryVisit(Message):
+        """Class posted when a location in history is visited."""
+
+        viewer: Viewer
+        """The viewer."""
+
     def _watch_history(self) -> None:
+        """React to the history being updated."""
         self.post_message(self.HistoryUpdated(self))
+        if self.history:
+            # If history is being assigned, that means we've got new
+            # history. That likely means we're starting up and watch to view
+            # the latest thing in history; so let's do that...
+            self._visit_from_history()
 
     @work(thread=True, exclusive=True)
     def _load_from_file(self, location: Path, remember: bool) -> None:
@@ -213,23 +226,27 @@ class Viewer(Vertical, can_focus=False):
             self.history.add(self.location)
             self.post_message(self.HistoryUpdated(self))
 
-    def _move(self, movement: Callable[[], bool]) -> None:
-        """Move in the given direction through history.
+    def _visit_from_history(self) -> None:
+        """Visit the current location in history."""
+        self.set_reactive(Viewer.location, self.history.current_item)
+        self._visit(self.location, remember=False)
+        self.post_message(self.HistoryVisit(self))
 
-        Args:
-            movement: The function that performs the movement.
-        """
-        if movement():
-            self.set_reactive(Viewer.location, self.history.current_item)
-            self._visit(self.location, remember=False)
+    def goto(self, history_location: int) -> None:
+        """Go to a specific location in history."""
+        if self.history.current_location != history_location:
+            self.history.goto(history_location)
+            self._visit_from_history()
 
     def backward(self) -> None:
         """Go backward through the history."""
-        self._move(self.history.backward)
+        if self.history.backward():
+            self._visit_from_history()
 
     def forward(self) -> None:
         """Go forward through the history."""
-        self._move(self.history.forward)
+        if self.history.forward():
+            self._visit_from_history()
 
 
 ### viewer.py ends here

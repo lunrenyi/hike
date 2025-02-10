@@ -59,5 +59,14 @@ class Navigation(Vertical):
         if self._history:
             self._history.update(history)
 
+    def highlight_history(self, history: int) -> None:
+        """Highlight a specific entry in history.
+
+        Args:
+            The ID of the item of history to highlight.
+        """
+        if self._history:
+            self._history.highlight_location(history)
+
 
 ### navigation.py ends here

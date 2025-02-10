@@ -32,4 +32,13 @@ class OpenLocation(Message):
     """The location to open."""
 
 
+##############################################################################
+@dataclass
+class OpenFromHistory(Message):
+    """Open a location found in history."""
+
+    location: int
+    """The location in the history to open."""
+
+
 ### opening.py ends here
