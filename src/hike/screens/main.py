@@ -5,7 +5,7 @@
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Footer, Header
+from textual.widgets import Footer, Header, Markdown
 
 ##############################################################################
 # Textual enhanced imports.
@@ -129,6 +129,26 @@ class Main(EnhancedScreen[None]):
             message: The message requesting the history open.
         """
         self.query_one(Viewer).goto(message.location)
+
+    @on(Markdown.TableOfContentsUpdated)
+    def update_navigation_contents(
+        self, message: Markdown.TableOfContentsUpdated
+    ) -> None:
+        """Handle the table of contents being updated.
+
+        Args:
+            message: The message broadcasting that the ToC is updated.
+        """
+        self.query_one(Navigation).table_of_contents = message.table_of_contents
+
+    @on(Markdown.TableOfContentsSelected)
+    def jump_to_content(self, message: Markdown.TableOfContentsSelected) -> None:
+        """Jump to a specific location in the current document.
+
+        Args:
+            message: The message request the jump.
+        """
+        self.query_one(Viewer).jump_to_content(message.block_id)
 
     @on(Help)
     def action_help_command(self) -> None:

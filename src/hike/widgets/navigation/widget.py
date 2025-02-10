@@ -1,13 +1,17 @@
 """Provides the navigation panel widget."""
 
 ##############################################################################
+# Backward compatibility.
+from __future__ import annotations
+
+##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
-from textual.events import DescendantBlur, DescendantFocus
 from textual.reactive import var
-from textual.widgets import Placeholder, TabbedContent
+from textual.widgets import Markdown, Placeholder, TabbedContent, Tree
+from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsType
 
 ##############################################################################
 # Local imports.
@@ -24,11 +28,27 @@ class Navigation(Vertical):
         width: 27%;
         dock: left;
         background: transparent;
+
         &.--dock-right {
             dock: right;
         }
+
         #tabs-list {
             background: $panel;
+        }
+
+        /* https://github.com/Textualize/textual/issues/5488 */
+        MarkdownTableOfContents, &:focus-within MarkdownTableOfContents {
+            background: transparent;
+            width: 1fr;
+            Tree {
+                background: transparent;
+            }
+        }
+
+        /* https://github.com/Textualize/textual/issues/5488 */
+        HistoryView, &:focus-within HistoryView {
+            background: transparent;
         }
     }
     """
@@ -36,25 +56,27 @@ class Navigation(Vertical):
     dock_right: var[bool] = var(False)
     """Should the navigation dock to the right?"""
 
+    table_of_contents: var[TableOfContentsType | None] = var(None)
+
     _history: var[HistoryView | None] = var(None)
     """The history display."""
-
-    @on(DescendantBlur)
-    @on(DescendantFocus)
-    def _textual_5488_workaround(self) -> None:
-        """Workaround for https://github.com/Textualize/textual/issues/5488"""
-        for widget in self.query(HistoryView):
-            widget._refresh_lines()
 
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
         self.set_class(self.dock_right, "--dock-right")
 
+    def _watch_table_of_contents(self) -> None:
+        """React to the table of content being updated."""
+        self.query_one(
+            MarkdownTableOfContents
+        ).table_of_contents = self.table_of_contents
+        self.query_one("MarkdownTableOfContents Tree", Tree).cursor_line = 0
+
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         self._history = HistoryView()
         with TabbedContent("Content", "Local", "Bookmarks", "History"):
-            yield Placeholder()
+            yield MarkdownTableOfContents(Markdown())
             yield Placeholder()
             yield Placeholder()
             yield self._history

@@ -248,5 +248,13 @@ class Viewer(Vertical, can_focus=False):
         if self.history.forward():
             self._visit_from_history()
 
+    def jump_to_content(self, block_id: str) -> None:
+        """Jump to some content in the current document.
+
+        Args:
+            block_id: The ID of the content to jump to.
+        """
+        self.scroll_to_widget(self.query_one(f"#{block_id}"), top=True)
+
 
 ### viewer.py ends here
