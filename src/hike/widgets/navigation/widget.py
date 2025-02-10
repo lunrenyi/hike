@@ -1,14 +1,6 @@
 """Provides the navigation panel widget."""
 
 ##############################################################################
-# Python imports.
-from pathlib import Path
-
-##############################################################################
-# httpx imports.
-from httpx import URL
-
-##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
 from textual.containers import Vertical
