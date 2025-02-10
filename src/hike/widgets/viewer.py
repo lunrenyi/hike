@@ -19,10 +19,10 @@ from httpx import URL, AsyncClient, HTTPStatusError, RequestError
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import Vertical, VerticalScroll
 from textual.message import Message
 from textual.reactive import var
-from textual.widgets import Markdown
+from textual.widgets import Label, Markdown
 
 ##############################################################################
 # Local imports.
@@ -31,17 +31,38 @@ from ..types import HikeHistory, HikeLocation
 
 
 ##############################################################################
-class Viewer(VerticalScroll):
+class ViewerTitle(Label):
+    """Widget to display the viewer's title."""
+
+    DEFAULT_CSS = """
+    ViewerTitle {
+        background: $panel;
+        color: $foreground;
+        content-align: right middle;
+        width: 1fr;
+    }
+    """
+
+    location: var[HikeLocation | None] = var(None)
+    """The location to display."""
+
+    def _watch_location(self) -> None:
+        """React to the location changing."""
+        self.update(str(self.location or ""))
+
+
+##############################################################################
+class Viewer(Vertical, can_focus=False):
     """The Markdown viewer widget."""
 
     DEFAULT_CSS = """
     Viewer {
-        border-top: blank;
-        border-title-align: right;
-        border-title-color: $foreground;
         display: block;
         &.empty {
             display: none;
+        }
+        &> VerticalScroll {
+            background: transparent;
         }
         Markdown {
             background: transparent;
@@ -80,7 +101,9 @@ class Viewer(VerticalScroll):
 
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
-        yield Markdown()
+        yield ViewerTitle()
+        with VerticalScroll():
+            yield Markdown()
 
     @dataclass
     class Loaded(Message):
@@ -183,7 +206,6 @@ class Viewer(VerticalScroll):
             location: The location to visit.
             remember: Should this location go into history?
         """
-        self.can_focus = location is not None
         self.set_class(location is None, "empty")
         self._load_markdown(location, remember)
 
@@ -198,7 +220,7 @@ class Viewer(VerticalScroll):
         Args:
             message: The message requesting the update.
         """
-        self.border_title = str(self.location or "")
+        self.query_one(ViewerTitle).location = self.location
         self.query_one(Markdown).update(message.markdown)
         if (
             message.remember
