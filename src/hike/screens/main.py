@@ -38,16 +38,16 @@ class Main(EnhancedScreen[None]):
         #workspace {
             hatch: right $surface;
             .panel {
-                border-left: wide $panel;
+                border-left: solid $panel;
                 &:focus, &:focus-within {
-                    border-left: wide $border;
+                    border-left: solid $border;
                 }
             }
         }
 
         .panel {
             background: $surface;
-            &:focus {
+            &:focus, &:focus-within {
                 background: $panel 80%;
             }
         }

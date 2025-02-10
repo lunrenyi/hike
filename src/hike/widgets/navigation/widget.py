@@ -28,6 +28,7 @@ class Navigation(Vertical):
     Navigation {
         width: 27%;
         dock: left;
+        background: transparent;
         &.--dock-right {
             dock: right;
         }

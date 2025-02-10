@@ -60,6 +60,7 @@ class HistoryView(EnhancedOptionList):
     HistoryView {
         height: 1fr;
         border: none;
+        background: transparent;
         &:focus {
             border: none;
         }
