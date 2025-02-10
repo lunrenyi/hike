@@ -12,7 +12,7 @@ from textual_enhanced.commands import (
 
 ##############################################################################
 # Local imports.
-from ..commands import Backward, Forward, ToggleNavigation
+from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
 
 
 ##############################################################################
@@ -26,6 +26,7 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield Backward()
+        yield ChangeNavigationSide()
         yield ChangeTheme()
         yield Forward()
         yield Help()

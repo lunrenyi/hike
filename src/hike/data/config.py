@@ -25,6 +25,9 @@ class Configuration:
     navigation_visible: bool = True
     """Should the navigation panel be visible?"""
 
+    navigation_on_right: bool = False
+    """Should the navigation panel live on the right?"""
+
 
 ##############################################################################
 def configuration_file() -> Path:

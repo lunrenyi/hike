@@ -20,7 +20,7 @@ from textual_fspicker import FileOpen
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..commands import Backward, Forward, ToggleNavigation
+from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
 from ..data import load_configuration, update_configuration
 from ..messages import OpenFrom, OpenLocation
 from ..providers import MainCommands
@@ -63,6 +63,7 @@ class Main(EnhancedScreen[None]):
         ChangeTheme,
         Quit,
         # Everything else.
+        ChangeNavigationSide,
         Backward,
         Forward,
     )
@@ -83,7 +84,9 @@ class Main(EnhancedScreen[None]):
 
     def on_mount(self) -> None:
         """Configure the screen once the DOM is mounted."""
-        self.set_class(load_configuration().navigation_visible, "navigation")
+        config = load_configuration()
+        self.set_class(config.navigation_visible, "navigation")
+        self.query_one(Navigation).dock_right = config.navigation_on_right
 
     @on(OpenLocation)
     def open_markdown(self, message: OpenLocation) -> None:
@@ -116,6 +119,14 @@ class Main(EnhancedScreen[None]):
         self.toggle_class("navigation")
         with update_configuration() as config:
             config.navigation_visible = self.has_class("navigation")
+
+    @on(ChangeNavigationSide)
+    def action_change_navigation_side_command(self) -> None:
+        """Change the side that the navigation panel lives on."""
+        navigation = self.query_one(Navigation)
+        navigation.dock_right = not navigation.dock_right
+        with update_configuration() as config:
+            config.navigation_on_right = navigation.dock_right
 
     @on(Quit)
     def action_quit_command(self) -> None:

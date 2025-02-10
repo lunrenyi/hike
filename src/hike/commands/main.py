@@ -14,4 +14,11 @@ class ToggleNavigation(Command):
     FOOTER_TEXT = "Nav"
 
 
+##############################################################################
+class ChangeNavigationSide(Command):
+    """Change which side the navigation panel lives on"""
+
+    BINDING_KEY = "shift+f2"
+
+
 ### navigation.py ends here

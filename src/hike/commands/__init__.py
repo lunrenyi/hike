@@ -2,11 +2,11 @@
 
 ##############################################################################
 # Local imports.
-from .main import ToggleNavigation
+from .main import ChangeNavigationSide, ToggleNavigation
 from .navigation import Backward, Forward
 
 ##############################################################################
 # Exports.
-__all__ = ["Backward", "Forward", "ToggleNavigation"]
+__all__ = ["Backward", "ChangeNavigationSide", "Forward", "ToggleNavigation"]
 
 ### __init__.py ends here
