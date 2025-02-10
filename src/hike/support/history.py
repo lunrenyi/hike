@@ -6,6 +6,10 @@ from collections import deque
 from typing import Generic, Iterator, Sequence, TypeVar
 
 ##############################################################################
+# Textual imports.
+from textual.geometry import clamp
+
+##############################################################################
 # Typing extensions imports.
 from typing_extensions import Self
 
@@ -76,6 +80,11 @@ class History(Generic[HistoryItem]):
             self._current += 1
             return True
         return False
+
+    def goto(self, location: int) -> Self:
+        """Jump to a specific location within history."""
+        self._current = clamp(location, 0, len(self._history) - 1)
+        return self
 
     def __iadd__(self, item: HistoryItem) -> Self:
         """Add an item to the history."""

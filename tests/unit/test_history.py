@@ -135,4 +135,17 @@ def test_iterator() -> None:
     assert list(History[int]([1, 2, 3])) == [1, 2, 3]
 
 
+##############################################################################
+@mark.parametrize("desired, achieved", ((0, 0), (1, 1), (2, 2), (3, 2), (-1, 0)))
+def test_goto(desired: int, achieved: int) -> None:
+    """We should be able to go to specific locations in history."""
+    assert History[None]((None, None, None)).goto(desired).current_location == achieved
+
+
+##############################################################################
+def test_goto_empty() -> None:
+    """Going to a location in an empty list should keep the location as `None`."""
+    assert History[None](()).goto(42).current_location is None
+
+
 ### test_history.py ends here
