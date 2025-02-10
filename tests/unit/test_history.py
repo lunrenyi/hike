@@ -141,7 +141,7 @@ def test_forward() -> None:
 ##############################################################################
 def test_forward_empty() -> None:
     """We should not be able to go forward in an empty history."""
-    history = History[None]([])
+    history = History[None]()
     assert history.current_location is None
     assert history.forward() is False
     assert history.current_location is None
@@ -163,7 +163,7 @@ def test_goto(desired: int, achieved: int) -> None:
 ##############################################################################
 def test_goto_empty() -> None:
     """Going to a location in an empty list should keep the location as `None`."""
-    assert History[None](()).goto(42).current_location is None
+    assert History[None]().goto(42).current_location is None
 
 
 ##############################################################################
