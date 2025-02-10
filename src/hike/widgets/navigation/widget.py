@@ -58,9 +58,6 @@ class Navigation(Vertical):
 
     table_of_contents: var[TableOfContentsType | None] = var(None)
 
-    _history: var[HistoryView | None] = var(None)
-    """The history display."""
-
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
         self.set_class(self.dock_right, "--dock-right")
@@ -74,12 +71,11 @@ class Navigation(Vertical):
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
-        self._history = HistoryView()
         with TabbedContent("Content", "Local", "Bookmarks", "History"):
             yield MarkdownTableOfContents(Markdown())
             yield Placeholder()
             yield Placeholder()
-            yield self._history
+            yield HistoryView()
 
     def update_history(self, history: HikeHistory) -> None:
         """Update the history display.
@@ -87,8 +83,7 @@ class Navigation(Vertical):
         Args:
             history: The history to display.
         """
-        if self._history:
-            self._history.update(history)
+        self.query_one(HistoryView).update(history)
 
     def highlight_history(self, history: int) -> None:
         """Highlight a specific entry in history.
@@ -96,8 +91,7 @@ class Navigation(Vertical):
         Args:
             The ID of the item of history to highlight.
         """
-        if self._history:
-            self._history.highlight_location(history)
+        self.query_one(HistoryView).highlight_location(history)
 
 
 ### navigation.py ends here
