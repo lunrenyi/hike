@@ -56,6 +56,7 @@ class Navigation(Vertical):
     """Should the navigation dock to the right?"""
 
     table_of_contents: var[TableOfContentsType | None] = var(None)
+    """The currently-displayed table of contents."""
 
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
