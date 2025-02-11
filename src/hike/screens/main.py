@@ -17,6 +17,8 @@ from textual_enhanced.screen import EnhancedScreen
 # Textual fspicker imports.
 from textual_fspicker import FileOpen
 
+from hike.messages.history import RemoveHistoryEntry
+
 ##############################################################################
 # Local imports.
 from .. import __version__
@@ -129,6 +131,15 @@ class Main(EnhancedScreen[None]):
             message: The message requesting the history open.
         """
         self.query_one(Viewer).goto(message.location)
+
+    @on(RemoveHistoryEntry)
+    def remove_location_from_history(self, message: RemoveHistoryEntry) -> None:
+        """Remove a specific location from history.
+
+        Args:
+            message: The message requesting the location be removed.
+        """
+        self.query_one(Viewer).remove_from_history(message.location)
 
     @on(Markdown.TableOfContentsUpdated)
     def update_navigation_contents(

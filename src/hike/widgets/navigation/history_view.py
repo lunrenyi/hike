@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from pathlib import Path
+from typing import cast
 
 ##############################################################################
 # Rich imports.
@@ -10,16 +11,19 @@ from rich.text import Text
 
 ##############################################################################
 # Textual imports.
-from textual import on
+from textual import on, work
+from textual.binding import Binding
+from textual.message import Message
 from textual.widgets.option_list import Option
 
 ##############################################################################
 # Textual-enhanced imports.
+from textual_enhanced.dialogs import Confirm
 from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenFromHistory
+from ...messages import OpenFromHistory, RemoveHistoryEntry
 from ...types import HikeHistory, HikeLocation
 
 
@@ -65,6 +69,16 @@ class HistoryView(EnhancedOptionList):
     }
     """
 
+    BINDINGS = [
+        Binding(
+            "delete",
+            "remove",
+            "Remove",
+            show=True,
+            tooltip="Remove the current item from history",
+        ),
+    ]
+
     def update(self, history: HikeHistory) -> None:
         """Update the content of the history view.
 
@@ -99,6 +113,34 @@ class HistoryView(EnhancedOptionList):
             location: The ID of the location to highlight.
         """
         self.highlighted = self.get_option_index(str(location))
+
+    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+        """Check if an action is possible to perform right now.
+
+        Args:
+            action: The action to perform.
+            parameters: The parameters of the action.
+
+        Returns:
+            `True` if it can perform, `False` or `None` if not.
+        """
+        if action == "remove":
+            return bool(self.option_count) and self.highlighted is not None
+        return True
+
+    @work
+    async def action_remove(self) -> None:
+        """Remove an item of history."""
+        if not self.check_action("remove", ()):
+            return
+        if await self.app.push_screen_wait(
+            Confirm(
+                "Remove?", "Are you sure you want to remove this location from history?"
+            )
+        ):
+            assert self.highlighted is not None
+            location = cast(Location, self.get_option_at_index(self.highlighted))
+            self.post_message(RemoveHistoryEntry(location.location_id))
 
 
 ### history.py ends here

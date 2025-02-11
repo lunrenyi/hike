@@ -256,5 +256,13 @@ class Viewer(Vertical, can_focus=False):
         """
         self.scroll_to_widget(self.query_one(f"#{block_id}"), top=True)
 
+    def remove_from_history(self, history: int) -> None:
+        """Remove a specific location from history.
+
+        Args:
+            history: The ID of the location in history to remove.
+        """
+        self.notify(f"TODO: Remove history item {history}")
+
 
 ### viewer.py ends here
