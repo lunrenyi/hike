@@ -43,6 +43,7 @@ class LocalView(DirectoryTree):
         Args:
             message: The message requesting that the file be viewed.
         """
+        message.stop()
         self.post_message(OpenLocation(message.path))
 
 
