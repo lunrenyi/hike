@@ -40,10 +40,8 @@ class ChangeDirectoryCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         if match := CHDIR.search(text):
-            if (root := Path(match["directory"])).is_dir():
-                for_widget.post_message(
-                    SetLocalViewRoot(Path(root).expanduser().resolve())
-                )
+            if (root := Path(match["directory"]).expanduser()).is_dir():
+                for_widget.post_message(SetLocalViewRoot(Path(root).resolve()))
                 return True
         return False
 
