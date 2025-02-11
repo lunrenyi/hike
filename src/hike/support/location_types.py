@@ -42,4 +42,17 @@ def _(location: URL) -> bool:
     return maybe_markdown(location.path)
 
 
+##############################################################################
+def looks_urllike(candidate: str) -> bool:
+    """Does the given value look like a URL?
+
+    Args:
+        candiate: The candidate to test.
+
+    Returns:
+        `True` if the string looks like a URL, `False` if not.
+    """
+    return (url := URL(candidate)).is_absolute_url and url.scheme in ("http", "https")
+
+
 ### location_types.py ends here

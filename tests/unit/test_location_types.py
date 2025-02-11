@@ -14,7 +14,7 @@ from pytest import mark
 
 ##############################################################################
 # Local imports.
-from hike.support import maybe_markdown
+from hike.support import looks_urllike, maybe_markdown
 from hike.types import HikeLocation
 
 
@@ -36,6 +36,28 @@ from hike.types import HikeLocation
 def test_maybe_markdown(to_test: HikeLocation, expected: bool) -> None:
     """We should be able to make a good guess at what's a Markdown location."""
     assert maybe_markdown(to_test) is expected
+
+
+##############################################################################
+@mark.parametrize(
+    "to_test, expected",
+    (
+        ("http://example.com/", True),
+        ("https://example.com/", True),
+        ("http://example", True),
+        ("https://example", True),
+        ("example.com/", False),
+        ("example.com/", False),
+        ("", False),
+        ("http", False),
+        ("https", False),
+        ("http://", False),
+        ("https://", False),
+    ),
+)
+def test_looks_urllike(to_test: str, expected: bool) -> None:
+    """We should be able to make a good guess at what's a URL."""
+    assert looks_urllike(to_test) is expected
 
 
 ### test_location_types.py ends here
