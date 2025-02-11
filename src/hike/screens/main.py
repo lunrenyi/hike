@@ -17,8 +17,6 @@ from textual_enhanced.screen import EnhancedScreen
 # Textual fspicker imports.
 from textual_fspicker import FileOpen
 
-from hike.messages.history import RemoveHistoryEntry
-
 ##############################################################################
 # Local imports.
 from .. import __version__
@@ -30,7 +28,13 @@ from ..commands import (
     ToggleNavigation,
 )
 from ..data import load_configuration, load_history, save_history, update_configuration
-from ..messages import ClearHistory, OpenFrom, OpenFromHistory, OpenLocation
+from ..messages import (
+    ClearHistory,
+    OpenFrom,
+    OpenFromHistory,
+    OpenLocation,
+    RemoveHistoryEntry,
+)
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
 
