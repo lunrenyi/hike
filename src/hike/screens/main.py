@@ -154,7 +154,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Viewer).remove_from_history(message.location)
 
     @on(ClearHistory)
-    def clear_down_history(self) -> None:
+    def _clear_down_history(self) -> None:
         """Clear all items from history."""
         self.query_one(Viewer).clear_history()
 
