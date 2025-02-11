@@ -34,6 +34,7 @@ from ..messages import (
     OpenFromHistory,
     OpenLocation,
     RemoveHistoryEntry,
+    SetLocalViewRoot,
 )
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
@@ -156,6 +157,15 @@ class Main(EnhancedScreen[None]):
     def clear_down_history(self) -> None:
         """Clear all items from history."""
         self.query_one(Viewer).clear_history()
+
+    @on(SetLocalViewRoot)
+    def _set_local_root(self, message: SetLocalViewRoot) -> None:
+        """Change the root directory of the local file browser.
+
+        Args:
+            message: The message requesting the root be changed.
+        """
+        self.query_one(Navigation).set_local_view_root(message.root)
 
     @on(Markdown.TableOfContentsUpdated)
     def _update_navigation_contents(

@@ -143,5 +143,13 @@ class Navigation(Vertical):
         """
         self.query_one(HistoryView).highlight_location(history)
 
+    def set_local_view_root(self, root: Path) -> None:
+        """Set the root directory for the local file browser.
+
+        Args:
+            root: The new root directory.
+        """
+        self.query_one(LocalView).path = root
+
 
 ### navigation.py ends here

@@ -31,8 +31,8 @@ class OpenFileCommand(InputCommand):
         Returns:
             `True` if the command was handled; `False` if not.
         """
-        if (path := Path(text).expanduser().resolve()).is_file():
-            for_widget.post_message(OpenLocation(path))
+        if (path := Path(text).expanduser()).is_file():
+            for_widget.post_message(OpenLocation(path.resolve()))
             return True
         return False
 

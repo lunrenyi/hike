@@ -18,6 +18,7 @@ from textual_enhanced.commands import Quit
 ##############################################################################
 # Local imports.
 from .base_command import InputCommand
+from .change_directory import ChangeDirectoryCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_url import OpenURLCommand
@@ -27,6 +28,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenDirectoryCommand,
     OpenFileCommand,
     OpenURLCommand,
+    ChangeDirectoryCommand,
 )
 """The commands used for the input."""
 
