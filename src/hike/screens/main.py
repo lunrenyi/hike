@@ -37,6 +37,7 @@ from ..messages import (
     SetLocalViewRoot,
 )
 from ..providers import MainCommands
+from ..support import maybe_markdown, view_in_browser
 from ..widgets import CommandLine, Navigation, Viewer
 
 
@@ -122,7 +123,10 @@ class Main(EnhancedScreen[None]):
         Args:
             message: The message requesting the file be opened.
         """
-        self.query_one(Viewer).location = message.to_open
+        if maybe_markdown(message.to_open):
+            self.query_one(Viewer).location = message.to_open
+        else:
+            view_in_browser(message.to_open)
 
     @on(OpenFrom)
     @work
