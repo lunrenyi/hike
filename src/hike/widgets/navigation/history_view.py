@@ -23,7 +23,7 @@ from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
-from ...messages import OpenFromHistory, RemoveHistoryEntry
+from ...messages import ClearHistory, OpenFromHistory, RemoveHistoryEntry
 from ...types import HikeHistory, HikeLocation
 
 
@@ -77,6 +77,13 @@ class HistoryView(EnhancedOptionList):
             show=True,
             tooltip="Remove the current location from history",
         ),
+        Binding(
+            "backspace",
+            "clear",
+            "Clear",
+            show=True,
+            tooltip="Clear all locations from history",
+        ),
     ]
 
     def update(self, history: HikeHistory) -> None:
@@ -126,6 +133,8 @@ class HistoryView(EnhancedOptionList):
         """
         if action == "remove":
             return bool(self.option_count) and self.highlighted is not None
+        if action == "clear":
+            return bool(self.option_count)
         return True
 
     @work
@@ -141,6 +150,18 @@ class HistoryView(EnhancedOptionList):
             assert self.highlighted is not None
             location = cast(Location, self.get_option_at_index(self.highlighted))
             self.post_message(RemoveHistoryEntry(location.location_id))
+
+    @work
+    async def action_clear(self) -> None:
+        """Clear all items from history."""
+        if not self.check_action("clear", ()):
+            return
+        if await self.app.push_screen_wait(
+            Confirm(
+                "Clear?", "Are you sure you want to clear all locations from history?"
+            )
+        ):
+            self.post_message(ClearHistory())
 
 
 ### history.py ends here

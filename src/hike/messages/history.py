@@ -18,4 +18,9 @@ class RemoveHistoryEntry(Message):
     """The location in the history to remove."""
 
 
+##############################################################################
+class ClearHistory(Message):
+    """Clear all items from history."""
+
+
 ### history.py ends here

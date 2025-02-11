@@ -24,7 +24,7 @@ from hike.messages.history import RemoveHistoryEntry
 from .. import __version__
 from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
 from ..data import load_configuration, load_history, save_history, update_configuration
-from ..messages import OpenFrom, OpenFromHistory, OpenLocation
+from ..messages import ClearHistory, OpenFrom, OpenFromHistory, OpenLocation
 from ..providers import MainCommands
 from ..widgets import CommandLine, Navigation, Viewer
 
@@ -140,6 +140,11 @@ class Main(EnhancedScreen[None]):
             message: The message requesting the location be removed.
         """
         self.query_one(Viewer).remove_from_history(message.location)
+
+    @on(ClearHistory)
+    def clear_down_history(self) -> None:
+        """Clear all items from history."""
+        self.query_one(Viewer).clear_history()
 
     @on(Markdown.TableOfContentsUpdated)
     def update_navigation_contents(

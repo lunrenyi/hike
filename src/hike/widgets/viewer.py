@@ -112,6 +112,13 @@ class Viewer(Vertical, can_focus=False):
         viewer: Viewer
         """The viewer."""
 
+    @on(HistoryUpdated)
+    def _history_updated(self) -> None:
+        """React to the bindings being updated."""
+        self.refresh_bindings()
+        if not self.history:
+            self.location = None
+
     def _watch_history(self) -> None:
         """React to the history being updated."""
         self.post_message(self.HistoryUpdated(self))
@@ -264,8 +271,10 @@ class Viewer(Vertical, can_focus=False):
         """
         del self.history[history]
         self.post_message(self.HistoryUpdated(self))
-        if not self.history:
-            self.location = None
+
+    def clear_history(self) -> None:
+        """Clear all locations from history."""
+        self.history = HikeHistory()
 
 
 ### viewer.py ends here
