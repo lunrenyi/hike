@@ -12,7 +12,7 @@ from httpx import URL
 
 ##############################################################################
 @singledispatch
-def maybe_markdown(location: Path) -> bool:
+def maybe_markdown(location: object) -> bool:
     """Does the given location look like it might be a Markdown file?
 
     Args:
@@ -21,6 +21,12 @@ def maybe_markdown(location: Path) -> bool:
     Returns:
         `True` if the location looks like it's Markdown, `False` if not.
     """
+    return False
+
+
+##############################################################################
+@maybe_markdown.register
+def _(location: Path) -> bool:
     return location.suffix.lower() in (".md", ".markdown")
 
 
