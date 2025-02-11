@@ -5,6 +5,10 @@
 from __future__ import annotations
 
 ##############################################################################
+# Python imports.
+from pathlib import Path
+
+##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
 from textual.containers import Vertical
@@ -16,6 +20,7 @@ from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsTyp
 # Local imports.
 from ...types import HikeHistory
 from .history_view import HistoryView
+from .local_view import LocalView
 
 
 ##############################################################################
@@ -46,7 +51,7 @@ class Navigation(Vertical):
         }
 
         /* https://github.com/Textualize/textual/issues/5488 */
-        HistoryView, &:focus-within HistoryView {
+        HistoryView, &:focus-within HistoryView, LocalView, &:focus-within LocalView {
             background: transparent;
         }
     }
@@ -82,7 +87,7 @@ class Navigation(Vertical):
             with TabPane("Content", id="content"):
                 yield MarkdownTableOfContents(Markdown())
             with TabPane("Local", id="local"):
-                yield Placeholder()
+                yield LocalView(Path("~").expanduser())
             with TabPane("Bookmarks", id="bookmarks"):
                 yield Placeholder()
             with TabPane("History", id="history"):
