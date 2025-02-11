@@ -111,7 +111,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Viewer).history = load_history()
 
     @on(OpenLocation)
-    def open_markdown(self, message: OpenLocation) -> None:
+    def _open_markdown(self, message: OpenLocation) -> None:
         """Open a file for viewing.
 
         Args:
@@ -121,7 +121,7 @@ class Main(EnhancedScreen[None]):
 
     @on(OpenFrom)
     @work
-    async def browse_for_file(self, message: OpenFrom) -> None:
+    async def _browse_for_file(self, message: OpenFrom) -> None:
         """Browse for a markdown file with a file open dialog.
 
         Args:
@@ -131,7 +131,7 @@ class Main(EnhancedScreen[None]):
             self.post_message(OpenLocation(chosen))
 
     @on(OpenFromHistory)
-    def open_from_history(self, message: OpenFromHistory) -> None:
+    def _open_from_history(self, message: OpenFromHistory) -> None:
         """Open a location from the history.
 
         Args:
@@ -140,7 +140,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Viewer).goto(message.location)
 
     @on(RemoveHistoryEntry)
-    def remove_location_from_history(self, message: RemoveHistoryEntry) -> None:
+    def _remove_location_from_history(self, message: RemoveHistoryEntry) -> None:
         """Remove a specific location from history.
 
         Args:
@@ -154,7 +154,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Viewer).clear_history()
 
     @on(Markdown.TableOfContentsUpdated)
-    def update_navigation_contents(
+    def _update_navigation_contents(
         self, message: Markdown.TableOfContentsUpdated
     ) -> None:
         """Handle the table of contents being updated.
@@ -165,7 +165,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Navigation).table_of_contents = message.table_of_contents
 
     @on(Markdown.TableOfContentsSelected)
-    def jump_to_content(self, message: Markdown.TableOfContentsSelected) -> None:
+    def _jump_to_content(self, message: Markdown.TableOfContentsSelected) -> None:
         """Jump to a specific location in the current document.
 
         Args:
