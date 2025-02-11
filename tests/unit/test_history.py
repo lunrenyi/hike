@@ -178,4 +178,13 @@ def test_goto_and_movement_in_empty_history() -> None:
     assert history.current_location is None
 
 
+##############################################################################
+def test_delete_history() -> None:
+    """We should be able to delete an item in history."""
+    history = History[None]((None,))
+    assert len(history) == 1
+    del history[0]
+    assert len(history) == 0
+
+
 ### test_history.py ends here

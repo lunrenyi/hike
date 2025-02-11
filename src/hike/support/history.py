@@ -106,5 +106,8 @@ class History(Generic[HistoryItem]):
     def __iter__(self) -> Iterator[HistoryItem]:
         return iter(self._history)
 
+    def __delitem__(self, index: int) -> None:
+        del self._history[index]
+
 
 ### history.py ends here
