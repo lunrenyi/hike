@@ -104,9 +104,11 @@ class History(Generic[HistoryItem]):
         return len(self._history)
 
     def __iter__(self) -> Iterator[HistoryItem]:
+        """Support iterating through the history."""
         return iter(self._history)
 
     def __delitem__(self, index: int) -> None:
+        """Delete an item in history."""
         del self._history[index]
 
 
