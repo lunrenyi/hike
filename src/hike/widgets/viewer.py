@@ -262,7 +262,8 @@ class Viewer(Vertical, can_focus=False):
         Args:
             history: The ID of the location in history to remove.
         """
-        self.notify(f"TODO: Remove history item {history}")
+        del self.history[history]
+        self.post_message(self.HistoryUpdated(self))
 
 
 ### viewer.py ends here
