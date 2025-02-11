@@ -116,17 +116,18 @@ class Viewer(Vertical, can_focus=False):
     def _history_updated(self) -> None:
         """React to the bindings being updated."""
         self.refresh_bindings()
-        if not self.history:
+        # Given that the content of history has changed, we need to update
+        # the display. If we have history...
+        if self.history:
+            # ...visit whatever is now current.
+            self._visit_from_history()
+        else:
+            # ...otherwise there's nothing to display.
             self.location = None
 
     def _watch_history(self) -> None:
         """React to the history being updated."""
         self.post_message(self.HistoryUpdated(self))
-        if self.history:
-            # If history is being assigned, that means we've got new
-            # history. That likely means we're starting up and watch to view
-            # the latest thing in history; so let's do that...
-            self._visit_from_history()
 
     @work(thread=True, exclusive=True)
     def _load_from_file(self, location: Path, remember: bool) -> None:
