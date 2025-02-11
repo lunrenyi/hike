@@ -12,6 +12,10 @@ from textual.containers import Horizontal
 from textual.widgets import Input, Label
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import Quit
+
+##############################################################################
 # Local imports.
 from .base_command import InputCommand
 from .open_directory import OpenDirectoryCommand
@@ -66,6 +70,8 @@ class CommandLine(Horizontal):
     {'\n    '.join(command.help_text() for command in COMMANDS)}
     """
 
+    BINDINGS = [("escape", "request_exit")]
+
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         yield Label("> ")
@@ -84,6 +90,10 @@ class CommandLine(Horizontal):
                 message.input.value = ""
                 return
         self.notify("Unable to handle that input", title="Error", severity="error")
+
+    def action_request_exit(self) -> None:
+        """Request that the application quits."""
+        self.post_message(Quit())
 
 
 ### widget.py ends here
