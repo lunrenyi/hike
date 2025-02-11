@@ -58,8 +58,10 @@ class Navigation(Vertical):
     """
 
     BINDINGS = [
-        ("escape", "maybe_return_to_tabs"),
+        ("escape", "return_to_tabs"),
         ("down", "move_into_panel"),
+        ("ctrl+left", "switch('previous_tab')"),
+        ("ctrl+right", "switch('next_tab')"),
     ]
 
     dock_right: var[bool] = var(False)
@@ -75,7 +77,14 @@ class Navigation(Vertical):
     def action_move_into_panel(self) -> None:
         """Drop focus down into a panel."""
         if (active := self.query_one(TabbedContent).active_pane) is not None:
-            active.query_one("*").focus()
+            for widget in active.query("*"):
+                if widget.can_focus:
+                    widget.focus()
+                    return
+
+    async def action_switch(self, switcher: str) -> None:
+        await self.query_one(Tabs).run_action(switcher)
+        self.call_after_refresh(self.run_action, "move_into_panel")
 
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
