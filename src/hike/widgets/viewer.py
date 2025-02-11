@@ -264,6 +264,8 @@ class Viewer(Vertical, can_focus=False):
         """
         del self.history[history]
         self.post_message(self.HistoryUpdated(self))
+        if not self.history:
+            self.location = None
 
 
 ### viewer.py ends here
