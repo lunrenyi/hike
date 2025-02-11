@@ -10,7 +10,6 @@ from textual.widgets import Footer, Header, Markdown
 ##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import ChangeTheme, Command, Help, Quit
-from textual_enhanced.dialogs import HelpScreen
 from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
@@ -191,11 +190,6 @@ class Main(EnhancedScreen[None]):
         """
         self.query_one(Viewer).jump_to_content(message.block_id)
 
-    @on(Help)
-    def action_help_command(self) -> None:
-        """Toggle the display of the help panel."""
-        self.app.push_screen(HelpScreen(self))
-
     @on(ToggleNavigation)
     def action_toggle_navigation_command(self) -> None:
         """Toggle the display of the navigation panel."""
@@ -210,11 +204,6 @@ class Main(EnhancedScreen[None]):
         navigation.dock_right = not navigation.dock_right
         with update_configuration() as config:
             config.navigation_on_right = navigation.dock_right
-
-    @on(Quit)
-    def action_quit_command(self) -> None:
-        """Quit the application."""
-        self.app.exit()
 
     @on(JumpToCommandLine)
     def action_jump_to_command_line_command(self) -> None:
