@@ -13,7 +13,7 @@ from pathlib import Path
 from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.reactive import var
-from textual.widgets import Markdown, Placeholder, TabbedContent, TabPane, Tree
+from textual.widgets import Markdown, Placeholder, TabbedContent, TabPane, Tabs, Tree
 from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsType
 
 ##############################################################################
@@ -57,11 +57,25 @@ class Navigation(Vertical):
     }
     """
 
+    BINDINGS = [
+        ("escape", "maybe_return_to_tabs"),
+        ("down", "move_into_panel"),
+    ]
+
     dock_right: var[bool] = var(False)
     """Should the navigation dock to the right?"""
 
     table_of_contents: var[TableOfContentsType | None] = var(None)
     """The currently-displayed table of contents."""
+
+    def action_return_to_tabs(self) -> None:
+        """Return focus to the tabs."""
+        self.query_one(Tabs).focus()
+
+    def action_move_into_panel(self) -> None:
+        """Drop focus down into a panel."""
+        if (active := self.query_one(TabbedContent).active_pane) is not None:
+            active.query_one("*").focus()
 
     def _watch_dock_right(self) -> None:
         """React to the dock toggle being changed."""
