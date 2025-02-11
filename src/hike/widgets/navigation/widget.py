@@ -9,7 +9,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.reactive import var
-from textual.widgets import Markdown, Placeholder, TabbedContent, Tree
+from textual.widgets import Markdown, Placeholder, TabbedContent, TabPane, Tree
 from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsType
 
 ##############################################################################
@@ -67,15 +67,26 @@ class Navigation(Vertical):
         self.query_one(
             MarkdownTableOfContents
         ).table_of_contents = self.table_of_contents
-        self.query_one("MarkdownTableOfContents Tree", Tree).cursor_line = 0
+        tabs = self.query_one(TabbedContent)
+        if self.table_of_contents:
+            self.query_one("MarkdownTableOfContents Tree", Tree).cursor_line = 0
+            tabs.enable_tab("content")
+        else:
+            tabs.disable_tab("content")
+            if tabs.active == "content":
+                tabs.active = "local"
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
-        with TabbedContent("Content", "Local", "Bookmarks", "History"):
-            yield MarkdownTableOfContents(Markdown())
-            yield Placeholder()
-            yield Placeholder()
-            yield HistoryView()
+        with TabbedContent():
+            with TabPane("Content", id="content"):
+                yield MarkdownTableOfContents(Markdown())
+            with TabPane("Local", id="local"):
+                yield Placeholder()
+            with TabPane("Bookmarks", id="bookmarks"):
+                yield Placeholder()
+            with TabPane("History", id="history"):
+                yield HistoryView()
 
     def update_history(self, history: HikeHistory) -> None:
         """Update the history display.
