@@ -13,7 +13,6 @@ from rich.text import Text
 # Textual imports.
 from textual import on, work
 from textual.binding import Binding
-from textual.message import Message
 from textual.widgets.option_list import Option
 
 ##############################################################################
