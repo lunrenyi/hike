@@ -22,7 +22,13 @@ from hike.messages.history import RemoveHistoryEntry
 ##############################################################################
 # Local imports.
 from .. import __version__
-from ..commands import Backward, ChangeNavigationSide, Forward, ToggleNavigation
+from ..commands import (
+    Backward,
+    ChangeNavigationSide,
+    Forward,
+    JumpToCommandLine,
+    ToggleNavigation,
+)
 from ..data import load_configuration, load_history, save_history, update_configuration
 from ..messages import ClearHistory, OpenFrom, OpenFromHistory, OpenLocation
 from ..providers import MainCommands
@@ -80,12 +86,13 @@ class Main(EnhancedScreen[None]):
         ChangeNavigationSide,
         Backward,
         Forward,
+        JumpToCommandLine,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
     COMMANDS = {MainCommands}
 
-    AUTO_FOCUS = "CommandLine *"
+    AUTO_FOCUS = "CommandLine Input"
 
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
@@ -190,6 +197,12 @@ class Main(EnhancedScreen[None]):
     def action_quit_command(self) -> None:
         """Quit the application."""
         self.app.exit()
+
+    @on(JumpToCommandLine)
+    def action_jump_to_command_line_command(self) -> None:
+        """Jump to the command line."""
+        if self.AUTO_FOCUS:
+            self.query_one(self.AUTO_FOCUS).focus()
 
     @on(Backward)
     def action_backward_command(self) -> None:

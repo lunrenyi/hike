@@ -21,4 +21,11 @@ class ChangeNavigationSide(Command):
     BINDING_KEY = "shift+f2"
 
 
+##############################################################################
+class JumpToCommandLine(Command):
+    """Jump to the command line"""
+
+    BINDING_KEY = "/"
+
+
 ### navigation.py ends here
