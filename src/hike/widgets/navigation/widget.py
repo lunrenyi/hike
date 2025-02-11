@@ -18,6 +18,7 @@ from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsTyp
 
 ##############################################################################
 # Local imports.
+from ...commands import JumpToCommandLine
 from ...types import HikeHistory
 from .history_view import HistoryView
 from .local_view import LocalView
@@ -72,7 +73,10 @@ class Navigation(Vertical):
 
     def action_return_to_tabs(self) -> None:
         """Return focus to the tabs."""
-        self.query_one(Tabs).focus()
+        if self.screen.focused == (tabs := self.query_one(Tabs)):
+            self.post_message(JumpToCommandLine())
+        else:
+            tabs.focus()
 
     def action_move_into_panel(self) -> None:
         """Drop focus down into a panel."""
