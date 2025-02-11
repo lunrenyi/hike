@@ -100,6 +100,13 @@ class Navigation(Vertical):
             history: The history to display.
         """
         self.query_one(HistoryView).update(history)
+        tabs = self.query_one(TabbedContent)
+        if history:
+            tabs.enable_tab("history")
+        else:
+            tabs.disable_tab("history")
+            if tabs.active == "history":
+                tabs.active = "local"
 
     def highlight_history(self, history: int) -> None:
         """Highlight a specific entry in history.
