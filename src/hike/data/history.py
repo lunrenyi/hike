@@ -55,7 +55,7 @@ def load_history() -> HikeHistory:
     return HikeHistory(
         [
             (URL if entry_type == "url" else Path)(entry)
-            for entry_type, entry in loads(history.read_text())
+            for entry_type, entry in loads(history.read_text(encoding="utf-8"))
         ]
         if (history := history_file()).exists()
         else []
