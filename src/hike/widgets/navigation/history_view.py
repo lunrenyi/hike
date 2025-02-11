@@ -75,7 +75,7 @@ class HistoryView(EnhancedOptionList):
             "remove",
             "Remove",
             show=True,
-            tooltip="Remove the current item from history",
+            tooltip="Remove the current location from history",
         ),
     ]
 
