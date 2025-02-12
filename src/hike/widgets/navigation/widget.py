@@ -66,7 +66,7 @@ class Navigation(Vertical):
     """
 
     BINDINGS = [
-        ("escape", "return_to_tabs"),
+        ("escape", "return_to_tabs_or_bounce_out"),
         ("down", "move_into_panel"),
         ("ctrl+left", "switch('previous_tab')"),
         ("ctrl+right", "switch('next_tab')"),
@@ -81,8 +81,8 @@ class Navigation(Vertical):
     bookmarks: var[Bookmarks] = var(Bookmarks)
     """The bookmarks."""
 
-    def action_return_to_tabs(self) -> None:
-        """Return focus to the tabs."""
+    def action_return_to_tabs_or_bounce_out(self) -> None:
+        """Return focus to the tabs, or to the input."""
         if self.screen.focused == (tabs := self.query_one(Tabs)):
             self.post_message(JumpToCommandLine())
         else:
