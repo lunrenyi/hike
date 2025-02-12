@@ -28,4 +28,11 @@ class JumpToCommandLine(Command):
     BINDING_KEY = "/"
 
 
+##############################################################################
+class BookmarkLocation(Command):
+    """Bookmark the current location"""
+
+    BINDING_KEY = "ctrl+b"
+
+
 ### navigation.py ends here

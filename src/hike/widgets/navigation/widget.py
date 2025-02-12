@@ -6,20 +6,25 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
+from dataclasses import dataclass
 from pathlib import Path
 
 ##############################################################################
 # Textual imports.
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
+from textual.message import Message
 from textual.reactive import var
-from textual.widgets import Markdown, Placeholder, TabbedContent, TabPane, Tabs, Tree
+from textual.widgets import Markdown, TabbedContent, TabPane, Tabs, Tree
 from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsType
 
 ##############################################################################
 # Local imports.
 from ...commands import JumpToCommandLine
-from ...types import HikeHistory
+from ...data import Bookmark, Bookmarks
+from ...types import HikeHistory, HikeLocation
+from .bookmarks_view import BookmarksView
 from .history_view import HistoryView
 from .local_view import LocalView
 
@@ -52,7 +57,9 @@ class Navigation(Vertical):
         }
 
         /* https://github.com/Textualize/textual/issues/5488 */
-        HistoryView, &:focus-within HistoryView, LocalView, &:focus-within LocalView {
+        HistoryView, &:focus-within HistoryView,
+        LocalView, &:focus-within LocalView,
+        BookmarksView, &:focus-within BookmarksView {
             background: transparent;
         }
     }
@@ -70,6 +77,9 @@ class Navigation(Vertical):
 
     table_of_contents: var[TableOfContentsType | None] = var(None)
     """The currently-displayed table of contents."""
+
+    bookmarks: var[Bookmarks] = var(Bookmarks)
+    """The bookmarks."""
 
     def action_return_to_tabs(self) -> None:
         """Return focus to the tabs."""
@@ -94,19 +104,37 @@ class Navigation(Vertical):
         """React to the dock toggle being changed."""
         self.set_class(self.dock_right, "--dock-right")
 
+    def _maybe_enable_tab(self, tab: str, data: object) -> bool:
+        """Enable/disable a tab based on there being data.
+
+        Args:
+            tab: The name of the tab.
+            data: The data to test.
+
+        Returns:
+            `True` if the tab was enabled, `False` if disabled.
+        """
+        tabs = self.query_one(TabbedContent)
+        if data:
+            tabs.enable_tab(tab)
+            return True
+        tabs.disable_tab(tab)
+        if tabs.active == tab:
+            tabs.active = "local"
+        return False
+
     def _watch_table_of_contents(self) -> None:
         """React to the table of content being updated."""
         self.query_one(
             MarkdownTableOfContents
         ).table_of_contents = self.table_of_contents
-        tabs = self.query_one(TabbedContent)
-        if self.table_of_contents:
+        if self._maybe_enable_tab("content", self.table_of_contents):
             self.query_one("MarkdownTableOfContents Tree", Tree).cursor_line = 0
-            tabs.enable_tab("content")
-        else:
-            tabs.disable_tab("content")
-            if tabs.active == "content":
-                tabs.active = "local"
+
+    def _watch_bookmarks(self) -> None:
+        """React to the bookmarks being changed."""
+        self.query_one(BookmarksView).update(self.bookmarks)
+        self._maybe_enable_tab("bookmarks", self.bookmarks)
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
@@ -116,7 +144,7 @@ class Navigation(Vertical):
             with TabPane("Local", id="local"):
                 yield LocalView(Path("~").expanduser())
             with TabPane("Bookmarks", id="bookmarks"):
-                yield Placeholder()
+                yield BookmarksView()
             with TabPane("History", id="history"):
                 yield HistoryView()
 
@@ -127,13 +155,7 @@ class Navigation(Vertical):
             history: The history to display.
         """
         self.query_one(HistoryView).update(history)
-        tabs = self.query_one(TabbedContent)
-        if history:
-            tabs.enable_tab("history")
-        else:
-            tabs.disable_tab("history")
-            if tabs.active == "history":
-                tabs.active = "local"
+        self._maybe_enable_tab("history", history)
 
     def highlight_history(self, history: int) -> None:
         """Highlight a specific entry in history.
@@ -150,6 +172,63 @@ class Navigation(Vertical):
             root: The new root directory.
         """
         self.query_one(LocalView).path = root
+
+    @dataclass
+    class BookmarksUpdated(Message):
+        """Message sent when the bookmarks are updated."""
+
+        navigation: Navigation
+        """The navigation widget sending the message."""
+
+    def add_bookmark(self, title: str, location: HikeLocation) -> None:
+        """Add a bookmark.
+
+        Args:
+            title: The title of the bookmark.
+            location: The location to bookmark.
+        """
+        self.bookmarks = [Bookmark(title, location), *self.bookmarks]
+        self.post_message(self.BookmarksUpdated(self))
+
+    @on(BookmarksView.Renamed)
+    def _bookmark_renamed(self, message: BookmarksView.Renamed) -> None:
+        """Handle a bookmark being renamed.
+
+        Args:
+            message: The message requesting the deletion.
+        """
+        try:
+            bookmark = self.bookmarks.index(message.renamed_from)
+        except ValueError:
+            self.notify(
+                "Could not find the bookmark to modify it",
+                title="Bookmark error",
+                severity="error",
+            )
+            return
+        (new_bookmarks := self.bookmarks.copy())[bookmark] = message.renamed_to
+        self.bookmarks = new_bookmarks
+        self.post_message(self.BookmarksUpdated(self))
+
+    @on(BookmarksView.Deleted)
+    def _bookmark_deleted(self, message: BookmarksView.Deleted) -> None:
+        """handle a bookmark being deleted.
+
+        Args:
+            message: The message requesting the deletion.
+        """
+        try:
+            bookmark = self.bookmarks.index(message.deleted)
+        except ValueError:
+            self.notify(
+                "Could not find the bookmark to delete it",
+                title="Bookmark error",
+                severity="error",
+            )
+            return
+        del (new_bookmarks := self.bookmarks.copy())[bookmark]
+        self.bookmarks = new_bookmarks
+        self.post_message(self.BookmarksUpdated(self))
 
 
 ### navigation.py ends here

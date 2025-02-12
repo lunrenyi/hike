@@ -2,13 +2,19 @@
 
 ##############################################################################
 # Local imports.
-from .main import ChangeNavigationSide, JumpToCommandLine, ToggleNavigation
+from .main import (
+    BookmarkLocation,
+    ChangeNavigationSide,
+    JumpToCommandLine,
+    ToggleNavigation,
+)
 from .navigation import Backward, Forward
 
 ##############################################################################
 # Exports.
 __all__ = [
     "Backward",
+    "BookmarkLocation",
     "ChangeNavigationSide",
     "Forward",
     "JumpToCommandLine",

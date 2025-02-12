@@ -10,6 +10,7 @@ from textual.widgets import Footer, Header, Markdown
 ##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import ChangeTheme, Command, Help, Quit
+from textual_enhanced.dialogs import ModalInput
 from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
@@ -21,12 +22,20 @@ from textual_fspicker import FileOpen
 from .. import __version__
 from ..commands import (
     Backward,
+    BookmarkLocation,
     ChangeNavigationSide,
     Forward,
     JumpToCommandLine,
     ToggleNavigation,
 )
-from ..data import load_configuration, load_history, save_history, update_configuration
+from ..data import (
+    load_bookmarks,
+    load_configuration,
+    load_history,
+    save_bookmarks,
+    save_history,
+    update_configuration,
+)
 from ..messages import (
     ClearHistory,
     OpenFrom,
@@ -88,8 +97,9 @@ class Main(EnhancedScreen[None]):
         ChangeTheme,
         Quit,
         # Everything else.
-        ChangeNavigationSide,
         Backward,
+        BookmarkLocation,
+        ChangeNavigationSide,
         Forward,
         JumpToCommandLine,
     )
@@ -113,6 +123,7 @@ class Main(EnhancedScreen[None]):
         config = load_configuration()
         self.set_class(config.navigation_visible, "navigation")
         self.query_one(Navigation).dock_right = config.navigation_on_right
+        self.query_one(Navigation).bookmarks = load_bookmarks()
         self.query_one(Viewer).history = load_history()
 
     @on(OpenLocation)
@@ -221,6 +232,26 @@ class Main(EnhancedScreen[None]):
         """Move forward through history."""
         self.query_one(Viewer).forward()
 
+    @on(BookmarkLocation)
+    @work
+    async def action_bookmark_location_command(self) -> None:
+        """Add the current location to the bookmarks."""
+        if (location := self.query_one(Viewer).location) is None:
+            self.notify(
+                "Please visit a file or URL to bookmark it.", severity="warning"
+            )
+            return
+        if location in self.query_one(Navigation).bookmarks:
+            self.notify(
+                "This location is already in your bookmarks", severity="warning"
+            )
+            return
+        if title := await self.app.push_screen_wait(
+            ModalInput("Enter a title for the bookmark")
+        ):
+            self.query_one(Navigation).add_bookmark(title, location)
+            self.notify("Bookmark added")
+
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:
         """Update the view of history when it changes.
@@ -236,6 +267,11 @@ class Main(EnhancedScreen[None]):
         """React to a new location in history being visited."""
         if (location := message.viewer.history.current_location) is not None:
             self.query_one(Navigation).highlight_history(location)
+
+    @on(Navigation.BookmarksUpdated)
+    def _update_bookmarks(self, message: Navigation.BookmarksUpdated) -> None:
+        """Handle the bookmarks being updated."""
+        save_bookmarks(message.navigation.bookmarks)
 
 
 ### main.py ends here

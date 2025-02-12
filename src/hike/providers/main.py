@@ -14,6 +14,7 @@ from textual_enhanced.commands import (
 # Local imports.
 from ..commands import (
     Backward,
+    BookmarkLocation,
     ChangeNavigationSide,
     Forward,
     JumpToCommandLine,
@@ -32,6 +33,7 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield Backward()
+        yield BookmarkLocation()
         yield ChangeNavigationSide()
         yield ChangeTheme()
         yield Forward()
