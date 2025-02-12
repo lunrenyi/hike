@@ -131,9 +131,10 @@ class BookmarksView(EnhancedOptionList):
         """Rename the currently-highlighted bookmark."""
         if self.current_bookmark is None:
             return
-        # TODO: Allow editing the current title.
         if title := await self.app.push_screen_wait(
-            ModalInput("The title for the bookmark")
+            ModalInput(
+                "The title for the bookmark", initial=self.current_bookmark.title
+            )
         ):
             self.post_message(
                 self.Renamed(
