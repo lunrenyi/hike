@@ -22,7 +22,7 @@ from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
 from textual.message import Message
 from textual.reactive import var
-from textual.widgets import Label, Markdown
+from textual.widgets import Label, Markdown, Rule
 
 ##############################################################################
 # Local imports.
@@ -67,6 +67,11 @@ class Viewer(Vertical, can_focus=False):
         Markdown {
             background: transparent;
         }
+        Rule {
+            height: 1;
+            margin: 0 !important;
+            color: $foreground 10%;
+        }
     }
     """
 
@@ -82,6 +87,7 @@ class Viewer(Vertical, can_focus=False):
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
         yield ViewerTitle()
+        yield Rule(line_style="heavy")
         with VerticalScroll():
             yield Markdown()
 
