@@ -21,14 +21,27 @@ from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
+from .open_from_forge import (
+    OpenFromBitbucket,
+    OpenFromCodeberg,
+    OpenFromGitHub,
+    OpenFromGitLab,
+)
 from .open_url import OpenURLCommand
 
 ##############################################################################
 COMMANDS: Final[tuple[type[InputCommand], ...]] = (
-    OpenDirectoryCommand,
+    # Keep the first three in order. A file match should win over a
+    # directory should win over a URL.
     OpenFileCommand,
+    OpenDirectoryCommand,
     OpenURLCommand,
+    # Once the above are out of the way the order doesn't matter so much.
     ChangeDirectoryCommand,
+    OpenFromBitbucket,
+    OpenFromCodeberg,
+    OpenFromGitHub,
+    OpenFromGitLab,
 )
 """The commands used for the input."""
 

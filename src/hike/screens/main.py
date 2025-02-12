@@ -40,6 +40,7 @@ from ..data import (
 from ..messages import (
     ClearHistory,
     OpenFrom,
+    OpenFromForge,
     OpenFromHistory,
     OpenLocation,
     RemoveHistoryEntry,
@@ -159,6 +160,17 @@ class Main(EnhancedScreen[None]):
             message: The message requesting the history open.
         """
         self.query_one(Viewer).goto(message.location)
+
+    @on(OpenFromForge)
+    def _open_from_forge(self, message: OpenFromForge) -> None:
+        """Open a file from a git forge.
+
+        Args:
+            message: The message requesting the operation.
+        """
+        self.notify(
+            f"TODO: Open {message.forge}/{message.owner}/{message.repository}:{message.branch}/{message.filename} from "
+        )
 
     @on(RemoveHistoryEntry)
     def _remove_location_from_history(self, message: RemoveHistoryEntry) -> None:

@@ -4,13 +4,14 @@
 # Local imports.
 from .history import ClearHistory, RemoveHistoryEntry
 from .local_view import SetLocalViewRoot
-from .opening import OpenFrom, OpenFromHistory, OpenLocation
+from .opening import OpenFrom, OpenFromForge, OpenFromHistory, OpenLocation
 
 ##############################################################################
 # Exports.
 __all__ = [
     "ClearHistory",
     "OpenFrom",
+    "OpenFromForge",
     "OpenFromHistory",
     "OpenLocation",
     "RemoveHistoryEntry",
