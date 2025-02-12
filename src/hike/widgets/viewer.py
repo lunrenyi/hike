@@ -27,6 +27,7 @@ from textual.widgets import Label, Markdown, Rule
 ##############################################################################
 # Local imports.
 from .. import __version__
+from ..commands import JumpToCommandLine
 from ..types import HikeHistory, HikeLocation
 
 
@@ -75,6 +76,8 @@ class Viewer(Vertical, can_focus=False):
     }
     """
 
+    BINDINGS = [("escape", "bounce_out")]
+
     USER_AGENT: Final[str] = f"Hike v{__version__} (https://github.com/davep/hike)"
     """The user agent string for the viewer."""
 
@@ -90,6 +93,10 @@ class Viewer(Vertical, can_focus=False):
         yield Rule(line_style="heavy")
         with VerticalScroll():
             yield Markdown()
+
+    def action_bounce_out(self) -> None:
+        """Bounce back out to the input."""
+        self.post_message(JumpToCommandLine())
 
     @dataclass
     class Loaded(Message):
