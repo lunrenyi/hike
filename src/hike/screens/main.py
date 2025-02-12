@@ -26,6 +26,7 @@ from ..commands import (
     ChangeNavigationSide,
     Forward,
     JumpToCommandLine,
+    Reload,
     ToggleNavigation,
 )
 from ..data import (
@@ -101,6 +102,7 @@ class Main(EnhancedScreen[None]):
         BookmarkLocation,
         ChangeNavigationSide,
         Forward,
+        Reload,
         JumpToCommandLine,
     )
 
@@ -200,6 +202,11 @@ class Main(EnhancedScreen[None]):
             message: The message request the jump.
         """
         self.query_one(Viewer).jump_to_content(message.block_id)
+
+    @on(Reload)
+    def action_reload_command(self) -> None:
+        """Reload the current document."""
+        self.query_one(Viewer).reload()
 
     @on(ToggleNavigation)
     def action_toggle_navigation_command(self) -> None:

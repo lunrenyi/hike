@@ -6,6 +6,7 @@ from .main import (
     BookmarkLocation,
     ChangeNavigationSide,
     JumpToCommandLine,
+    Reload,
     ToggleNavigation,
 )
 from .navigation import Backward, Forward
@@ -18,6 +19,7 @@ __all__ = [
     "ChangeNavigationSide",
     "Forward",
     "JumpToCommandLine",
+    "Reload",
     "ToggleNavigation",
 ]
 

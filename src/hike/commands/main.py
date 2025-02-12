@@ -35,4 +35,11 @@ class BookmarkLocation(Command):
     BINDING_KEY = "ctrl+b"
 
 
+##############################################################################
+class Reload(Command):
+    """Reload the current document"""
+
+    BINDING_KEY = "ctrl+r"
+
+
 ### navigation.py ends here

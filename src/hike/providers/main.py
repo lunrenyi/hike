@@ -18,6 +18,7 @@ from ..commands import (
     ChangeNavigationSide,
     Forward,
     JumpToCommandLine,
+    Reload,
     ToggleNavigation,
 )
 
@@ -40,6 +41,7 @@ class MainCommands(CommandsProvider):
         yield Help()
         yield JumpToCommandLine()
         yield Quit()
+        yield Reload()
         yield ToggleNavigation()
 
 

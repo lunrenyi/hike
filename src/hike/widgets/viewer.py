@@ -253,6 +253,10 @@ class Viewer(Vertical, can_focus=False):
         self._visit(self.location, remember=False)
         self.post_message(self.HistoryVisit(self))
 
+    def reload(self) -> None:
+        """Reload the current document."""
+        self._visit(self.location, remember=False)
+
     def goto(self, history_location: int) -> None:
         """Go to a specific location in history."""
         if self.history.current_location != history_location:
