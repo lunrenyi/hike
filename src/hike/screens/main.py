@@ -82,8 +82,17 @@ class Main(EnhancedScreen[None]):
 
         .panel {
             background: $surface;
-            &:focus, &:focus-within {
+            * {
+                scrollbar-gutter: stable;
+                scrollbar-background: $surface;
+                scrollbar-background-hover: $surface;
+                scrollbar-background-active: $surface;
+            }
+            &:focus *, &:focus-within * {
                 background: $panel 80%;
+                scrollbar-background: $panel;
+                scrollbar-background-hover: $panel;
+                scrollbar-background-active: $panel;
             }
         }
 
