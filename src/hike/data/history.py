@@ -4,7 +4,6 @@
 # Python imports.
 from json import dumps, loads
 from pathlib import Path
-from typing import Sequence
 
 ##############################################################################
 # httpx imports.
