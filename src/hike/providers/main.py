@@ -23,6 +23,7 @@ from ..commands import (
     JumpToLocalBrowser,
     JumpToTableOfContents,
     Reload,
+    SearchBookmarks,
     ToggleNavigation,
 )
 
@@ -50,6 +51,7 @@ class MainCommands(CommandsProvider):
         yield JumpToLocalBrowser()
         yield Quit()
         yield Reload()
+        yield SearchBookmarks()
         yield ToggleNavigation()
 
 

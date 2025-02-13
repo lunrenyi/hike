@@ -7,6 +7,7 @@ from .main import (
     ChangeNavigationSide,
     JumpToCommandLine,
     Reload,
+    SearchBookmarks,
     ToggleNavigation,
 )
 from .navigation import (
@@ -31,6 +32,7 @@ __all__ = [
     "JumpToLocalBrowser",
     "JumpToTableOfContents",
     "Reload",
+    "SearchBookmarks",
     "ToggleNavigation",
 ]
 

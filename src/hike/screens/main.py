@@ -36,6 +36,7 @@ from ..commands import (
     JumpToLocalBrowser,
     JumpToTableOfContents,
     Reload,
+    SearchBookmarks,
     ToggleNavigation,
 )
 from ..data import (
@@ -57,7 +58,7 @@ from ..messages import (
     RemoveHistoryEntry,
     SetLocalViewRoot,
 )
-from ..providers import MainCommands
+from ..providers import BookmarkCommands, MainCommands
 from ..support import maybe_markdown, view_in_browser
 from ..widgets import CommandLine, Navigation, Viewer
 
@@ -131,6 +132,7 @@ class Main(EnhancedScreen[None]):
         JumpToLocalBrowser,
         JumpToTableOfContents,
         Reload,
+        SearchBookmarks,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
@@ -165,7 +167,8 @@ class Main(EnhancedScreen[None]):
         config = load_configuration()
         self.navigation_visible = config.navigation_visible
         self.query_one(Navigation).dock_right = config.navigation_on_right
-        self.query_one(Navigation).bookmarks = load_bookmarks()
+        self.query_one(Navigation).bookmarks = (bookmarks := load_bookmarks())
+        BookmarkCommands.bookmarks = bookmarks
         self.query_one(Viewer).history = load_history()
         self.query_one(CommandLine).history = load_command_history()
         if self._arguments.command:
@@ -293,6 +296,11 @@ class Main(EnhancedScreen[None]):
         """Reload the current document."""
         self.query_one(Viewer).reload()
 
+    @on(SearchBookmarks)
+    def action_search_bookmarks_command(self) -> None:
+        """Search the bookmarks in the command palette."""
+        self.show_palette(BookmarkCommands)
+
     @on(ToggleNavigation)
     def action_toggle_navigation_command(self) -> None:
         """Toggle the display of the navigation panel."""
@@ -391,6 +399,7 @@ class Main(EnhancedScreen[None]):
     def _update_bookmarks(self, message: Navigation.BookmarksUpdated) -> None:
         """Handle the bookmarks being updated."""
         save_bookmarks(message.navigation.bookmarks)
+        BookmarkCommands.bookmarks = message.navigation.bookmarks
 
     @on(CommandLine.HistoryUpdated)
     def _save_command_line_history(self, message: CommandLine.HistoryUpdated) -> None:

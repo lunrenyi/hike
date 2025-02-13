@@ -2,11 +2,13 @@
 
 ##############################################################################
 # Local imports.
+from .bookmarks import BookmarkCommands
 from .main import MainCommands
 
 ##############################################################################
 # Exports.
 __all__ = [
+    "BookmarkCommands",
     "MainCommands",
 ]
 

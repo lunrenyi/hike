@@ -42,4 +42,11 @@ class Reload(Command):
     BINDING_KEY = "ctrl+r"
 
 
+##############################################################################
+class SearchBookmarks(Command):
+    """Search the bookmarks"""
+
+    BINDING_KEY = "f3"
+
+
 ### navigation.py ends here
