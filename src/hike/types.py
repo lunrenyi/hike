@@ -19,6 +19,10 @@ HikeLocation: TypeAlias = Path | URL
 
 ##############################################################################
 HikeHistory: TypeAlias = History[HikeLocation]
-"""The type of the history used in the application."""
+"""The type of the browsing history."""
+
+##############################################################################
+CommandHistory: TypeAlias = History[str]
+"""The type of the command history."""
 
 ### types.py ends here

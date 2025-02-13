@@ -1,14 +1,20 @@
 """Provides a widget for getting input from the user."""
 
 ##############################################################################
+# Backward compatibility.
+from __future__ import annotations
+
+##############################################################################
 # Python imports.
-from typing import Final, TypeAlias
+from dataclasses import dataclass
+from typing import Final
 
 ##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Horizontal
+from textual.message import Message
 from textual.reactive import var
 from textual.widgets import Input, Label
 from textual.widgets.input import Selection
@@ -19,7 +25,7 @@ from textual_enhanced.commands import Quit
 
 ##############################################################################
 # Local imports.
-from ...support import History
+from ...types import CommandHistory
 from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
 from .open_directory import OpenDirectoryCommand
@@ -47,11 +53,6 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenFromGitLab,
 )
 """The commands used for the input."""
-
-
-##############################################################################
-CommandHistory: TypeAlias = History[str]
-"""Type of the command line history."""
 
 
 ##############################################################################
@@ -118,13 +119,20 @@ class CommandLine(Horizontal):
         ("down", "history_next"),
     ]
 
-    _history: var[CommandHistory] = var(CommandHistory)
+    history: var[CommandHistory] = var(CommandHistory)
     """The command line history."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         yield Label("> ")
         yield Input(placeholder="Enter a directory, file, path or command")
+
+    @dataclass
+    class HistoryUpdated(Message):
+        """Message posted when the command history is updated."""
+
+        command_line: CommandLine
+        """The command line whose history was updated."""
 
     def handle_input(self, command: str) -> None:
         """Handle input from the user.
@@ -134,7 +142,8 @@ class CommandLine(Horizontal):
         """
         for candidate in COMMANDS:
             if candidate.handle(command, self):
-                self._history.add(command)
+                self.history.add(command)
+                self.post_message(self.HistoryUpdated(self))
                 self.query_one(Input).value = ""
                 return
         self.notify("Unable to handle that input", title="Error", severity="error")
@@ -155,17 +164,14 @@ class CommandLine(Horizontal):
 
     def action_history_previous(self) -> None:
         """Move backwards through the command line history."""
-        if value := self._history.current_item:
+        if value := self.history.current_item:
             self.query_one(Input).value = value
             self.query_one(Input).selection = Selection(0, len(value))
-            self._history.backward()
+            self.history.backward()
 
     def action_history_next(self) -> None:
         """Move forwards through the command line history."""
-        if (
-            self._history.forward()
-            and (value := self._history.current_item) is not None
-        ):
+        if self.history.forward() and (value := self.history.current_item) is not None:
             self.query_one(Input).value = value
             self.query_one(Input).selection = Selection(0, len(value))
         else:

@@ -1,9 +1,11 @@
 """The main screen for the application."""
 
 ##############################################################################
-# Textual imports.
+# Python imports.
 from argparse import Namespace
 
+##############################################################################
+# Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
@@ -33,9 +35,11 @@ from ..commands import (
 )
 from ..data import (
     load_bookmarks,
+    load_command_history,
     load_configuration,
     load_history,
     save_bookmarks,
+    save_command_history,
     save_history,
     update_configuration,
 )
@@ -140,6 +144,7 @@ class Main(EnhancedScreen[None]):
         self.query_one(Navigation).dock_right = config.navigation_on_right
         self.query_one(Navigation).bookmarks = load_bookmarks()
         self.query_one(Viewer).history = load_history()
+        self.query_one(CommandLine).history = load_command_history()
         if self._arguments.command:
             self.query_one(CommandLine).handle_input(" ".join(self._arguments.command))
 
@@ -314,6 +319,15 @@ class Main(EnhancedScreen[None]):
     def _update_bookmarks(self, message: Navigation.BookmarksUpdated) -> None:
         """Handle the bookmarks being updated."""
         save_bookmarks(message.navigation.bookmarks)
+
+    @on(CommandLine.HistoryUpdated)
+    def _save_command_line_history(self, message: CommandLine.HistoryUpdated) -> None:
+        """Save the command line history to storage when it changes.
+
+        Args:
+            message: The message requesting the same.
+        """
+        save_command_history(message.command_line.history)
 
 
 ### main.py ends here

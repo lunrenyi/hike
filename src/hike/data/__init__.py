@@ -3,6 +3,7 @@
 ##############################################################################
 # Local imports.
 from .bookmarks import Bookmark, Bookmarks, load_bookmarks, save_bookmarks
+from .command_history import load_command_history, save_command_history
 from .config import (
     Configuration,
     load_configuration,
@@ -18,9 +19,11 @@ __all__ = [
     "Bookmarks",
     "Configuration",
     "load_bookmarks",
+    "load_command_history",
     "load_configuration",
     "load_history",
     "save_bookmarks",
+    "save_command_history",
     "save_configuration",
     "save_history",
     "update_configuration",
