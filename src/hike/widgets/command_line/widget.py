@@ -16,6 +16,7 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal
 from textual.message import Message
 from textual.reactive import var
+from textual.suggester import SuggestFromList
 from textual.widgets import Input, Label
 from textual.widgets.input import Selection
 
@@ -122,10 +123,23 @@ class CommandLine(Horizontal):
     history: var[CommandHistory] = var(CommandHistory)
     """The command line history."""
 
+    @property
+    def _history_suggester(self) -> SuggestFromList:
+        """A suggester for the history of input."""
+        return SuggestFromList(list(self.history))
+
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
         yield Label("> ")
-        yield Input(placeholder="Enter a directory, file, path or command")
+        yield Input(
+            placeholder="Enter a directory, file, path or command",
+            suggester=self._history_suggester,
+        )
+
+    def _watch_history(self) -> None:
+        """React to history being updated."""
+        if self.is_mounted:
+            self.query_one(Input).suggester = self._history_suggester
 
     @dataclass
     class HistoryUpdated(Message):
@@ -147,6 +161,7 @@ class CommandLine(Horizontal):
                 self.history.add(command)
                 self.post_message(self.HistoryUpdated(self))
                 self.query_one(Input).value = ""
+                self.query_one(Input).suggester = self._history_suggester
                 return
         self.notify("Unable to handle that input", title="Error", severity="error")
 
