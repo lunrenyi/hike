@@ -69,10 +69,10 @@ class Bookmark:
             return self.title.casefold() == value.title.casefold()
         if isinstance(value, str):
             return self.title.casefold() == value.casefold()
-        if (isinstance(value, Path) and isinstance(self.location, Path)) or (
-            isinstance(value, URL) and isinstance(self.location, URL)
-        ):
-            return self.location == value
+        if isinstance(value, Path):
+            return isinstance(self.location, Path) and self.location == value
+        if isinstance(value, URL):
+            return isinstance(self.location, URL) and self.location == value
         raise NotImplementedError
 
 
