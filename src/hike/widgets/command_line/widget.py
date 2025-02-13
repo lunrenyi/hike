@@ -140,6 +140,8 @@ class CommandLine(Horizontal):
         Args:
             command: The command the user entered.
         """
+        if not (command := command.strip()):
+            return
         for candidate in COMMANDS:
             if candidate.handle(command, self):
                 self.history.add(command)
