@@ -221,7 +221,7 @@ class Main(EnhancedScreen[None]):
         """
         if (url := await message.url()) is None:
             self.notify(
-                "The file you were after could not be located..\n\n"
+                "The file you were after could not be located.\n\n"
                 "Check the spelling of the owner, repository and file; "
                 "also consider what branch it might be on.",
                 title=f"No suitable {message.forge} target found",
