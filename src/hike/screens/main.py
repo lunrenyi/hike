@@ -87,7 +87,6 @@ class Main(EnhancedScreen[None]):
                 background: $panel 80%;
             }
             * {
-                scrollbar-gutter: stable;
                 scrollbar-background: $surface;
                 scrollbar-background-hover: $surface;
                 scrollbar-background-active: $surface;
