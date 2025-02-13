@@ -2,6 +2,8 @@
 
 ##############################################################################
 # Textual imports.
+from argparse import Namespace
+
 from textual.app import InvalidThemeError
 
 ##############################################################################
@@ -48,8 +50,14 @@ class Hike(EnhancedApp[None]):
 
     COMMANDS = set()
 
-    def __init__(self) -> None:
-        """Initialise the application."""
+    def __init__(self, arguments: Namespace) -> None:
+        """Initialise the application.
+
+        Args:
+            The command line arguments passed to the application.
+        """
+        self._arguments = arguments
+        """The command line arguments passed to the application."""
         super().__init__()
         configuration = load_configuration()
         if configuration.theme is not None:
@@ -69,7 +77,7 @@ class Hike(EnhancedApp[None]):
         Returns:
             The main screen.
         """
-        return Main()
+        return Main(self._arguments)
 
 
 ### hike.py ends here

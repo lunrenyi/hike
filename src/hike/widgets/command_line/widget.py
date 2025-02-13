@@ -126,6 +126,19 @@ class CommandLine(Horizontal):
         yield Label("> ")
         yield Input(placeholder="Enter a directory, file, path or command")
 
+    def handle_input(self, command: str) -> None:
+        """Handle input from the user.
+
+        Args:
+            command: The command the user entered.
+        """
+        for candidate in COMMANDS:
+            if candidate.handle(command, self):
+                self._history.add(command)
+                self.query_one(Input).value = ""
+                return
+        self.notify("Unable to handle that input", title="Error", severity="error")
+
     @on(Input.Submitted)
     def _handle_input(self, message: Input.Submitted) -> None:
         """Handle input from the user.
@@ -134,12 +147,7 @@ class CommandLine(Horizontal):
             message: The message requesting input is handled.
         """
         message.stop()
-        for candidate in COMMANDS:
-            if candidate.handle(message.value, self):
-                self._history.add(message.value)
-                message.input.value = ""
-                return
-        self.notify("Unable to handle that input", title="Error", severity="error")
+        self.handle_input(message.value)
 
     def action_request_exit(self) -> None:
         """Request that the application quits."""

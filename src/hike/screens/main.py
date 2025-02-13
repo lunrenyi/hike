@@ -2,6 +2,8 @@
 
 ##############################################################################
 # Textual imports.
+from argparse import Namespace
+
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
@@ -112,6 +114,16 @@ class Main(EnhancedScreen[None]):
 
     AUTO_FOCUS = "CommandLine Input"
 
+    def __init__(self, arguments: Namespace) -> None:
+        """Initialise the main screen.
+
+        Args:
+            arguments: The arguments passed to the application on the command line.
+        """
+        self._arguments = arguments
+        """The arguments passed on the command line."""
+        super().__init__()
+
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
@@ -128,6 +140,8 @@ class Main(EnhancedScreen[None]):
         self.query_one(Navigation).dock_right = config.navigation_on_right
         self.query_one(Navigation).bookmarks = load_bookmarks()
         self.query_one(Viewer).history = load_history()
+        if self._arguments.command:
+            self.query_one(CommandLine).handle_input(" ".join(self._arguments.command))
 
     @on(OpenLocation)
     def _open_markdown(self, message: OpenLocation) -> None:
