@@ -243,6 +243,22 @@ class Main(EnhancedScreen[None]):
         """
         self.query_one(Viewer).jump_to_content(message.block_id)
 
+    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+        """Check if an action is possible to perform right now.
+
+        Args:
+            action: The action to perform.
+            parameters: The parameters of the action.
+
+        Returns:
+            `True` if it can perform, `False` or `None` if not.
+        """
+        if action == "forward_command":
+            return self.query_one(Viewer).history.can_go_forward or None
+        if action == "backward_command":
+            return self.query_one(Viewer).history.can_go_backward or None
+        return True
+
     @on(Reload)
     def action_reload_command(self) -> None:
         """Reload the current document."""

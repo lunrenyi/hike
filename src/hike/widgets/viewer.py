@@ -250,6 +250,7 @@ class Viewer(Vertical, can_focus=False):
         self.set_reactive(Viewer.location, self.history.current_item)
         self._visit(self.location, remember=False)
         self.post_message(self.HistoryVisit(self))
+        self.refresh_bindings()
 
     def reload(self) -> None:
         """Reload the current document."""
