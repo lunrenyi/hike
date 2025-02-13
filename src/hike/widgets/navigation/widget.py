@@ -72,6 +72,15 @@ class Navigation(Vertical):
         ("ctrl+right", "switch('next_tab')"),
     ]
 
+    HELP = """
+    ## The Navigation Panel
+
+    Here you'll find panels for the current document's table of contents; a
+    local file browser (use the `chdir` command in the command line at the
+    bottom of the screen to change the root directory); a simple bookmark
+    manager and your browsing history.
+    """
+
     dock_right: var[bool] = var(False)
     """Should the navigation dock to the right?"""
 

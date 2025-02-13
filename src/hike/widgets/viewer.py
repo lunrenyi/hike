@@ -77,6 +77,12 @@ class Viewer(Vertical, can_focus=False):
     }
     """
 
+    HELP = """
+    ## Viewer
+
+    This is the main Markdown viewer.
+    """
+
     BINDINGS = [("escape", "bounce_out")]
 
     location: var[HikeLocation | None] = var(None)
