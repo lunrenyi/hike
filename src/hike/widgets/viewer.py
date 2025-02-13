@@ -27,6 +27,8 @@ from textual.widgets import Label, Markdown, Rule
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
+from ..messages import OpenLocation
+from ..support import looks_urllike
 from ..types import HikeHistory, HikeLocation
 
 
@@ -88,7 +90,7 @@ class Viewer(Vertical, can_focus=False):
         yield ViewerTitle()
         yield Rule(line_style="heavy")
         with VerticalScroll():
-            yield Markdown()
+            yield Markdown(open_links=False)
 
     def action_bounce_out(self) -> None:
         """Bounce back out to the input."""
@@ -289,6 +291,52 @@ class Viewer(Vertical, can_focus=False):
     def clear_history(self) -> None:
         """Clear all locations from history."""
         self.history = HikeHistory()
+
+    @on(Markdown.LinkClicked)
+    def _handle_link(self, message: Markdown.LinkClicked) -> None:
+        """Handle a link being clicked in the Markdown widget.
+
+        Args:
+            message: The message requesting the link be handled.
+        """
+        message.stop()
+
+        # Outright URL?
+        if looks_urllike(message.href):
+            self.post_message(OpenLocation(URL(message.href)))
+            return
+
+        # Possibly a relative path to a currently-visited URL?
+        if isinstance(self.location, URL):
+            self.post_message(
+                OpenLocation(self.location.copy_with().join(message.href))
+            )
+            return
+
+        # A local file that exists?
+        if (local_file := Path(message.href).expanduser()).exists():
+            self.post_message(OpenLocation(local_file.resolve()))
+            return
+
+        # A local file relative to the current location?
+        if (
+            isinstance(self.location, Path)
+            and (local_file := self.location / Path(message.href)).absolute().exists()
+        ):
+            self.post_message(OpenLocation(local_file))
+            return
+
+        # Some sort of internal anchor perhaps?
+        if message.href.startswith("#") and message.markdown.goto_anchor(
+            message.href[1:]
+        ):
+            return
+
+        self.notify(
+            f"The clicked link could not be handled:\n\n{message.href}",
+            title="Unknown link type",
+            severity="error",
+        )
 
 
 ### viewer.py ends here
