@@ -125,7 +125,7 @@ class OpenFromBitbucket(OpenFromForgeCommand):
 
 ##############################################################################
 class OpenFromCodeberg(OpenFromForgeCommand):
-    """Open a file from BitBucket"""
+    """Open a file from Codeberg"""
 
     COMMAND = "`codeberg`"
     ALIASES = "`cb`"
@@ -147,7 +147,7 @@ class OpenFromGitHub(OpenFromForgeCommand):
 
 ##############################################################################
 class OpenFromGitLab(OpenFromForgeCommand):
-    """Open a file from GitHub"""
+    """Open a file from GitLab"""
 
     COMMAND = "`gitlab`"
     ALIASES = "`gl`"
