@@ -59,16 +59,26 @@ class History(Generic[HistoryItem]):
         except IndexError:
             return None
 
+    @property
+    def can_go_backward(self) -> bool:
+        """Can history go backward?"""
+        return bool(self._current)
+
     def backward(self) -> bool:
         """Go backward through the history.
 
         Returns:
             `True` if we moved through history, `False` if not.
         """
-        if self._current:
+        if self.can_go_backward:
             self._current -= 1
             return True
         return False
+
+    @property
+    def can_go_forward(self) -> bool:
+        """Can history go forward?"""
+        return self._current < len(self._history) - 1
 
     def forward(self) -> bool:
         """Go forward through the history.
@@ -76,7 +86,7 @@ class History(Generic[HistoryItem]):
         Returns:
             `True` if we moved through history, `False` if not.
         """
-        if self._current < len(self._history) - 1:
+        if self.can_go_forward:
             self._current += 1
             return True
         return False
