@@ -17,7 +17,7 @@ from textual.message import Message
 ##############################################################################
 # Local imports.
 from .. import USER_AGENT
-from ..types import Forge, HikeLocation
+from ..types import HikeLocation
 
 
 ##############################################################################
@@ -48,22 +48,15 @@ class OpenFromHistory(Message):
 
 
 ##############################################################################
-RAW_URLS: Final[dict[Forge, str]] = {
-    "bitbucket": "https://bitbucket.org/{owner}/{repository}/raw/{branch}/{file}",
-    "codeberg": "https://codeberg.org/{owner}/{repository}/raw//branch/{branch}/{file}",
-    "github": "https://raw.githubusercontent.com/{owner}/{repository}/{branch}/{file}",
-    "gitlab": "https://gitlab.com/{owner}/{repository}/-/raw/{branch}/{file}",
-}
-"""Raw file URLs for each of the supported forges."""
-
-
-##############################################################################
 @dataclass
 class OpenFromForge(Message):
     """Open a file from a forge."""
 
-    forge: Forge
-    """The forge to open from."""
+    forge: str
+    """The name of the forge."""
+
+    raw_url_format: str
+    """The format of the raw URL for the forge."""
 
     owner: str
     """The owner of the repository to open from."""
@@ -83,14 +76,12 @@ class OpenFromForge(Message):
         Returns:
             The URL if one could be worked out, or `None` if not.
         """
-        if (raw_format := RAW_URLS.get(self.forge)) is None:
-            return None
         filename = self.filename or "README.md"
         async with AsyncClient() as client:
             for candidate_branch in (
                 (self.branch,) if self.branch else ("main", "master")
             ):
-                url = raw_format.format(
+                url = self.raw_url_format.format(
                     owner=self.owner,
                     repository=self.repository,
                     branch=candidate_branch,

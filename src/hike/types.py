@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from pathlib import Path
-from typing import Literal, TypeAlias
+from typing import TypeAlias
 
 ##############################################################################
 # httpx imports.
@@ -20,9 +20,5 @@ HikeLocation: TypeAlias = Path | URL
 ##############################################################################
 HikeHistory: TypeAlias = History[HikeLocation]
 """The type of the history used in the application."""
-
-##############################################################################
-Forge: TypeAlias = Literal["bitbucket", "codeberg", "github", "gitlab"]
-"""The type of a supported git forge."""
 
 ### types.py ends here
