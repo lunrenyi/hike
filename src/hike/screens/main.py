@@ -162,15 +162,24 @@ class Main(EnhancedScreen[None]):
         self.query_one(Viewer).goto(message.location)
 
     @on(OpenFromForge)
-    def _open_from_forge(self, message: OpenFromForge) -> None:
+    @work
+    async def _open_from_forge(self, message: OpenFromForge) -> None:
         """Open a file from a git forge.
 
         Args:
             message: The message requesting the operation.
         """
-        self.notify(
-            f"TODO: Open {message.forge}/{message.owner}/{message.repository}:{message.branch}/{message.filename} from "
-        )
+        if (url := await message.url()) is None:
+            self.notify(
+                "The file you were after could not be located..\n\n"
+                "Check the spelling of the owner, repository and file; "
+                "also consider what branch it might be on.",
+                title=f"No suitable {message.forge} target found",
+                severity="error",
+                timeout=8,
+            )
+        else:
+            self.post_message(OpenLocation(url))
 
     @on(RemoveHistoryEntry)
     def _remove_location_from_history(self, message: RemoveHistoryEntry) -> None:
