@@ -230,5 +230,28 @@ class Navigation(Vertical):
         self.bookmarks = new_bookmarks
         self.post_message(self.BookmarksUpdated(self))
 
+    def _activate(self, panel: str) -> None:
+        self.query_one(TabbedContent).active = panel
+        self.call_next(self.run_action, "move_into_panel")
+
+    def jump_to_content(self) -> None:
+        """Jump into the content panel, if possible."""
+        if self.table_of_contents:
+            self._activate("content")
+
+    def jump_to_local(self) -> None:
+        """Jump into the local browser panel, if possible."""
+        self._activate("local")
+
+    def jump_to_bookmarks(self) -> None:
+        """Jump into the bookmarks panel, if possible."""
+        if self.bookmarks:
+            self._activate("bookmarks")
+
+    def jump_to_history(self) -> None:
+        """Jump into the history panel, if possible."""
+        if self.query_one(HistoryView).option_count:
+            self._activate("history")
+
 
 ### navigation.py ends here

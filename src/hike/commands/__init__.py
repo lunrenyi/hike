@@ -9,7 +9,14 @@ from .main import (
     Reload,
     ToggleNavigation,
 )
-from .navigation import Backward, Forward
+from .navigation import (
+    Backward,
+    Forward,
+    JumpToBookmarks,
+    JumpToHistory,
+    JumpToLocalBrowser,
+    JumpToTableOfContents,
+)
 
 ##############################################################################
 # Exports.
@@ -18,7 +25,11 @@ __all__ = [
     "BookmarkLocation",
     "ChangeNavigationSide",
     "Forward",
+    "JumpToBookmarks",
     "JumpToCommandLine",
+    "JumpToHistory",
+    "JumpToLocalBrowser",
+    "JumpToTableOfContents",
     "Reload",
     "ToggleNavigation",
 ]

@@ -17,7 +17,11 @@ from ..commands import (
     BookmarkLocation,
     ChangeNavigationSide,
     Forward,
+    JumpToBookmarks,
     JumpToCommandLine,
+    JumpToHistory,
+    JumpToLocalBrowser,
+    JumpToTableOfContents,
     Reload,
     ToggleNavigation,
 )
@@ -40,6 +44,10 @@ class MainCommands(CommandsProvider):
         yield Forward()
         yield Help()
         yield JumpToCommandLine()
+        yield JumpToTableOfContents()
+        yield JumpToBookmarks()
+        yield JumpToHistory()
+        yield JumpToLocalBrowser()
         yield Quit()
         yield Reload()
         yield ToggleNavigation()

@@ -21,4 +21,32 @@ class Backward(Command):
     SHOW_IN_FOOTER = True
 
 
+##############################################################################
+class JumpToTableOfContents(Command):
+    """Jump to the table of contents in the navigation panel"""
+
+    BINDING_KEY = "ctrl+t"
+
+
+##############################################################################
+class JumpToLocalBrowser(Command):
+    """Jump to the local filesystem browser in the navigation panel"""
+
+    BINDING_KEY = "ctrl+l"
+
+
+##############################################################################
+class JumpToBookmarks(Command):
+    """Jump to the bookmarks in the navigation panel"""
+
+    BINDING_KEY = "ctrl+o"
+
+
+##############################################################################
+class JumpToHistory(Command):
+    """Jump to the history in the navigation panel"""
+
+    BINDING_KEY = "ctrl+y"
+
+
 ### navigation.py ends here

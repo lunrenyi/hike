@@ -9,6 +9,7 @@ from argparse import Namespace
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal
+from textual.reactive import var
 from textual.widgets import Footer, Header, Markdown
 
 ##############################################################################
@@ -29,7 +30,11 @@ from ..commands import (
     BookmarkLocation,
     ChangeNavigationSide,
     Forward,
+    JumpToBookmarks,
     JumpToCommandLine,
+    JumpToHistory,
+    JumpToLocalBrowser,
+    JumpToTableOfContents,
     Reload,
     ToggleNavigation,
 )
@@ -109,14 +114,21 @@ class Main(EnhancedScreen[None]):
         BookmarkLocation,
         ChangeNavigationSide,
         Forward,
-        Reload,
+        JumpToBookmarks,
         JumpToCommandLine,
+        JumpToHistory,
+        JumpToLocalBrowser,
+        JumpToTableOfContents,
+        Reload,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
     COMMANDS = {MainCommands}
 
     AUTO_FOCUS = "CommandLine Input"
+
+    navigation_visible: var[bool] = var(True)
+    """Set if the navigation panel is visible or not."""
 
     def __init__(self, arguments: Namespace) -> None:
         """Initialise the main screen.
@@ -140,13 +152,19 @@ class Main(EnhancedScreen[None]):
     def on_mount(self) -> None:
         """Configure the screen once the DOM is mounted."""
         config = load_configuration()
-        self.set_class(config.navigation_visible, "navigation")
+        self.navigation_visible = config.navigation_visible
         self.query_one(Navigation).dock_right = config.navigation_on_right
         self.query_one(Navigation).bookmarks = load_bookmarks()
         self.query_one(Viewer).history = load_history()
         self.query_one(CommandLine).history = load_command_history()
         if self._arguments.command:
             self.query_one(CommandLine).handle_input(" ".join(self._arguments.command))
+
+    def _watch_navigation_visible(self) -> None:
+        """React to the navigation visible property being set."""
+        self.set_class(self.navigation_visible, "navigation")
+        with update_configuration() as config:
+            config.navigation_visible = self.navigation_visible
 
     @on(OpenLocation)
     def _open_markdown(self, message: OpenLocation) -> None:
@@ -267,9 +285,7 @@ class Main(EnhancedScreen[None]):
     @on(ToggleNavigation)
     def action_toggle_navigation_command(self) -> None:
         """Toggle the display of the navigation panel."""
-        self.toggle_class("navigation")
-        with update_configuration() as config:
-            config.navigation_visible = self.has_class("navigation")
+        self.navigation_visible = not self.navigation_visible
 
     @on(ChangeNavigationSide)
     def action_change_navigation_side_command(self) -> None:
@@ -314,6 +330,35 @@ class Main(EnhancedScreen[None]):
         ):
             self.query_one(Navigation).add_bookmark(title, location)
             self.notify("Bookmark added")
+
+    def _with_navigation_visible(self) -> Navigation:
+        """Ensure navigation is visible.
+
+        Returns:
+            The navigation widget.
+        """
+        self.navigation_visible = True
+        return self.query_one(Navigation)
+
+    @on(JumpToTableOfContents)
+    def action_jump_to_table_of_contents_command(self) -> None:
+        """Jump to the table of contents."""
+        self._with_navigation_visible().jump_to_content()
+
+    @on(JumpToLocalBrowser)
+    def action_jump_to_local_browser_command(self) -> None:
+        """Jump to the local browser."""
+        self._with_navigation_visible().jump_to_local()
+
+    @on(JumpToBookmarks)
+    def action_jump_to_bookmarks_command(self) -> None:
+        """Jump to the bookmarks."""
+        self._with_navigation_visible().jump_to_bookmarks()
+
+    @on(JumpToHistory)
+    def action_jump_to_history_command(self) -> None:
+        """Jump to the history."""
+        self._with_navigation_visible().jump_to_history()
 
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:
