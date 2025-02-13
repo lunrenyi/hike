@@ -26,7 +26,7 @@ from textual.widgets import Label, Markdown, Rule
 
 ##############################################################################
 # Local imports.
-from .. import __version__
+from .. import USER_AGENT
 from ..commands import JumpToCommandLine
 from ..types import HikeHistory, HikeLocation
 
@@ -77,9 +77,6 @@ class Viewer(Vertical, can_focus=False):
     """
 
     BINDINGS = [("escape", "bounce_out")]
-
-    USER_AGENT: Final[str] = f"Hike v{__version__} (https://github.com/davep/hike)"
-    """The user agent string for the viewer."""
 
     location: var[HikeLocation | None] = var(None)
     """The location of the markdown being displayed."""
