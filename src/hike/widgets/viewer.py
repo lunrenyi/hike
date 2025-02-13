@@ -9,7 +9,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import singledispatchmethod
 from pathlib import Path
-from typing import Final
 
 ##############################################################################
 # httpx imports.
@@ -169,7 +168,7 @@ class Viewer(Vertical, can_focus=False):
                 response = await client.get(
                     location,
                     follow_redirects=True,
-                    headers={"user-agent": self.USER_AGENT},
+                    headers={"user-agent": USER_AGENT},
                 )
         except RequestError as error:
             self.notify(str(error), title="Request error", severity="error", timeout=8)
