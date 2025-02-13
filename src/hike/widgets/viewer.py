@@ -15,6 +15,11 @@ from pathlib import Path
 from httpx import URL, AsyncClient, HTTPStatusError, RequestError
 
 ##############################################################################
+# MarkdownIt imports.
+from markdown_it import MarkdownIt
+from mdit_py_plugins import front_matter
+
+##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
@@ -96,7 +101,12 @@ class Viewer(Vertical, can_focus=False):
         yield ViewerTitle()
         yield Rule(line_style="heavy")
         with VerticalScroll():
-            yield Markdown(open_links=False)
+            yield Markdown(
+                open_links=False,
+                parser_factory=lambda: MarkdownIt("gfm-like").use(
+                    front_matter.front_matter_plugin
+                ),
+            )
 
     def action_bounce_out(self) -> None:
         """Bounce back out to the input."""
