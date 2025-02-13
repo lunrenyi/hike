@@ -52,15 +52,6 @@ class OpenFromForgeCommand(InputCommand):
         return (candidate[0], candidate[1]) if candidate else ("", "")
 
     @classmethod
-    def for_forge(cls, command: str) -> bool:
-        """Is the given command for the given forge?
-
-        Args:
-            command: The command to test.
-        """
-        return f"`{command}`" in (cls.COMMAND, cls.ALIASES)
-
-    @classmethod
     def maybe_request(cls, arguments: str, for_widget: Widget) -> bool:
         """Maybe request a file be opened from the given forge.
 
@@ -108,9 +99,9 @@ class OpenFromForgeCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         command, arguments = cls.split_command(text)
-        if cls.for_forge(command):
-            return cls.maybe_request(arguments, for_widget)
-        return False
+        return f"`{command}`" in (cls.COMMAND, cls.ALIASES) and cls.maybe_request(
+            arguments, for_widget
+        )
 
 
 ##############################################################################
