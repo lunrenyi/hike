@@ -100,7 +100,7 @@ class Viewer(Vertical, can_focus=False):
         """Compose the content of the viewer."""
         yield ViewerTitle()
         yield Rule(line_style="heavy")
-        with VerticalScroll():
+        with VerticalScroll(id="document"):
             yield Markdown(
                 open_links=False,
                 parser_factory=lambda: MarkdownIt("gfm-like").use(
@@ -230,15 +230,23 @@ class Viewer(Vertical, can_focus=False):
     def _(self, location: None, remember: bool) -> None:
         self.post_message(self.Loaded(self, "", remember))
 
-    def _visit(self, location: HikeLocation | None, remember: bool = True) -> None:
+    def _visit(
+        self,
+        location: HikeLocation | None,
+        remember: bool = True,
+        preserve_position: bool = False,
+    ) -> None:
         """Visit the given location.
 
         Args:
             location: The location to visit.
             remember: Should this location go into history?
+            preserve_position: Attempt to preserve the scroll position?
         """
         self.set_class(location is None, "empty")
         self._load_markdown(location, remember)
+        if not preserve_position:
+            self.query_one("#document").scroll_home(animate=False)
 
     def _watch_location(self) -> None:
         """Handle changes to the location to view."""
@@ -270,7 +278,7 @@ class Viewer(Vertical, can_focus=False):
 
     def reload(self) -> None:
         """Reload the current document."""
-        self._visit(self.location, remember=False)
+        self._visit(self.location, remember=False, preserve_position=True)
 
     def goto(self, history_location: int) -> None:
         """Go to a specific location in history."""
