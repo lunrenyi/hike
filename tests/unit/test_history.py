@@ -32,6 +32,13 @@ def test_empty_history_has_no_length() -> None:
 
 
 ##############################################################################
+def test_empty_history_has_nowhere_to_go() -> None:
+    """An empty history should not be able to move."""
+    assert History().can_go_backward is False
+    assert History().can_go_forward is False
+
+
+##############################################################################
 @mark.parametrize("initial", ([1], [1, 2], range(100)))
 def test_pre_populate_history_has_location(initial: Sequence[int]) -> None:
     """A pre-populated history should be at the last location."""
@@ -105,10 +112,13 @@ def test_backward() -> None:
     """We should be able to move backward through history until we can't."""
     history = History[int]([1, 2, 3])
     assert history.current_location == 2
+    assert history.can_go_backward is True
     assert history.backward() is True
     assert history.current_location == 1
+    assert history.can_go_backward is True
     assert history.backward() is True
     assert history.current_location == 0
+    assert history.can_go_backward is False
     assert history.backward() is False
     assert history.current_location == 0
 
@@ -129,11 +139,15 @@ def test_forward() -> None:
     assert history.backward() is True
     assert history.backward() is True
     assert history.backward() is False
+    assert history.can_go_backward is False
     assert history.current_location == 0
+    assert history.can_go_forward is True
     assert history.forward() is True
     assert history.current_location == 1
+    assert history.can_go_forward is True
     assert history.forward() is True
     assert history.current_location == 2
+    assert history.can_go_forward is False
     assert history.forward() is False
     assert history.current_location == 2
 
