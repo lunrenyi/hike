@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## v0.1.0
+
+**Released: 2025-02-14**
+
+- Initial release.
+
 ## v0.0.1
 
 **Released: 2025-02-07**
