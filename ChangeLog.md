@@ -5,6 +5,8 @@
 **Released: WiP**
 
 - The bookmark search command palette now sorts the bookmarks.
+- The suggester for the command line now prefers newer history entries over
+  older.
 
 ## v0.1.0
 

@@ -126,7 +126,7 @@ class CommandLine(Horizontal):
     @property
     def _history_suggester(self) -> SuggestFromList:
         """A suggester for the history of input."""
-        return SuggestFromList(list(self.history))
+        return SuggestFromList(reversed(list(self.history)))
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
