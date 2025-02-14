@@ -54,6 +54,7 @@ Commands can also be discovered via the command palette
   Codeberg and Bitbucket.
 - A command palette to make it easy to discover commands and their keys.
 - A rich help screen to make it easy to discover commands and their keys.
+- [Possibly more as time goes on]((https://github.com/davep/hike/issues?q=is%3Aissue+is%3Aopen+label%3ATODO)).
 
 ## File locations
 
