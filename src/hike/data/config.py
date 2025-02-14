@@ -29,6 +29,7 @@ class Configuration:
     """Should the navigation panel live on the right?"""
 
     markdown_extensions: list[str] = field(default_factory=lambda: [".md", ".markdown"])
+    """The file extensions to consider to be Markdown files."""
 
 
 ##############################################################################
