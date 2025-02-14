@@ -4,6 +4,7 @@
 # Local imports.
 from .main import (
     BookmarkLocation,
+    ChangeCommandLineLocation,
     ChangeNavigationSide,
     JumpToCommandLine,
     Reload,
@@ -24,6 +25,7 @@ from .navigation import (
 __all__ = [
     "Backward",
     "BookmarkLocation",
+    "ChangeCommandLineLocation",
     "ChangeNavigationSide",
     "Forward",
     "JumpToBookmarks",

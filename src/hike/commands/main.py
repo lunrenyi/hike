@@ -29,6 +29,13 @@ class JumpToCommandLine(Command):
 
 
 ##############################################################################
+class ChangeCommandLineLocation(Command):
+    """Swap the position of the command line between top and bottom"""
+
+    BINDING_KEY = "ctrl+up, ctrl+down"
+
+
+##############################################################################
 class BookmarkLocation(Command):
     """Bookmark the current location"""
 

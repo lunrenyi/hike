@@ -31,6 +31,9 @@ class Configuration:
     markdown_extensions: list[str] = field(default_factory=lambda: [".md", ".markdown"])
     """The file extensions to consider to be Markdown files."""
 
+    command_line_on_top: bool = False
+    """Should the command line live at the top of the screen?"""
+
 
 ##############################################################################
 def configuration_file() -> Path:

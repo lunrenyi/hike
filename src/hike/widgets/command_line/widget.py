@@ -13,11 +13,11 @@ from typing import Final
 # Textual imports.
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Horizontal, Vertical
 from textual.message import Message
 from textual.reactive import var
 from textual.suggester import SuggestFromList
-from textual.widgets import Input, Label
+from textual.widgets import Input, Label, Rule
 from textual.widgets.input import Selection
 
 ##############################################################################
@@ -57,15 +57,17 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
 
 
 ##############################################################################
-class CommandLine(Horizontal):
+class CommandLine(Vertical):
     """A command line for getting input from the user."""
 
     DEFAULT_CSS = """
     CommandLine {
         height: 1;
+
         Label, Input {
             color: $text-muted;
         }
+
         &:focus-within {
             Label, Input {
                 color: $text;
@@ -74,11 +76,27 @@ class CommandLine(Horizontal):
                 text-style: bold;
             }
         }
+
+        Rule {
+            height: 1;
+            margin: 0 !important;
+            color: $foreground 10%;
+            display: none;
+        }
+
         Input, Input:focus {
             border: none;
             padding: 0;
             height: 1fr;
             background: transparent;
+        }
+
+        &.--top {
+            dock: top;
+            height: 2;
+            Rule {
+                display: block;
+            }
         }
     }
     """
@@ -123,6 +141,9 @@ class CommandLine(Horizontal):
     history: var[CommandHistory] = var(CommandHistory)
     """The command line history."""
 
+    dock_top: var[bool] = var(False)
+    """Should the input dock to the top of the screen?"""
+
     @property
     def _history_suggester(self) -> SuggestFromList:
         """A suggester for the history of input."""
@@ -130,16 +151,22 @@ class CommandLine(Horizontal):
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
-        yield Label("> ")
-        yield Input(
-            placeholder="Enter a directory, file, path or command",
-            suggester=self._history_suggester,
-        )
+        with Horizontal():
+            yield Label("> ")
+            yield Input(
+                placeholder="Enter a directory, file, path or command",
+                suggester=self._history_suggester,
+            )
+        yield Rule(line_style="heavy")
 
     def _watch_history(self) -> None:
         """React to history being updated."""
         if self.is_mounted:
             self.query_one(Input).suggester = self._history_suggester
+
+    def _watch_dock_top(self) -> None:
+        """React to being asked to dock input to the top."""
+        self.set_class(self.dock_top, "--top")
 
     @dataclass
     class HistoryUpdated(Message):
