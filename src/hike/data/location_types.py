@@ -9,6 +9,10 @@ from pathlib import Path
 # httpx imports.
 from httpx import URL
 
+##############################################################################
+# Local imports.
+from .config import load_configuration
+
 
 ##############################################################################
 @singledispatch
@@ -27,7 +31,7 @@ def maybe_markdown(location: object) -> bool:
 ##############################################################################
 @maybe_markdown.register
 def _(location: Path) -> bool:
-    return location.suffix.lower() in (".md", ".markdown")
+    return location.suffix.lower() in load_configuration().markdown_extensions
 
 
 ##############################################################################

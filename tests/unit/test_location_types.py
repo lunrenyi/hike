@@ -14,7 +14,7 @@ from pytest import mark
 
 ##############################################################################
 # Local imports.
-from hike.support import looks_urllike, maybe_markdown
+from hike.data import looks_urllike, maybe_markdown
 from hike.types import HikeLocation
 
 

@@ -11,6 +11,7 @@ from .config import (
     update_configuration,
 )
 from .history import load_history, save_history
+from .location_types import looks_urllike, maybe_markdown
 
 ##############################################################################
 # Exports.
@@ -22,6 +23,8 @@ __all__ = [
     "load_command_history",
     "load_configuration",
     "load_history",
+    "looks_urllike",
+    "maybe_markdown",
     "save_bookmarks",
     "save_command_history",
     "save_configuration",

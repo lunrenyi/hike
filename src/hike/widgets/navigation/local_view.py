@@ -12,8 +12,8 @@ from textual.widgets import DirectoryTree
 
 ##############################################################################
 # Local imports.
+from ...data import maybe_markdown
 from ...messages import OpenLocation
-from ...support import maybe_markdown
 
 
 ##############################################################################

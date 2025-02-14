@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from functools import lru_cache
 from json import dumps, loads
 from pathlib import Path
@@ -27,6 +27,8 @@ class Configuration:
 
     navigation_on_right: bool = False
     """Should the navigation panel live on the right?"""
+
+    markdown_extensions: list[str] = field(default_factory=lambda: [".md", ".markdown"])
 
 
 ##############################################################################

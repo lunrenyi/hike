@@ -8,10 +8,11 @@ from httpx import URL
 # Textual imports.
 from textual.widget import Widget
 
+from ...data import looks_urllike
+
 ##############################################################################
 # Local imports.
 from ...messages import OpenLocation
-from ...support import looks_urllike
 from .base_command import InputCommand
 
 

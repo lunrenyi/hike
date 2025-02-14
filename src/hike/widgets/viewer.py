@@ -32,8 +32,8 @@ from textual.widgets import Label, Markdown, Rule
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
+from ..data import looks_urllike
 from ..messages import OpenLocation
-from ..support import looks_urllike
 from ..types import HikeHistory, HikeLocation
 
 

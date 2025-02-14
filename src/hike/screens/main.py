@@ -44,6 +44,7 @@ from ..data import (
     load_command_history,
     load_configuration,
     load_history,
+    maybe_markdown,
     save_bookmarks,
     save_command_history,
     save_history,
@@ -59,7 +60,7 @@ from ..messages import (
     SetLocalViewRoot,
 )
 from ..providers import BookmarkCommands, MainCommands
-from ..support import maybe_markdown, view_in_browser
+from ..support import view_in_browser
 from ..widgets import CommandLine, Navigation, Viewer
 
 
