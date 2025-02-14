@@ -39,6 +39,10 @@ application you can see this by pressing <kbd>F1</kbd>.
 
 ![Hike Help](.images/hike-help.png)
 
+Commands can also be discovered via the command palette
+(<kbd>ctrl</kbd>+<kbd>p</kbd>):
+
+
 ## Features
 
 - A command line where file names, URLs and commands can be entered.
