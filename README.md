@@ -1,6 +1,6 @@
-# hike
+# Hike
 
-TODO: Banner
+![Hike](./.images/hike-social-banner.png)
 
 ## Introduction
 
