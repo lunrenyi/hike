@@ -42,6 +42,7 @@ application you can see this by pressing <kbd>F1</kbd>.
 Commands can also be discovered via the command palette
 (<kbd>ctrl</kbd>+<kbd>p</kbd>):
 
+![The command palette](.images/hike-command-palette.png)
 
 ## Features
 
