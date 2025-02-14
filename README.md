@@ -1,6 +1,6 @@
 # Hike
 
-![Hike](./.images/hike-social-banner.png)
+![Hike](https://raw.githubusercontent.com/davep/hike/refs/heads/main/.images/hike-social-banner.png)
 
 ## Introduction
 
@@ -37,12 +37,12 @@ Once installed run the `hike` command.
 The best way to get to know Hike is to read the help screen. Once in the
 application you can see this by pressing <kbd>F1</kbd>.
 
-![Hike Help](.images/hike-help.png)
+![Hike Help](https://raw.githubusercontent.com/davep/hike/refs/heads/main/.images/hike-help.png)
 
 Commands can also be discovered via the command palette
 (<kbd>ctrl</kbd>+<kbd>p</kbd>):
 
-![The command palette](.images/hike-command-palette.png)
+![The command palette](https://raw.githubusercontent.com/davep/hike/refs/heads/main/.images/hike-command-palette.png)
 
 ## Features
 
