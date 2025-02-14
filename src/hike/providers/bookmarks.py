@@ -28,7 +28,7 @@ class BookmarkCommands(CommandsProvider):
         Yields:
             The commands for the command palette.
         """
-        for bookmark in self.bookmarks:
+        for bookmark in sorted(self.bookmarks):
             yield CommandHit(
                 f"Visit {bookmark.title}",
                 f"{bookmark.location}",

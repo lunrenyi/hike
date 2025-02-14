@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- The bookmark search command palette now sorts the bookmarks.
+
 ## v0.1.0
 
 **Released: 2025-02-14**
