@@ -16,6 +16,7 @@ from textual.message import Message
 ##############################################################################
 # Local imports.
 from .. import USER_AGENT
+from ..data import load_configuration
 from ..types import HikeLocation
 
 
@@ -78,7 +79,7 @@ class OpenFromForge(Message):
         filename = self.filename or "README.md"
         async with AsyncClient() as client:
             for candidate_branch in (
-                (self.branch,) if self.branch else ("main", "master")
+                [self.branch] if self.branch else load_configuration().main_branches
             ):
                 url = self.raw_url_format.format(
                     owner=self.owner,

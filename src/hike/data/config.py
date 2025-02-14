@@ -34,6 +34,9 @@ class Configuration:
     command_line_on_top: bool = False
     """Should the command line live at the top of the screen?"""
 
+    main_branches: list[str] = field(default_factory=lambda: ["main", "master"])
+    """The branches considered to be main branches on forges."""
+
 
 ##############################################################################
 def configuration_file() -> Path:
