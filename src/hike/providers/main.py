@@ -15,6 +15,7 @@ from textual_enhanced.commands import (
 from ..commands import (
     Backward,
     BookmarkLocation,
+    ChangeCommandLineLocation,
     ChangeNavigationSide,
     Forward,
     JumpToBookmarks,
@@ -40,6 +41,7 @@ class MainCommands(CommandsProvider):
         """
         yield Backward()
         yield BookmarkLocation()
+        yield ChangeCommandLineLocation()
         yield ChangeNavigationSide()
         yield ChangeTheme()
         yield Forward()

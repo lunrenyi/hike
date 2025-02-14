@@ -28,6 +28,7 @@ from .. import __version__
 from ..commands import (
     Backward,
     BookmarkLocation,
+    ChangeCommandLineLocation,
     ChangeNavigationSide,
     Forward,
     JumpToBookmarks,
@@ -124,6 +125,7 @@ class Main(EnhancedScreen[None]):
         # Everything else.
         Backward,
         BookmarkLocation,
+        ChangeCommandLineLocation,
         ChangeNavigationSide,
         Forward,
         JumpToBookmarks,
@@ -171,6 +173,7 @@ class Main(EnhancedScreen[None]):
         BookmarkCommands.bookmarks = bookmarks
         self.query_one(Viewer).history = load_history()
         self.query_one(CommandLine).history = load_command_history()
+        self.query_one(CommandLine).dock_top = config.command_line_on_top
         if self._arguments.command:
             self.query_one(CommandLine).handle_input(" ".join(self._arguments.command))
 
@@ -313,6 +316,14 @@ class Main(EnhancedScreen[None]):
         navigation.dock_right = not navigation.dock_right
         with update_configuration() as config:
             config.navigation_on_right = navigation.dock_right
+
+    @on(ChangeCommandLineLocation)
+    def action_change_command_line_location_command(self) -> None:
+        """Change the location of the command line."""
+        command_line = self.query_one(CommandLine)
+        command_line.dock_top = not command_line.dock_top
+        with update_configuration() as config:
+            config.command_line_on_top = command_line.dock_top
 
     @on(JumpToCommandLine)
     def action_jump_to_command_line_command(self) -> None:
