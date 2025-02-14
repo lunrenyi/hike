@@ -37,7 +37,7 @@ Once installed run the `hike` command.
 The best way to get to know Hike is to read the help screen. Once in the
 application you can see this by pressing <kbd>F1</kbd>.
 
-TODO: Help image
+![Hike Help](.images/hike-help.png)
 
 ## Features
 
