@@ -6,7 +6,7 @@
 
 - The bookmark search command palette now sorts the bookmarks.
 - The suggester for the command line now prefers newer history entries over
-  older.
+  older. ([#3](https://github.com/davep/hike/pull/3))
 
 ## v0.1.0
 
