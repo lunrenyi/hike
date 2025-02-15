@@ -1,17 +1,30 @@
-"""Command palette provider for the editor."""
+"""Commands for the fallback editor."""
 
 ##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import (
     ChangeTheme,
+    Command,
     CommandHits,
     CommandsProvider,
     Help,
 )
 
+
 ##############################################################################
-# Local imports.
-from ..commands.editor import Close, Save
+class Save(Command):
+    """Save changes back to the document"""
+
+    BINDING_KEY = "f2, ctrl+s"
+    SHOW_IN_FOOTER = True
+
+
+##############################################################################
+class Close(Command):
+    """Close the editor"""
+
+    BINDING_KEY = "f10"
+    SHOW_IN_FOOTER = True
 
 
 ##############################################################################
@@ -30,4 +43,4 @@ class EditorCommands(CommandsProvider):
         yield Close()
 
 
-### editor.py ends here
+### commands.py ends here

@@ -36,8 +36,8 @@ from textual.widgets import Label, Markdown, Rule
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
 from ..data import load_configuration, looks_urllike
+from ..editor import Editor
 from ..messages import CopyToClipboard, OpenLocation
-from ..screens.editor import Editor
 from ..support import is_copy_request_click, view_in_browser
 from ..types import HikeHistory, HikeLocation
 

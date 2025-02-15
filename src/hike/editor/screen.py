@@ -19,8 +19,7 @@ from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
 # Local imports.
-from ..commands.editor import Close, Save
-from ..providers.editor import EditorCommands
+from .commands import Close, EditorCommands, Save
 
 
 ##############################################################################
@@ -128,4 +127,4 @@ class Editor(EnhancedScreen[None]):
         self.dismiss()
 
 
-### editor.py ends here
+### screen.py ends here
