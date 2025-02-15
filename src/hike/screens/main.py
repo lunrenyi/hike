@@ -5,6 +5,11 @@
 from argparse import Namespace
 
 ##############################################################################
+# Pyperclip imports.
+from pyperclip import PyperclipException
+from pyperclip import copy as copy_to_clipboard
+
+##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
@@ -30,6 +35,8 @@ from ..commands import (
     BookmarkLocation,
     ChangeCommandLineLocation,
     ChangeNavigationSide,
+    CopyLocationToClipboard,
+    CopyMarkdownToClipboard,
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
@@ -53,6 +60,7 @@ from ..data import (
 )
 from ..messages import (
     ClearHistory,
+    CopyToClipboard,
     OpenFrom,
     OpenFromForge,
     OpenFromHistory,
@@ -127,6 +135,8 @@ class Main(EnhancedScreen[None]):
         BookmarkLocation,
         ChangeCommandLineLocation,
         ChangeNavigationSide,
+        CopyLocationToClipboard,
+        CopyMarkdownToClipboard,
         Forward,
         JumpToBookmarks,
         JumpToCommandLine,
@@ -182,6 +192,27 @@ class Main(EnhancedScreen[None]):
         self.set_class(self.navigation_visible, "navigation")
         with update_configuration() as config:
             config.navigation_visible = self.navigation_visible
+
+    @on(CopyToClipboard)
+    def _copy_text_to_clipbaord(self, message: CopyToClipboard) -> None:
+        """Copy some text into the clipboard.
+
+        Args:
+            message: The message requesting the text be copied.
+        """
+        # First off, use Textual's own copy to clipboard facility. Generally
+        # this will work in most terminals, and if it does it'll likely work
+        # best, getting the text through remote connections to the user's
+        # own environment.
+        self.app.copy_to_clipboard(message.text)
+        # However, as a backup, use pyerclip too. If the above did fail due
+        # to the terminal not supporting the operation, this might.
+        try:
+            copy_to_clipboard(message.text)
+        except PyperclipException:
+            pass
+        # Give the user some feedback.
+        self.notify("Copied")
 
     @on(OpenLocation)
     def _open_markdown(self, message: OpenLocation) -> None:
@@ -389,6 +420,16 @@ class Main(EnhancedScreen[None]):
     def action_jump_to_history_command(self) -> None:
         """Jump to the history."""
         self._with_navigation_visible().jump_to_history()
+
+    @on(CopyLocationToClipboard)
+    def action_copy_location_to_clipboard_command(self) -> None:
+        """Copy the current location to the clipboard."""
+        self.post_message(CopyToClipboard(str(self.query_one(Viewer).location)))
+
+    @on(CopyMarkdownToClipboard)
+    def action_copy_markdown_to_clipboard_command(self) -> None:
+        """Copy the current markdown to the clipboard."""
+        self.post_message(CopyToClipboard(self.query_one(Viewer).source))
 
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:

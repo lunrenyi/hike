@@ -24,6 +24,7 @@ from mdit_py_plugins import front_matter
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
+from textual.events import Click
 from textual.message import Message
 from textual.reactive import var
 from textual.widgets import Label, Markdown, Rule
@@ -33,8 +34,8 @@ from textual.widgets import Label, Markdown, Rule
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
 from ..data import load_configuration, looks_urllike
-from ..messages import OpenLocation
-from ..support import view_in_browser
+from ..messages import CopyToClipboard, OpenLocation
+from ..support import is_copy_request_click, view_in_browser
 from ..types import HikeHistory, HikeLocation
 
 
@@ -57,6 +58,17 @@ class ViewerTitle(Label):
     def _watch_location(self) -> None:
         """React to the location changing."""
         self.update(str(self.location or ""))
+
+    @on(Click)
+    def _maybe_clipboard(self, message: Click) -> None:
+        """Maybe copy to the clipboard.
+
+        Args:
+            message: The mouse click message.
+        """
+        if is_copy_request_click(message) and self.location:
+            message.stop()
+            self.post_message(CopyToClipboard(str(self.location)))
 
 
 ##############################################################################
@@ -87,6 +99,14 @@ class Viewer(Vertical, can_focus=False):
     ## Viewer
 
     This is the main Markdown viewer.
+
+    ### Copying to the clipboard
+
+    See the main help and the command palette for commands for copying to
+    the clipboard; you can also copy with the mouse by either clicking once
+    while holding down <kbd>ctrl</kbd>, or click 3 times. Doing so on the
+    location will copy the location, doing so on the main document will copy
+    the markdown's source.
     """
 
     BINDINGS = [("escape", "bounce_out")]
@@ -96,6 +116,9 @@ class Viewer(Vertical, can_focus=False):
 
     history: var[HikeHistory] = var(HikeHistory)
     """The history for the viewer."""
+
+    _source: var[str] = var("")
+    """The source of the Markdown we're viewing."""
 
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
@@ -108,6 +131,11 @@ class Viewer(Vertical, can_focus=False):
                     front_matter.front_matter_plugin
                 ),
             )
+
+    @property
+    def source(self) -> str:
+        """The source of the markdown being viewed."""
+        return self._source
 
     def action_bounce_out(self) -> None:
         """Bounce back out to the input."""
@@ -265,6 +293,7 @@ class Viewer(Vertical, can_focus=False):
             message: The message requesting the update.
         """
         self.query_one(ViewerTitle).location = self.location
+        self._source = message.markdown
         self.query_one(Markdown).update(message.markdown)
         if (
             message.remember
@@ -367,6 +396,17 @@ class Viewer(Vertical, can_focus=False):
             title="Unknown link type",
             severity="error",
         )
+
+    @on(Click)
+    def _maybe_clipboard(self, message: Click) -> None:
+        """Maybe copy to the clipboard.
+
+        Args:
+            message: The mouse click message.
+        """
+        if is_copy_request_click(message) and self._source:
+            message.stop()
+            self.post_message(CopyToClipboard(self._source))
 
 
 ### viewer.py ends here

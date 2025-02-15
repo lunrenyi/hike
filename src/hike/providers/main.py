@@ -17,6 +17,8 @@ from ..commands import (
     BookmarkLocation,
     ChangeCommandLineLocation,
     ChangeNavigationSide,
+    CopyLocationToClipboard,
+    CopyMarkdownToClipboard,
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
@@ -44,6 +46,8 @@ class MainCommands(CommandsProvider):
         yield ChangeCommandLineLocation()
         yield ChangeNavigationSide()
         yield ChangeTheme()
+        yield CopyLocationToClipboard()
+        yield CopyMarkdownToClipboard()
         yield Forward()
         yield Help()
         yield JumpToCommandLine()

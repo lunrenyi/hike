@@ -56,4 +56,18 @@ class SearchBookmarks(Command):
     BINDING_KEY = "f3"
 
 
+##############################################################################
+class CopyLocationToClipboard(Command):
+    """Copy the location to the clipboard"""
+
+    BINDING_KEY = "f4"
+
+
+##############################################################################
+class CopyMarkdownToClipboard(Command):
+    """Copy the Markdown source to the clipboard"""
+
+    BINDING_KEY = "shift+f4"
+
+
 ### navigation.py ends here
