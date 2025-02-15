@@ -37,6 +37,7 @@ from .. import USER_AGENT
 from ..commands import JumpToCommandLine
 from ..data import load_configuration, looks_urllike
 from ..messages import CopyToClipboard, OpenLocation
+from ..screens.editor import Editor
 from ..support import is_copy_request_click, view_in_browser
 from ..types import HikeHistory, HikeLocation
 
@@ -429,26 +430,21 @@ class Viewer(Vertical, can_focus=False):
             return
 
         # We need an editor to edit things.
-        if not (editor := (getenv("VISUAL") or getenv("EDITOR") or "")):
-            # TODO: Fall back on TextArea.
-            # TODO: Consider a config setting to turn off ever using an
-            # external editor.
-            self.notify(
-                "Unable to find a suitable editor, please set $VISUAL or $EDITOR in your environment.",
-                title="Unknown Editor",
-                severity="error",
-            )
-            return
+        if editor := (getenv("VISUAL") or getenv("EDITOR") or ""):
+            # Run the editor.
+            with self.app.suspend():
+                run((editor, str(self.location)))
+                # Work around https://github.com/Textualize/textual/issues/5528.
+                self.app.refresh()
+            # Given we did an edit, we should now reload.
+            self.reload()
+        else:
+            assert isinstance(self.location, Path)
 
-        # Run the editor.
-        with self.app.suspend():
-            run((editor, str(self.location)))
+            def _reload(_: None) -> None:
+                self.reload()
 
-        # Work around https://github.com/Textualize/textual/issues/5528.
-        self.app.refresh()
-
-        # Given we did an edit, we should now reload.
-        self.reload()
+            self.app.push_screen(Editor(self.location), callback=_reload)
 
 
 ### viewer.py ends here
