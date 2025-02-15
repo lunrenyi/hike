@@ -34,6 +34,7 @@ from .. import USER_AGENT
 from ..commands import JumpToCommandLine
 from ..data import load_configuration, looks_urllike
 from ..messages import OpenLocation
+from ..support import view_in_browser
 from ..types import HikeHistory, HikeLocation
 
 
@@ -209,8 +210,12 @@ class Viewer(Vertical, can_focus=False):
             ):
                 self.post_message(self.Loaded(self, response.text, remember))
                 return
-        # TODO: Be kind and open the URL outwith the viewer.
-        self.notify("That didn't look like markdown to me.")
+
+        # It doesn't look like Markdown, so let's open it in the browser.
+        self.notify(
+            "That location doesn't look like a Markdown file, opening in your browser..."
+        )
+        view_in_browser(location)
 
     @singledispatchmethod
     def _load_markdown(self, location: Path, remember: bool) -> None:
