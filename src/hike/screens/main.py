@@ -207,6 +207,8 @@ class Main(EnhancedScreen[None]):
             copy_to_clipboard(message.text)
         except PyperclipException:
             pass
+        # Give the user some feedback.
+        self.notify("Copied")
 
     @on(OpenLocation)
     def _open_markdown(self, message: OpenLocation) -> None:
