@@ -97,6 +97,9 @@ class Viewer(Vertical, can_focus=False):
     history: var[HikeHistory] = var(HikeHistory)
     """The history for the viewer."""
 
+    _source: var[str] = var("")
+    """The source of the Markdown we're viewing."""
+
     def compose(self) -> ComposeResult:
         """Compose the content of the viewer."""
         yield ViewerTitle()
@@ -108,6 +111,11 @@ class Viewer(Vertical, can_focus=False):
                     front_matter.front_matter_plugin
                 ),
             )
+
+    @property
+    def source(self) -> str:
+        """The source of the markdown being viewed."""
+        return self._source
 
     def action_bounce_out(self) -> None:
         """Bounce back out to the input."""
@@ -265,6 +273,7 @@ class Viewer(Vertical, can_focus=False):
             message: The message requesting the update.
         """
         self.query_one(ViewerTitle).location = self.location
+        self._source = message.markdown
         self.query_one(Markdown).update(message.markdown)
         if (
             message.remember
