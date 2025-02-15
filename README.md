@@ -50,6 +50,8 @@ Commands can also be discovered via the command palette
 - A local file browser.
 - A simple bookmarking system.
 - A browsing history.
+- The ability to edit markdown documents in the local filesystem, either
+  using your editor of choice or a simple builtin editor.
 - Commands for quickly loading and viewing files held on GitHub, GitLab,
   Codeberg and Bitbucket.
 - A command palette to make it easy to discover commands and their keys.
