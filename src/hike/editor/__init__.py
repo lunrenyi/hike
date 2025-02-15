@@ -1,11 +1,12 @@
-"""Provides the screens for the application."""
+"""Provides the builtin Markdown editor."""
 
 ##############################################################################
 # Local imports.
-from .main import Main
+from .screen import Editor
 
 ##############################################################################
 # Exports.
-__all__ = ["Main"]
+__all__ = ["Editor"]
+
 
 ### __init__.py ends here

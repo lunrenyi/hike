@@ -70,4 +70,12 @@ class CopyMarkdownToClipboard(Command):
     BINDING_KEY = "shift+f4"
 
 
+##############################################################################
+class Edit(Command):
+    """Edit the current markdown document"""
+
+    BINDING_KEY = "f5"
+    SHOW_IN_FOOTER = True
+
+
 ### navigation.py ends here

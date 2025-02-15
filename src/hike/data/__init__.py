@@ -11,7 +11,7 @@ from .config import (
     update_configuration,
 )
 from .history import load_history, save_history
-from .location_types import looks_urllike, maybe_markdown
+from .location_types import is_editable, looks_urllike, maybe_markdown
 
 ##############################################################################
 # Exports.
@@ -19,6 +19,7 @@ __all__ = [
     "Bookmark",
     "Bookmarks",
     "Configuration",
+    "is_editable",
     "load_bookmarks",
     "load_command_history",
     "load_configuration",

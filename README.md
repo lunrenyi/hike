@@ -50,11 +50,22 @@ Commands can also be discovered via the command palette
 - A local file browser.
 - A simple bookmarking system.
 - A browsing history.
+- The ability to edit markdown documents in the local filesystem, either
+  using your editor of choice or a simple builtin editor.
 - Commands for quickly loading and viewing files held on GitHub, GitLab,
   Codeberg and Bitbucket.
 - A command palette to make it easy to discover commands and their keys.
 - A rich help screen to make it easy to discover commands and their keys.
 - [Possibly more as time goes on](https://github.com/davep/hike/issues?q=is%3Aissue+is%3Aopen+label%3ATODO).
+
+### Editing
+
+As mentioned above, Hike has support for editing markdown documents you're
+viewing from the local filesystem. While a builtin editor is provided, use
+of your own choice of editor is supported. If Hike finds that `$VISUAL` or
+`$EDITOR` are set in your environment then the resulting command will be
+used to edit the document (with `$VISUAL` being tried first, followed by
+`$EDITOR`).
 
 ## File locations
 

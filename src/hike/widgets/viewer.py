@@ -8,7 +8,9 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from functools import singledispatchmethod
+from os import getenv
 from pathlib import Path
+from subprocess import run
 
 ##############################################################################
 # httpx imports.
@@ -33,7 +35,8 @@ from textual.widgets import Label, Markdown, Rule
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
-from ..data import load_configuration, looks_urllike
+from ..data import is_editable, load_configuration, looks_urllike
+from ..editor import Editor
 from ..messages import CopyToClipboard, OpenLocation
 from ..support import is_copy_request_click, view_in_browser
 from ..types import HikeHistory, HikeLocation
@@ -283,7 +286,8 @@ class Viewer(Vertical, can_focus=False):
 
     def _watch_location(self) -> None:
         """Handle changes to the location to view."""
-        self._visit(self.location)
+        if self.is_mounted:
+            self._visit(self.location)
 
     @on(Loaded)
     def _update_markdown(self, message: Loaded) -> None:
@@ -407,6 +411,42 @@ class Viewer(Vertical, can_focus=False):
         if is_copy_request_click(message) and self._source:
             message.stop()
             self.post_message(CopyToClipboard(self._source))
+
+    @property
+    def is_editable(self) -> bool:
+        """Is the current location editable?"""
+        return self.location is not None and is_editable(self.location)
+
+    def edit(self) -> None:
+        """Edit the current document."""
+
+        # There's no point in even attempting to edit if we're not looking a
+        # something.
+        if self.location is None:
+            return
+
+        # We can't edit something that isn't local.
+        if not is_editable(self.location):
+            self.notify(
+                "Editing is only supported for Markdown files in the local filesystem.",
+                title="Not Supported",
+                severity="warning",
+            )
+            return
+
+        # We need an editor to edit things.
+        if editor := (getenv("VISUAL") or getenv("EDITOR") or ""):
+            # Run the editor.
+            with self.app.suspend():
+                run((editor, str(self.location)))
+                # Work around https://github.com/Textualize/textual/issues/5528.
+                self.app.refresh()
+            # Given we did an edit, we should now reload.
+            self.reload()
+        else:
+            self.app.push_screen(
+                Editor(self.location), callback=lambda _: self.reload()
+            )
 
 
 ### viewer.py ends here
