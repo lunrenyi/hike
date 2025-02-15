@@ -321,11 +321,11 @@ class Main(EnhancedScreen[None]):
         Returns:
             `True` if it can perform, `False` or `None` if not.
         """
-        if action == "forward_command":
+        if action == Forward.action_name():
             return self.query_one(Viewer).history.can_go_forward or None
-        if action == "backward_command":
+        if action == Backward.action_name():
             return self.query_one(Viewer).history.can_go_backward or None
-        if action == "edit_command":
+        if action == Edit.action_name():
             return self.query_one(Viewer).is_editable or None
         return True
 
