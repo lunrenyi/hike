@@ -4,6 +4,7 @@
 # Textual enhanced imports.
 from textual_enhanced.commands import (
     ChangeTheme,
+    Command,
     CommandHits,
     CommandsProvider,
     Help,
@@ -36,22 +37,33 @@ from ..commands import (
 class MainCommands(CommandsProvider):
     """Provides some top-level commands for the application."""
 
+    def _maybe(self, command: type[Command]) -> CommandHits:
+        """Yield a command if it's application.
+
+        Args:
+            command: The type of the command to maybe yield.
+
+        Yields:
+            The command if it can be used right now.
+        """
+        if self.screen.check_action(command.action_name(), ()):
+            yield command()
+
     def commands(self) -> CommandHits:
         """Provide the main application commands for the command palette.
 
         Yields:
             The commands for the command palette.
         """
-        yield Backward()
+        yield from self._maybe(Backward)
         yield BookmarkLocation()
         yield ChangeCommandLineLocation()
         yield ChangeNavigationSide()
         yield ChangeTheme()
         yield CopyLocationToClipboard()
         yield CopyMarkdownToClipboard()
-        if self.screen.check_action(Edit.action_name(), ()):
-            yield Edit()
-        yield Forward()
+        yield from self._maybe(Edit)
+        yield from self._maybe(Forward)
         yield Help()
         yield JumpToCommandLine()
         yield JumpToTableOfContents()
