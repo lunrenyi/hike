@@ -32,7 +32,7 @@ from textual.widgets import Label, Markdown, Rule
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
-from ..data import looks_urllike
+from ..data import load_configuration, looks_urllike
 from ..messages import OpenLocation
 from ..types import HikeHistory, HikeLocation
 
@@ -204,8 +204,8 @@ class Viewer(Vertical, can_focus=False):
         # least a form of plain text we can render.
         if content_type := response.headers.get("content-type"):
             if any(
-                content_type.startswith(f"text/{sub_type}")
-                for sub_type in ("plain", "markdown", "x-markdown")
+                content_type.startswith(allowed_type)
+                for allowed_type in load_configuration().markdown_content_types
             ):
                 self.post_message(self.Loaded(self, response.text, remember))
                 return

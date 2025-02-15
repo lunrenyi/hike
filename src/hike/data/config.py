@@ -31,6 +31,11 @@ class Configuration:
     markdown_extensions: list[str] = field(default_factory=lambda: [".md", ".markdown"])
     """The file extensions to consider to be Markdown files."""
 
+    markdown_content_types: list[str] = field(
+        default_factory=lambda: ["text/plain", "text/markdown", "text/x-markdown"]
+    )
+    """The content types to consider when looking for remote Markdown content."""
+
     command_line_on_top: bool = False
     """Should the command line live at the top of the screen?"""
 
