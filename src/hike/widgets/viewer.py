@@ -35,7 +35,7 @@ from textual.widgets import Label, Markdown, Rule
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
-from ..data import load_configuration, looks_urllike
+from ..data import is_editable, load_configuration, looks_urllike
 from ..editor import Editor
 from ..messages import CopyToClipboard, OpenLocation
 from ..support import is_copy_request_click, view_in_browser
@@ -415,13 +415,18 @@ class Viewer(Vertical, can_focus=False):
     @property
     def is_editable(self) -> bool:
         """Is the current location editable?"""
-        return isinstance(self.location, Path)
+        return self.location is not None and is_editable(self.location)
 
     def edit(self) -> None:
         """Edit the current document."""
 
+        # There's no point in even attempting to edit if we're not looking a
+        # something.
+        if self.location is None:
+            return
+
         # We can't edit something that isn't local.
-        if not self.is_editable:
+        if not is_editable(self.location):
             self.notify(
                 "Editing is only supported for Markdown files in the local filesystem.",
                 title="Not Supported",
@@ -439,7 +444,6 @@ class Viewer(Vertical, can_focus=False):
             # Given we did an edit, we should now reload.
             self.reload()
         else:
-            assert isinstance(self.location, Path)
 
             def _reload(_: None) -> None:
                 self.reload()
