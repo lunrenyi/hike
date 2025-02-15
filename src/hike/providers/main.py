@@ -19,6 +19,7 @@ from ..commands import (
     ChangeNavigationSide,
     CopyLocationToClipboard,
     CopyMarkdownToClipboard,
+    Edit,
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
@@ -48,6 +49,8 @@ class MainCommands(CommandsProvider):
         yield ChangeTheme()
         yield CopyLocationToClipboard()
         yield CopyMarkdownToClipboard()
+        if self.screen.check_action(Edit.action_name(), ()):
+            yield Edit()
         yield Forward()
         yield Help()
         yield JumpToCommandLine()

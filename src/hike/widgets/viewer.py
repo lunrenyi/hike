@@ -8,7 +8,9 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from functools import singledispatchmethod
+from os import getenv
 from pathlib import Path
+from subprocess import run
 
 ##############################################################################
 # httpx imports.
@@ -283,7 +285,8 @@ class Viewer(Vertical, can_focus=False):
 
     def _watch_location(self) -> None:
         """Handle changes to the location to view."""
-        self._visit(self.location)
+        if self.is_mounted:
+            self._visit(self.location)
 
     @on(Loaded)
     def _update_markdown(self, message: Loaded) -> None:
@@ -407,6 +410,45 @@ class Viewer(Vertical, can_focus=False):
         if is_copy_request_click(message) and self._source:
             message.stop()
             self.post_message(CopyToClipboard(self._source))
+
+    @property
+    def is_editable(self) -> bool:
+        """Is the current location editable?"""
+        return isinstance(self.location, Path)
+
+    def edit(self) -> None:
+        """Edit the current document."""
+
+        # We can't edit something that isn't local.
+        if not self.is_editable:
+            self.notify(
+                "Editing is only supported for Markdown files in the local filesystem.",
+                title="Not Supported",
+                severity="warning",
+            )
+            return
+
+        # We need an editor to edit things.
+        if not (editor := (getenv("VISUAL") or getenv("EDITOR") or "")):
+            # TODO: Fall back on TextArea.
+            # TODO: Consider a config setting to turn off ever using an
+            # external editor.
+            self.notify(
+                "Unable to find a suitable editor, please set $VISUAL or $EDITOR in your environment.",
+                title="Unknown Editor",
+                severity="error",
+            )
+            return
+
+        # Run the editor.
+        with self.app.suspend():
+            run((editor, str(self.location)))
+
+        # Work around https://github.com/Textualize/textual/issues/5528.
+        self.app.refresh()
+
+        # Given we did an edit, we should not reload.
+        self.reload()
 
 
 ### viewer.py ends here

@@ -37,6 +37,7 @@ from ..commands import (
     ChangeNavigationSide,
     CopyLocationToClipboard,
     CopyMarkdownToClipboard,
+    Edit,
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
@@ -128,6 +129,7 @@ class Main(EnhancedScreen[None]):
         # for the footer.
         Help,
         ToggleNavigation,
+        Edit,
         ChangeTheme,
         Quit,
         # Everything else.
@@ -323,6 +325,8 @@ class Main(EnhancedScreen[None]):
             return self.query_one(Viewer).history.can_go_forward or None
         if action == "backward_command":
             return self.query_one(Viewer).history.can_go_backward or None
+        if action == "edit_command":
+            return self.query_one(Viewer).is_editable or None
         return True
 
     @on(Reload)
@@ -430,6 +434,11 @@ class Main(EnhancedScreen[None]):
     def action_copy_markdown_to_clipboard_command(self) -> None:
         """Copy the current markdown to the clipboard."""
         self.post_message(CopyToClipboard(self.query_one(Viewer).source))
+
+    @on(Edit)
+    def action_edit_command(self) -> None:
+        """Edit the current markdown document, if possible."""
+        self.query_one(Viewer).edit()
 
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:
