@@ -15,7 +15,7 @@
 - Added the ability to copy the currently-viewed Markdown to the clipboard.
   ([#9](https://github.com/davep/hike/pull/9))
 - Added the ability to edit a Markdown document if it's in the local
-  filesystem.
+  filesystem. ([#10](https://github.com/davep/hike/pull/10))
 
 ## v0.1.0
 
