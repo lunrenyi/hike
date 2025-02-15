@@ -35,6 +35,8 @@ from ..commands import (
     BookmarkLocation,
     ChangeCommandLineLocation,
     ChangeNavigationSide,
+    CopyLocationToClipboard,
+    CopyMarkdownToClipboard,
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
@@ -133,6 +135,8 @@ class Main(EnhancedScreen[None]):
         BookmarkLocation,
         ChangeCommandLineLocation,
         ChangeNavigationSide,
+        CopyLocationToClipboard,
+        CopyMarkdownToClipboard,
         Forward,
         JumpToBookmarks,
         JumpToCommandLine,
@@ -416,6 +420,16 @@ class Main(EnhancedScreen[None]):
     def action_jump_to_history_command(self) -> None:
         """Jump to the history."""
         self._with_navigation_visible().jump_to_history()
+
+    @on(CopyLocationToClipboard)
+    def action_copy_location_to_clipboard_command(self) -> None:
+        """Copy the current location to the clipboard."""
+        self.post_message(CopyToClipboard(str(self.query_one(Viewer).location)))
+
+    @on(CopyMarkdownToClipboard)
+    def action_copy_markdown_to_clipboard_command(self) -> None:
+        """Copy the current markdown to the clipboard."""
+        self.post_message(CopyToClipboard(self.query_one(Viewer).source))
 
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:

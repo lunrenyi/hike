@@ -10,6 +10,8 @@
   older. ([#3](https://github.com/davep/hike/pull/3))
 - Added the ability to move the command line to the top of the screen.
   ([#5](https://github.com/davep/hike/pull/5))
+- Added the ability to copy the current location to the clipboard.
+- Added the ability to copy the currently-viewed Markdown to the clipboard.
 
 ## v0.1.0
 
