@@ -444,11 +444,9 @@ class Viewer(Vertical, can_focus=False):
             # Given we did an edit, we should now reload.
             self.reload()
         else:
-
-            def _reload(_: None) -> None:
-                self.reload()
-
-            self.app.push_screen(Editor(self.location), callback=_reload)
+            self.app.push_screen(
+                Editor(self.location), callback=lambda _: self.reload()
+            )
 
 
 ### viewer.py ends here
