@@ -4,6 +4,7 @@
 # Python imports.
 from functools import singledispatch
 from pathlib import Path
+from typing import TypeIs
 
 ##############################################################################
 # httpx imports.
@@ -11,6 +12,7 @@ from httpx import URL
 
 ##############################################################################
 # Local imports.
+from ..types import HikeLocation
 from .config import load_configuration
 
 
@@ -57,6 +59,19 @@ def looks_urllike(candidate: str) -> bool:
         `True` if the string looks like a URL, `False` if not.
     """
     return (url := URL(candidate)).is_absolute_url and url.scheme in ("http", "https")
+
+
+##############################################################################
+def is_editable(location: HikeLocation) -> TypeIs[Path]:
+    """Is the given location one that can be edited?
+
+    Args:
+        location: The location to test.
+
+    Returns:
+        `True` if the location can be edited, `False` if not.
+    """
+    return isinstance(location, Path)
 
 
 ### location_types.py ends here
