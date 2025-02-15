@@ -447,7 +447,7 @@ class Viewer(Vertical, can_focus=False):
         # Work around https://github.com/Textualize/textual/issues/5528.
         self.app.refresh()
 
-        # Given we did an edit, we should not reload.
+        # Given we did an edit, we should now reload.
         self.reload()
 
 
