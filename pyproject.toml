@@ -6,7 +6,7 @@ authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
 dependencies = [
-    "textual>=1.0.0",
+    "textual>=1.0.0,<2",
     "textual-enhanced>=0.6.0",
     "textual-fspicker>=0.2.0",
     "xdg-base-dirs>=6.0.2",
