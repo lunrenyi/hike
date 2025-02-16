@@ -25,7 +25,7 @@ from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
 # Textual fspicker imports.
-from textual_fspicker import FileOpen, FileSave
+from textual_fspicker import FileOpen, FileSave, Filters
 
 ##############################################################################
 # Local imports.
@@ -238,7 +238,18 @@ class Main(EnhancedScreen[None]):
         Args:
             message: The message requesting the operation.
         """
-        if chosen := await self.app.push_screen_wait(FileOpen(message.location)):
+        if chosen := await self.app.push_screen_wait(
+            FileOpen(
+                message.location,
+                filters=Filters(
+                    (
+                        "Markdown",
+                        lambda p: maybe_markdown(p),
+                    ),
+                    ("All files", lambda _: True),
+                ),
+            )
+        ):
             self.post_message(OpenLocation(chosen))
 
     @on(OpenFromHistory)
