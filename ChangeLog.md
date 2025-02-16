@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Added the ability to save a copy of the currently-viewed document.
+  ([#15](https://github.com/davep/hike/pull/15))
 
 ## v0.2.0
 
