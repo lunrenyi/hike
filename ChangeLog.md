@@ -6,6 +6,7 @@
 
 - Added the ability to save a copy of the currently-viewed document.
   ([#15](https://github.com/davep/hike/pull/15))
+- Made `chdir` a lot less fussy about the path given.
 
 ## v0.2.0
 

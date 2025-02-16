@@ -16,7 +16,7 @@ from ...messages import SetLocalViewRoot
 from .base_command import InputCommand
 
 ##############################################################################
-CHDIR: Final[Pattern[str]] = compile(r"^\s*(chdir|cd)\s+(?P<directory>\S+)\s*$")
+CHDIR: Final[Pattern[str]] = compile(r"^\s*(chdir|cd)\s+(?P<directory>.+)$")
 """Regular expression for matching the command."""
 
 
@@ -42,7 +42,7 @@ class ChangeDirectoryCommand(InputCommand):
         if match := CHDIR.search(text):
             if (
                 match["directory"]
-                and (root := Path(match["directory"]).expanduser()).is_dir()
+                and (root := Path(match["directory"].strip()).expanduser()).is_dir()
             ):
                 for_widget.post_message(SetLocalViewRoot(Path(root).resolve()))
                 return True
