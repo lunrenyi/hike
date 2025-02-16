@@ -61,10 +61,11 @@ class ViewerTitle(Label):
 
     def _watch_location(self) -> None:
         """React to the location changing."""
-        location = self.location or ""
         if (
             len(
-                display := "" if location is None else str(location)[-self.size.width :]
+                display := ""
+                if self.location is None
+                else str(self.location)[-self.size.width :]
             )
             >= self.size.width
         ):
