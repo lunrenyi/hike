@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Added the ability to save a copy of the currently-viewed document.
+
 ## v0.2.0
 
 **Released: 2025-02-16**

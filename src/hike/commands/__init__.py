@@ -11,6 +11,7 @@ from .main import (
     Edit,
     JumpToCommandLine,
     Reload,
+    SaveCopy,
     SearchBookmarks,
     ToggleNavigation,
 )
@@ -40,6 +41,7 @@ __all__ = [
     "JumpToLocalBrowser",
     "JumpToTableOfContents",
     "Reload",
+    "SaveCopy",
     "SearchBookmarks",
     "ToggleNavigation",
 ]
