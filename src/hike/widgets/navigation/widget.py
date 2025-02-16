@@ -36,6 +36,7 @@ class Navigation(Vertical):
     DEFAULT_CSS = """
     Navigation {
         width: 27%;
+        min-width: 38;
         dock: left;
         background: transparent;
 
