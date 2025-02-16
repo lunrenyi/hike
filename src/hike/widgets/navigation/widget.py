@@ -182,6 +182,10 @@ class Navigation(Vertical):
         """
         self.query_one(LocalView).path = root
 
+    def refresh_local_view(self) -> None:
+        """Refresh the local view."""
+        self.query_one(LocalView).reload()
+
     @dataclass
     class BookmarksUpdated(Message):
         """Message sent when the bookmarks are updated."""

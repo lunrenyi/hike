@@ -140,6 +140,20 @@ class Viewer(Vertical, can_focus=False):
         """The source of the markdown being viewed."""
         return self._source
 
+    @property
+    def filename(self) -> Path | None:
+        """The name of the file being viewed.
+
+        Notes:
+            This is just the name of the file itself, without any path. If
+            no file is being viewed at the moment then the value is `None`.
+        """
+        if isinstance(self.location, Path):
+            return Path(self.location.name)
+        if isinstance(self.location, URL):
+            return Path(Path(self.location.path).name)
+        return None
+
     def action_bounce_out(self) -> None:
         """Bounce back out to the input."""
         self.post_message(JumpToCommandLine())

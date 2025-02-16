@@ -78,4 +78,11 @@ class Edit(Command):
     SHOW_IN_FOOTER = True
 
 
+##############################################################################
+class SaveCopy(Command):
+    """Save a copy of the current document"""
+
+    BINDING_KEY = "ctrl+s"
+
+
 ### navigation.py ends here

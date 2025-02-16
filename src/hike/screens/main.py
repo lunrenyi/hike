@@ -25,7 +25,7 @@ from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
 # Textual fspicker imports.
-from textual_fspicker import FileOpen
+from textual_fspicker import FileOpen, FileSave
 
 ##############################################################################
 # Local imports.
@@ -45,6 +45,7 @@ from ..commands import (
     JumpToLocalBrowser,
     JumpToTableOfContents,
     Reload,
+    SaveCopy,
     SearchBookmarks,
     ToggleNavigation,
 )
@@ -146,6 +147,7 @@ class Main(EnhancedScreen[None]):
         JumpToLocalBrowser,
         JumpToTableOfContents,
         Reload,
+        SaveCopy,
         SearchBookmarks,
     )
 
@@ -439,6 +441,21 @@ class Main(EnhancedScreen[None]):
     def action_edit_command(self) -> None:
         """Edit the current markdown document, if possible."""
         self.query_one(Viewer).edit()
+
+    @on(SaveCopy)
+    @work
+    async def action_save_copy_command(self) -> None:
+        """Save a copy of the current document to a new file."""
+        if (suggested := self.query_one(Viewer).filename) is None:
+            return
+        if save_to := await self.app.push_screen_wait(FileSave(default_file=suggested)):
+            try:
+                save_to.write_text(self.query_one(Viewer).source, encoding="utf-8")
+            except IOError as error:
+                self.notify(str(error), title="Save Error", severity="error", timeout=8)
+                return
+            self.notify(f"Saved {save_to}")
+            self.query_one(Navigation).refresh_local_view()
 
     @on(Viewer.HistoryUpdated)
     def _update_history(self, message: Viewer.HistoryUpdated) -> None:
