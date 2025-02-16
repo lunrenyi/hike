@@ -244,7 +244,7 @@ class Main(EnhancedScreen[None]):
                 filters=Filters(
                     (
                         "Markdown",
-                        lambda p: maybe_markdown(p),
+                        maybe_markdown,
                     ),
                     ("All files", lambda _: True),
                 ),
