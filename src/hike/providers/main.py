@@ -57,12 +57,12 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield from self._maybe(Backward)
-        yield BookmarkLocation()
+        yield from self._maybe(BookmarkLocation)
         yield ChangeCommandLineLocation()
         yield ChangeNavigationSide()
         yield ChangeTheme()
-        yield CopyLocationToClipboard()
-        yield CopyMarkdownToClipboard()
+        yield from self._maybe(CopyLocationToClipboard)
+        yield from self._maybe(CopyMarkdownToClipboard)
         yield from self._maybe(Edit)
         yield from self._maybe(Forward)
         yield Help()
@@ -72,8 +72,8 @@ class MainCommands(CommandsProvider):
         yield JumpToHistory()
         yield JumpToLocalBrowser()
         yield Quit()
-        yield Reload()
-        yield SaveCopy()
+        yield from self._maybe(Reload)
+        yield from self._maybe(SaveCopy)
         yield SearchBookmarks()
         yield ToggleNavigation()
 

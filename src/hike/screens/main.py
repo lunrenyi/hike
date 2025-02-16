@@ -329,6 +329,17 @@ class Main(EnhancedScreen[None]):
             return self.query_one(Viewer).history.can_go_backward or None
         if action == Edit.action_name():
             return self.query_one(Viewer).is_editable or None
+        if action in (
+            command.action_name()
+            for command in (
+                BookmarkLocation,
+                CopyLocationToClipboard,
+                CopyMarkdownToClipboard,
+                Reload,
+                SaveCopy,
+            )
+        ):
+            return self.query_one(Viewer).location is not None
         return True
 
     @on(Reload)
