@@ -1,8 +1,8 @@
 # Hike ChangeLog
 
-## Unreleased
+## v0.2.0
 
-**Released: WiP**
+**Released: 2025-02-16**
 
 - The bookmark search command palette now sorts the bookmarks.
   ([#2](https://github.com/davep/hike/pull/2))
@@ -16,6 +16,7 @@
   ([#9](https://github.com/davep/hike/pull/9))
 - Added the ability to edit a Markdown document if it's in the local
   filesystem. ([#10](https://github.com/davep/hike/pull/10))
+- Pinned Textual to v1.0.0 for now as it broke `OptionList`.
 
 ## v0.1.0
 
