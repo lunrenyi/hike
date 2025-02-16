@@ -52,15 +52,29 @@ class ViewerTitle(Label):
         color: $foreground;
         content-align: right middle;
         width: 1fr;
+        height: 1;
     }
     """
 
-    location: var[HikeLocation | None] = var(None)
+    location: var[HikeLocation | None] = var(None, always_update=True)
     """The location to display."""
 
     def _watch_location(self) -> None:
         """React to the location changing."""
-        self.update(str(self.location or ""))
+        if (
+            len(
+                display := ""
+                if self.location is None
+                else str(self.location)[-self.size.width :]
+            )
+            >= self.size.width
+        ):
+            display = f"…{display[1:]}"
+        self.update(display)
+
+    def on_resize(self) -> None:
+        """Handle the widget being resized."""
+        self.location = self.location
 
     @on(Click)
     def _maybe_clipboard(self, message: Click) -> None:
