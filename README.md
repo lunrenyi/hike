@@ -7,7 +7,7 @@
 Hike is a [Markdown](https://commonmark.org/help/) browser for the terminal.
 It provides the ability to browse for and view local Markdown files, as well
 as Markdown files that can be downloaded from the web. It also has shortcuts
-that make it east to view Markdown files on popular git forges.
+that make it easy to view Markdown files on popular git forges.
 
 ## Installing
 
