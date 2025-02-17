@@ -39,6 +39,7 @@ from .open_from_forge import (
     OpenFromGitLab,
 )
 from .open_url import OpenURLCommand
+from .quit import QuitCommand
 
 ##############################################################################
 COMMANDS: Final[tuple[type[InputCommand], ...]] = (
@@ -53,6 +54,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenFromCodeberg,
     OpenFromGitHub,
     OpenFromGitLab,
+    QuitCommand,
 )
 """The commands used for the input."""
 
