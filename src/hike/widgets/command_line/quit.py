@@ -31,7 +31,7 @@ class QuitCommand(InputCommand):
         Returns:
             `True` if the command was handled; `False` if not.
         """
-        if f"`{text.strip().lower()}`" in (cls.COMMAND, cls.ALIASES):
+        if cls.is_command(text):
             for_widget.post_message(Quit())
             return True
         return False
