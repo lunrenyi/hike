@@ -53,20 +53,6 @@ class OpenFromForgeCommand(InputCommand):
     `main` branch and then `master`.
     """
 
-    @staticmethod
-    def split_command(text: str) -> tuple[str, str]:
-        """Split the command for further testing.
-
-        Args:
-            text: The text of the command.
-
-        Returns:
-            The command and its arguments.
-        """
-        if len(candidate := text.split(maxsplit=1)) == 1:
-            return candidate[0], ""
-        return (candidate[0], candidate[1]) if candidate else ("", "")
-
     @classmethod
     def maybe_request(cls, arguments: str, for_widget: Widget) -> bool:
         """Maybe request a file be opened from the given forge.
@@ -115,9 +101,7 @@ class OpenFromForgeCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         command, arguments = cls.split_command(text)
-        return f"`{command}`" in (cls.COMMAND, cls.ALIASES) and cls.maybe_request(
-            arguments, for_widget
-        )
+        return cls.is_command(command) and cls.maybe_request(arguments, for_widget)
 
 
 ##############################################################################
