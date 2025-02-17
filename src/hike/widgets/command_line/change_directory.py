@@ -3,8 +3,6 @@
 ##############################################################################
 # Python imports.
 from pathlib import Path
-from re import Pattern, compile
-from typing import Final
 
 ##############################################################################
 # Textual imports.
@@ -15,17 +13,13 @@ from textual.widget import Widget
 from ...messages import SetLocalViewRoot
 from .base_command import InputCommand
 
-##############################################################################
-CHDIR: Final[Pattern[str]] = compile(r"^\s*(chdir|cd)\s+(?P<directory>.+)$")
-"""Regular expression for matching the command."""
-
 
 ##############################################################################
 class ChangeDirectoryCommand(InputCommand):
     """Change the root directory of the local file browser"""
 
     COMMAND = "`chdir`"
-    ALIASES = "`cd`"
+    ALIASES = "`cd`, `dir`, `ls`"
     ARGUMENTS = "`<directory>`"
 
     @classmethod
@@ -39,13 +33,14 @@ class ChangeDirectoryCommand(InputCommand):
         Returns:
             `True` if the command was handled; `False` if not.
         """
-        if match := CHDIR.search(text):
-            if (
-                match["directory"]
-                and (root := Path(match["directory"].strip()).expanduser()).is_dir()
-            ):
-                for_widget.post_message(SetLocalViewRoot(Path(root).resolve()))
-                return True
+        command, directory = cls.split_command(text)
+        if (
+            cls.is_command(command)
+            and directory
+            and (root := Path(directory).expanduser()).is_dir()
+        ):
+            for_widget.post_message(SetLocalViewRoot(Path(root).resolve()))
+            return True
         return False
 
 
