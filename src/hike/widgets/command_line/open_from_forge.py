@@ -37,6 +37,22 @@ class OpenFromForgeCommand(InputCommand):
     URL_FORMAT = ""
     """The format of the raw URL for the forge."""
 
+    HELP = """
+    | Format | Effect |
+    | -- | -- |
+    | `<owner>/<repo>` | Open `README.md` from a repository |
+    | `<owner> <repo>` | Open `README.md` from a repository |
+    | `<owner>/<repo> <file>` | Open a specific file from a repository |
+    | `<owner> <repo> <file>` | Open a specific file from a repository |
+    | `<owner>/<repo>:<branch>` | Open `README.md` from a specific branch of a repository |
+    | `<owner> <repo>:<branch>` | Open `README.md` from a specific branch of a repository |
+    | `<owner>/<repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
+    | `<owner> <repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
+
+    If `<branch>` is omitted the requested file is looked for first in the
+    `main` branch and then `master`.
+    """
+
     @staticmethod
     def split_command(text: str) -> tuple[str, str]:
         """Split the command for further testing.
