@@ -34,6 +34,7 @@ from .open_file import OpenFileCommand
 from .open_from_forge import (
     OpenFromBitbucket,
     OpenFromCodeberg,
+    OpenFromForgeCommand,
     OpenFromGitHub,
     OpenFromGitLab,
 )
@@ -117,19 +118,7 @@ class CommandLine(Vertical):
     The forge-oriented commands listed above accept a number of different
     ways of quickly specifying which file you want to view. Examples include:
 
-    | Format | Effect |
-    | -- | -- |
-    | `<owner>/<repo>` | Open `README.md` from a repository |
-    | `<owner> <repo>` | Open `README.md` from a repository |
-    | `<owner>/<repo> <file>` | Open a specific file from a repository |
-    | `<owner> <repo> <file>` | Open a specific file from a repository |
-    | `<owner>/<repo>:<branch>` | Open `README.md` from a specific branch of a repository |
-    | `<owner> <repo>:<branch>` | Open `README.md` from a specific branch of a repository |
-    | `<owner>/<repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
-    | `<owner> <repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
-
-    If `<branch>` is omitted the requested file is looked for first in the
-    `main` branch and then `master`.
+    {OpenFromForgeCommand.HELP}
     """
 
     BINDINGS = [
