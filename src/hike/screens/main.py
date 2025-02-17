@@ -13,7 +13,7 @@ from pyperclip import copy as copy_to_clipboard
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Horizontal, VerticalGroup
 from textual.reactive import var
 from textual.widgets import Footer, Header, Markdown
 
@@ -172,10 +172,11 @@ class Main(EnhancedScreen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        with Horizontal(id="workspace"):
-            yield Navigation(classes="panel")
-            yield Viewer(classes="panel")
-        yield CommandLine(classes="panel")
+        with VerticalGroup():
+            with Horizontal(id="workspace"):
+                yield Navigation(classes="panel")
+                yield Viewer(classes="panel")
+            yield CommandLine(classes="panel")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -334,6 +335,13 @@ class Main(EnhancedScreen[None]):
         Returns:
             `True` if it can perform, `False` or `None` if not.
         """
+        if not self.is_mounted:
+            # Surprisingly it seems that Textual's "dynamic bindings" can
+            # cause this method to be called before the DOM is up and
+            # running. This breaks the rule of least astonishment, I'd say,
+            # but okay let's be defensive... (when I can come up with a nice
+            # little MRE I'll report it).
+            return True
         if action == Forward.action_name():
             return self.query_one(Viewer).history.can_go_forward or None
         if action == Backward.action_name():
