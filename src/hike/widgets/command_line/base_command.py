@@ -40,5 +40,37 @@ class InputCommand:
         """
         return False
 
+    @staticmethod
+    def split_command(text: str) -> tuple[str, str]:
+        """Split the command for further testing.
+
+        Args:
+            text: The text of the command.
+
+        Returns:
+            The command and its tail.
+        """
+        command, _, tail = text.strip().partition(" ")
+        return command.strip(), tail.strip()
+
+    @classmethod
+    def is_command(cls, command: str) -> bool:
+        """Does the given command appear to be a match?
+
+        Args:
+            command: The command to test.
+
+        Returns:
+            `True` if the given command seems to be a match, `False` if not.
+        """
+        # Build up all the possible matches. These are built from the main
+        # command and also the aliases. By convention the code will often
+        # use `code` fences for commands, and the aliases will be a comma
+        # list, so we clean that up as we go...
+        return command.strip().lower() in (
+            candidate.strip().lower().removeprefix("`").removesuffix("`")
+            for candidate in (cls.COMMAND, *cls.ALIASES.split(","))
+        )
+
 
 ### base_command.py ends here
