@@ -72,7 +72,7 @@ class Editor(EnhancedScreen[None]):
         """Compose the screen."""
         yield Header()
         yield TextArea.code_editor(language="markdown")
-        yield Footer(show_command_palette=False)
+        yield Footer()
 
     def on_mount(self) -> None:
         """Configure the screen when the DOM is mounted."""
