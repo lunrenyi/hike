@@ -54,6 +54,28 @@ class InputCommand:
         return command.strip(), tail.strip()
 
     @classmethod
+    def suggestions(cls) -> tuple[str, ...]:
+        """The suggested command matches for this command.
+
+        Returns:
+            A tuple of suggestions for the command.
+
+        Notes:
+            Any commands that look like value placeholders will be filtered
+            out.
+        """
+        # Build up all the possible matches. These are built from the main
+        # command and also the aliases. By convention the code will often
+        # use `code` fences for commands, and the aliases will be a comma
+        # list, so we clean that up as we go...
+        return tuple(
+            candidate.strip().removeprefix("`").removesuffix("`")
+            for candidate in (cls.COMMAND, *cls.ALIASES.split(","))
+            # Note that we filter out anything that looks like `<this>`.
+            if not candidate.startswith("`<")
+        )
+
+    @classmethod
     def is_command(cls, command: str) -> bool:
         """Does the given command appear to be a match?
 
@@ -63,14 +85,7 @@ class InputCommand:
         Returns:
             `True` if the given command seems to be a match, `False` if not.
         """
-        # Build up all the possible matches. These are built from the main
-        # command and also the aliases. By convention the code will often
-        # use `code` fences for commands, and the aliases will be a comma
-        # list, so we clean that up as we go...
-        return command.strip().lower() in (
-            candidate.strip().lower().removeprefix("`").removesuffix("`")
-            for candidate in (cls.COMMAND, *cls.ALIASES.split(","))
-        )
+        return command.strip().lower() in cls.suggestions()
 
 
 ### base_command.py ends here
