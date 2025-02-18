@@ -20,6 +20,8 @@
   ([#24](https://github.com/davep/hike/pull/24))
 - Added `local` as a command that the command line understands.
   ([#24](https://github.com/davep/hike/pull/24))
+- Added `help` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
 
 ## v0.2.0
 

@@ -7,7 +7,7 @@ from textual.widget import Widget
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.commands import Quit
+from textual_enhanced.commands import Help, Quit
 
 ##############################################################################
 # Local imports.
@@ -60,6 +60,15 @@ class ContentsCommand(GeneralCommand):
     COMMAND = "`contents`"
     ALIASES = "`c`, `toc`"
     MESSAGE = JumpToTableOfContents
+
+
+##############################################################################
+class HelpCommand(GeneralCommand):
+    """Show the help screen"""
+
+    COMMAND = "`help`"
+    ALIASES = "`?`"
+    MESSAGE = Help
 
 
 ##############################################################################
