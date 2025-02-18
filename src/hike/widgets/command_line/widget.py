@@ -29,6 +29,7 @@ from textual_enhanced.commands import Quit
 from ...types import CommandHistory
 from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
+from .contents import ContentsCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_from_forge import (
@@ -54,6 +55,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenFromCodeberg,
     OpenFromGitHub,
     OpenFromGitLab,
+    ContentsCommand,
     QuitCommand,
 )
 """The commands used for the input."""
