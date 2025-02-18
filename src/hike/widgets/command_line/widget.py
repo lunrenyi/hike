@@ -32,6 +32,7 @@ from .change_directory import ChangeDirectoryCommand
 from .general import (
     BookmarksCommand,
     ContentsCommand,
+    HelpCommand,
     HistoryCommand,
     LocalCommand,
     QuitCommand,
@@ -57,6 +58,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     # Once the above are out of the way the order doesn't matter so much.
     BookmarksCommand,
     ChangeDirectoryCommand,
+    HelpCommand,
     HistoryCommand,
     LocalCommand,
     OpenFromBitbucket,
