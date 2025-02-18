@@ -2,13 +2,13 @@
 
 ![Hike](https://raw.githubusercontent.com/davep/hike/refs/heads/main/.images/hike-social-banner.png)
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/davep/hike/style-lint-and-test.yaml)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/davep/hike/latest)
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/davep/hike)
-![GitHub Release Date](https://img.shields.io/github/release-date/davep/hike)
-![PyPI - License](https://img.shields.io/pypi/l/hike)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hike)
-![PyPI - Version](https://img.shields.io/pypi/v/hike)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/davep/hike/style-lint-and-test.yaml)](https://github.com/davep/hike/actions)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/davep/hike/latest)](https://github.com/davep/hike/commits/main/)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/davep/hike)](https://github.com/davep/hike/issues)
+[![GitHub Release Date](https://img.shields.io/github/release-date/davep/hike)](https://github.com/davep/hike/releases)
+[![PyPI - License](https://img.shields.io/pypi/l/hike)](https://github.com/davep/hike/blob/main/LICENSE)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hike)](https://github.com/davep/hike/blob/main/pyproject.toml)
+[![PyPI - Version](https://img.shields.io/pypi/v/hike)](https://pypi.org/project/hike/)
 
 ## Introduction
 
