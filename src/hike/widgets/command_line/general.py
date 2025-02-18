@@ -24,9 +24,8 @@ from .base_command import InputCommand
 class GeneralCommand(InputCommand):
     """Base class for general commands."""
 
-    COMMAND = "`quit`"
-    ALIASES = "`q`"
     MESSAGE: type[Message]
+    """The message to send for the command."""
 
     @classmethod
     def handle(cls, text: str, for_widget: Widget) -> bool:
