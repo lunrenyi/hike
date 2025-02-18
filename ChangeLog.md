@@ -8,6 +8,18 @@
   ([#15](https://github.com/davep/hike/pull/15))
 - Made `chdir` a lot less fussy about the path given.
   ([#18](https://github.com/davep/hike/pull/18))
+- Added `quit` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
+- Added `dir` and `ls` as aliases for `chdir`.
+  ([#24](https://github.com/davep/hike/pull/24))
+- Added `contents` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
+- Added `bookmarks` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
+- Added `history` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
+- Added `local` as a command that the command line understands.
+  ([#24](https://github.com/davep/hike/pull/24))
 
 ## v0.2.0
 

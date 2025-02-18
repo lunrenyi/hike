@@ -29,6 +29,13 @@ from textual_enhanced.commands import Quit
 from ...types import CommandHistory
 from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
+from .general import (
+    BookmarksCommand,
+    ContentsCommand,
+    HistoryCommand,
+    LocalCommand,
+    QuitCommand,
+)
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_from_forge import (
@@ -48,11 +55,16 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenDirectoryCommand,
     OpenURLCommand,
     # Once the above are out of the way the order doesn't matter so much.
+    BookmarksCommand,
     ChangeDirectoryCommand,
+    HistoryCommand,
+    LocalCommand,
     OpenFromBitbucket,
     OpenFromCodeberg,
     OpenFromGitHub,
     OpenFromGitLab,
+    ContentsCommand,
+    QuitCommand,
 )
 """The commands used for the input."""
 
@@ -111,9 +123,9 @@ class CommandLine(Vertical):
 
     | Command | Aliases | Arguments | Description |
     | --      | --      | --        | --          |
-    {'\n    '.join(command.help_text() for command in COMMANDS)}
+    {'\n    '.join(sorted(command.help_text() for command in COMMANDS))}
 
-    ### Forge support
+    ### ¹Forge support
 
     The forge-oriented commands listed above accept a number of different
     ways of quickly specifying which file you want to view. Examples include:

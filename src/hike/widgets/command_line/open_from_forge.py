@@ -11,6 +11,7 @@ from textual.widget import Widget
 
 ##############################################################################
 # Local imports.
+from ...data import load_configuration
 from ...messages import OpenFromForge
 from .base_command import InputCommand
 
@@ -19,7 +20,7 @@ from .base_command import InputCommand
 class OpenFromForgeCommand(InputCommand):
     """Base class for commands that open a file from a forge."""
 
-    ARGUMENTS = "`<owner> <repo>[:<branch>] [<file>]`"
+    ARGUMENTS = "`<remote-file>`¹"
 
     WITHOUT_BRANCH: Final[Pattern[str]] = compile(
         r"^(?P<owner>[^/ ]+)[/ ](?P<repo>[^ :]+)(?: +(?P<file>[^ ]+))?$"
@@ -37,7 +38,7 @@ class OpenFromForgeCommand(InputCommand):
     URL_FORMAT = ""
     """The format of the raw URL for the forge."""
 
-    HELP = """
+    HELP = f"""
     | Format | Effect |
     | -- | -- |
     | `<owner>/<repo>` | Open `README.md` from a repository |
@@ -49,23 +50,9 @@ class OpenFromForgeCommand(InputCommand):
     | `<owner>/<repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
     | `<owner> <repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
 
-    If `<branch>` is omitted the requested file is looked for first in the
-    `main` branch and then `master`.
+    If `<branch>` is omitted the requested file is looked in the following branches:
+    {', '.join(f'`{branch}`' for branch in load_configuration().main_branches)}.
     """
-
-    @staticmethod
-    def split_command(text: str) -> tuple[str, str]:
-        """Split the command for further testing.
-
-        Args:
-            text: The text of the command.
-
-        Returns:
-            The command and its arguments.
-        """
-        if len(candidate := text.split(maxsplit=1)) == 1:
-            return candidate[0], ""
-        return (candidate[0], candidate[1]) if candidate else ("", "")
 
     @classmethod
     def maybe_request(cls, arguments: str, for_widget: Widget) -> bool:
@@ -115,9 +102,7 @@ class OpenFromForgeCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         command, arguments = cls.split_command(text)
-        return f"`{command}`" in (cls.COMMAND, cls.ALIASES) and cls.maybe_request(
-            arguments, for_widget
-        )
+        return cls.is_command(command) and cls.maybe_request(arguments, for_widget)
 
 
 ##############################################################################
