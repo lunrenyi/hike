@@ -23,7 +23,7 @@
 - Added `help` as a command that the command line understands.
   ([#24](https://github.com/davep/hike/pull/24))
 - Changed command line completion so that if history is empty, known
-  commands are suggested.
+  commands are suggested. ([#29](https://github.com/davep/hike/pull/29))
 
 ## v0.2.0
 
