@@ -2,6 +2,14 @@
 
 ![Hike](https://raw.githubusercontent.com/davep/hike/refs/heads/main/.images/hike-social-banner.png)
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/davep/hike/style-lint-and-test.yaml)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/davep/hike/latest)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/davep/hike)
+![GitHub Release Date](https://img.shields.io/github/release-date/davep/hike)
+![PyPI - License](https://img.shields.io/pypi/l/hike)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hike)
+![PyPI - Version](https://img.shields.io/pypi/v/hike)
+
 ## Introduction
 
 Hike is a [Markdown](https://commonmark.org/help/) browser for the terminal.
