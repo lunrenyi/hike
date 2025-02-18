@@ -7,6 +7,7 @@ from __future__ import annotations
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
+from itertools import chain
 from typing import Final
 
 ##############################################################################
@@ -149,8 +150,16 @@ class CommandLine(Vertical):
 
     @property
     def _history_suggester(self) -> SuggestFromList:
-        """A suggester for the history of input."""
-        return SuggestFromList(reversed(list(self.history)))
+        """A suggester for the history of input.
+
+        If there us no history yet then a list of commands and aliases will
+        be used.
+        """
+        return SuggestFromList(
+            reversed(list(self.history))
+            if self.history
+            else chain(*(command.suggestions() for command in COMMANDS))
+        )
 
     def compose(self) -> ComposeResult:
         """Compose the content of the widget."""
