@@ -11,7 +11,7 @@ from textual_enhanced.commands import Quit
 
 ##############################################################################
 # Local imports.
-from ...commands import JumpToBookmarks, JumpToTableOfContents
+from ...commands import JumpToBookmarks, JumpToHistory, JumpToTableOfContents
 from .base_command import InputCommand
 
 
@@ -56,6 +56,15 @@ class ContentsCommand(GeneralCommand):
     COMMAND = "`contents`"
     ALIASES = "`c`, `toc`"
     MESSAGE = JumpToTableOfContents
+
+
+##############################################################################
+class HistoryCommand(GeneralCommand):
+    """Jump to the browsing history"""
+
+    COMMAND = "`history`"
+    ALIASES = "`h`"
+    MESSAGE = JumpToHistory
 
 
 ##############################################################################
