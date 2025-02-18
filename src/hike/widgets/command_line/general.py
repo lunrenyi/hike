@@ -11,7 +11,7 @@ from textual_enhanced.commands import Quit
 
 ##############################################################################
 # Local imports.
-from ...commands import JumpToTableOfContents
+from ...commands import JumpToBookmarks, JumpToTableOfContents
 from .base_command import InputCommand
 
 
@@ -38,6 +38,15 @@ class GeneralCommand(InputCommand):
             for_widget.post_message(cls.MESSAGE())
             return True
         return False
+
+
+##############################################################################
+class BookmarksCommand(GeneralCommand):
+    """Jump to the bookmarks"""
+
+    COMMAND = "`bookmarks`"
+    ALIASES = "`b`, `bm`"
+    MESSAGE = JumpToBookmarks
 
 
 ##############################################################################

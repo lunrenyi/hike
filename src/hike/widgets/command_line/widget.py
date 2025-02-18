@@ -29,7 +29,7 @@ from textual_enhanced.commands import Quit
 from ...types import CommandHistory
 from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
-from .general import ContentsCommand, QuitCommand
+from .general import BookmarksCommand, ContentsCommand, QuitCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_from_forge import (
@@ -49,6 +49,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenDirectoryCommand,
     OpenURLCommand,
     # Once the above are out of the way the order doesn't matter so much.
+    BookmarksCommand,
     ChangeDirectoryCommand,
     OpenFromBitbucket,
     OpenFromCodeberg,
