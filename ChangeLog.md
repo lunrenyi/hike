@@ -1,8 +1,8 @@
 # Hike ChangeLog
 
-## Unreleased
+## v0.3.0
 
-**Released: WiP**
+**Released: 2025-02-18**
 
 - Added the ability to save a copy of the currently-viewed document.
   ([#15](https://github.com/davep/hike/pull/15))
