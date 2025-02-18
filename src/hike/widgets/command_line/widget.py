@@ -29,7 +29,7 @@ from textual_enhanced.commands import Quit
 from ...types import CommandHistory
 from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
-from .contents import ContentsCommand
+from .general import ContentsCommand, QuitCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_from_forge import (
@@ -40,7 +40,6 @@ from .open_from_forge import (
     OpenFromGitLab,
 )
 from .open_url import OpenURLCommand
-from .quit import QuitCommand
 
 ##############################################################################
 COMMANDS: Final[tuple[type[InputCommand], ...]] = (

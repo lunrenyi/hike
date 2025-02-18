@@ -1,7 +1,8 @@
-"""Provides the command for quitting the application."""
+"""Provides general application commands for the command line."""
 
 ##############################################################################
 # Textual imports.
+from textual.message import Message
 from textual.widget import Widget
 
 ##############################################################################
@@ -10,15 +11,17 @@ from textual_enhanced.commands import Quit
 
 ##############################################################################
 # Local imports.
+from ...commands import JumpToTableOfContents
 from .base_command import InputCommand
 
 
 ##############################################################################
-class QuitCommand(InputCommand):
-    """Quit the application"""
+class GeneralCommand(InputCommand):
+    """Base class for general commands."""
 
     COMMAND = "`quit`"
     ALIASES = "`q`"
+    MESSAGE: type[Message]
 
     @classmethod
     def handle(cls, text: str, for_widget: Widget) -> bool:
@@ -32,9 +35,27 @@ class QuitCommand(InputCommand):
             `True` if the command was handled; `False` if not.
         """
         if cls.is_command(text):
-            for_widget.post_message(Quit())
+            for_widget.post_message(cls.MESSAGE())
             return True
         return False
 
 
-### quit.py ends here
+##############################################################################
+class ContentsCommand(GeneralCommand):
+    """Jump to the table of contents"""
+
+    COMMAND = "`contents`"
+    ALIASES = "`c`, `toc`"
+    MESSAGE = JumpToTableOfContents
+
+
+##############################################################################
+class QuitCommand(GeneralCommand):
+    """Quit the application"""
+
+    COMMAND = "`quit`"
+    ALIASES = "`q`"
+    MESSAGE = Quit
+
+
+### general.py ends here
