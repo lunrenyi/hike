@@ -123,9 +123,9 @@ class CommandLine(Vertical):
 
     | Command | Aliases | Arguments | Description |
     | --      | --      | --        | --          |
-    {'\n    '.join(command.help_text() for command in COMMANDS)}
+    {'\n    '.join(sorted(command.help_text() for command in COMMANDS))}
 
-    ### Forge support
+    ### ¹Forge support
 
     The forge-oriented commands listed above accept a number of different
     ways of quickly specifying which file you want to view. Examples include:

@@ -11,6 +11,7 @@ from textual.widget import Widget
 
 ##############################################################################
 # Local imports.
+from ...data import load_configuration
 from ...messages import OpenFromForge
 from .base_command import InputCommand
 
@@ -19,7 +20,7 @@ from .base_command import InputCommand
 class OpenFromForgeCommand(InputCommand):
     """Base class for commands that open a file from a forge."""
 
-    ARGUMENTS = "`<owner> <repo>[:<branch>] [<file>]`"
+    ARGUMENTS = "`<remote-file>`¹"
 
     WITHOUT_BRANCH: Final[Pattern[str]] = compile(
         r"^(?P<owner>[^/ ]+)[/ ](?P<repo>[^ :]+)(?: +(?P<file>[^ ]+))?$"
@@ -37,7 +38,7 @@ class OpenFromForgeCommand(InputCommand):
     URL_FORMAT = ""
     """The format of the raw URL for the forge."""
 
-    HELP = """
+    HELP = f"""
     | Format | Effect |
     | -- | -- |
     | `<owner>/<repo>` | Open `README.md` from a repository |
@@ -49,8 +50,8 @@ class OpenFromForgeCommand(InputCommand):
     | `<owner>/<repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
     | `<owner> <repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
 
-    If `<branch>` is omitted the requested file is looked for first in the
-    `main` branch and then `master`.
+    If `<branch>` is omitted the requested file is looked in the following branches:
+    {', '.join(f'`{branch}`' for branch in load_configuration().main_branches)}.
     """
 
     @classmethod
