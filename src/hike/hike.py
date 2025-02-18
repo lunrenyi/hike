@@ -1,9 +1,11 @@
 """The main application class."""
 
 ##############################################################################
-# Textual imports.
+# Python imports.
 from argparse import Namespace
 
+##############################################################################
+# Textual imports.
 from textual.app import InvalidThemeError
 
 ##############################################################################
