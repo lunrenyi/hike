@@ -156,9 +156,15 @@ class CommandLine(Vertical):
         be used.
         """
         return SuggestFromList(
-            reversed(list(self.history))
-            if self.history
-            else chain(*(command.suggestions() for command in COMMANDS))
+            [
+                # Start off with the history, with the most recently-used
+                # commands first so suggestions come from the thing
+                # most-recently done.
+                *reversed(list(self.history)),
+                # Tack known commands on the end; this means that the user
+                # will get prompted for commands they've not used yet.
+                *chain(*(command.suggestions() for command in COMMANDS)),
+            ]
         )
 
     def compose(self) -> ComposeResult:
