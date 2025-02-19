@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Added `changelog` as a command that the command line understands.
+- Added `readme` as a command that the command line understands.
 
 ## v0.3.0
 

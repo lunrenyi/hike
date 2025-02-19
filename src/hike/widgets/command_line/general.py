@@ -113,4 +113,12 @@ class ChangeLogCommand(GeneralCommand):
     MESSAGE = partial(HandleInput, "github davep hike ChangeLog.md")
 
 
+##############################################################################
+class ReadMeCommand(GeneralCommand):
+    """Show Hike's README"""
+
+    COMMAND = "`readme`"
+    MESSAGE = partial(HandleInput, "github davep hike")
+
+
 ### general.py ends here

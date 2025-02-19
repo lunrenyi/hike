@@ -38,6 +38,7 @@ from .general import (
     HistoryCommand,
     LocalCommand,
     QuitCommand,
+    ReadMeCommand,
 )
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
@@ -69,6 +70,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     OpenFromGitHub,
     OpenFromGitLab,
     ContentsCommand,
+    ReadMeCommand,
     QuitCommand,
 )
 """The commands used for the input."""
