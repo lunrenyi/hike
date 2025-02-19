@@ -32,11 +32,13 @@ from .base_command import InputCommand
 from .change_directory import ChangeDirectoryCommand
 from .general import (
     BookmarksCommand,
+    ChangeLogCommand,
     ContentsCommand,
     HelpCommand,
     HistoryCommand,
     LocalCommand,
     QuitCommand,
+    ReadMeCommand,
 )
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
@@ -62,11 +64,13 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     HelpCommand,
     HistoryCommand,
     LocalCommand,
+    ChangeLogCommand,
     OpenFromBitbucket,
     OpenFromCodeberg,
     OpenFromGitHub,
     OpenFromGitLab,
     ContentsCommand,
+    ReadMeCommand,
     QuitCommand,
 )
 """The commands used for the input."""

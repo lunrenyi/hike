@@ -1,6 +1,11 @@
 """Provides general application commands for the command line."""
 
 ##############################################################################
+# Python imports.
+from functools import partial
+from typing import Callable
+
+##############################################################################
 # Textual imports.
 from textual.message import Message
 from textual.widget import Widget
@@ -17,6 +22,7 @@ from ...commands import (
     JumpToLocalBrowser,
     JumpToTableOfContents,
 )
+from ...messages import HandleInput
 from .base_command import InputCommand
 
 
@@ -24,7 +30,7 @@ from .base_command import InputCommand
 class GeneralCommand(InputCommand):
     """Base class for general commands."""
 
-    MESSAGE: type[Message]
+    MESSAGE: Callable[[], Message]
     """The message to send for the command."""
 
     @classmethod
@@ -96,6 +102,23 @@ class QuitCommand(GeneralCommand):
     COMMAND = "`quit`"
     ALIASES = "`q`"
     MESSAGE = Quit
+
+
+##############################################################################
+class ChangeLogCommand(GeneralCommand):
+    """Show Hike's ChangeLog"""
+
+    COMMAND = "`changelog`"
+    ALIASES = "`cl`"
+    MESSAGE = partial(HandleInput, "github davep hike ChangeLog.md")
+
+
+##############################################################################
+class ReadMeCommand(GeneralCommand):
+    """Show Hike's README"""
+
+    COMMAND = "`readme`"
+    MESSAGE = partial(HandleInput, "github davep hike")
 
 
 ### general.py ends here
