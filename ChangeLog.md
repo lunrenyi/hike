@@ -2,12 +2,14 @@
 
 ## Unreleased
 
-**Released: WiP**
+**Released: 2025-02-19**
 
 - Added `changelog` as a command that the command line understands.
+  ([#33](https://github.com/davep/hike/pull/33))
 - Added `readme` as a command that the command line understands.
+  ([#33](https://github.com/davep/hike/pull/33))
 - Fixed failing when opening a document-relative local non-markdown file
-  from a click.
+  from a click. ([#34](https://github.com/davep/hike/pull/34))
 
 ## v0.3.0
 
