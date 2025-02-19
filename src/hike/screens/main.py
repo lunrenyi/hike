@@ -63,6 +63,7 @@ from ..data import (
 from ..messages import (
     ClearHistory,
     CopyToClipboard,
+    HandleInput,
     OpenFrom,
     OpenFromForge,
     OpenFromHistory,
@@ -190,13 +191,22 @@ class Main(EnhancedScreen[None]):
         self.query_one(CommandLine).history = load_command_history()
         self.query_one(CommandLine).dock_top = config.command_line_on_top
         if self._arguments.command:
-            self.query_one(CommandLine).handle_input(" ".join(self._arguments.command))
+            self.post_message(HandleInput(" ".join(self._arguments.command)))
 
     def _watch_navigation_visible(self) -> None:
         """React to the navigation visible property being set."""
         self.set_class(self.navigation_visible, "navigation")
         with update_configuration() as config:
             config.navigation_visible = self.navigation_visible
+
+    @on(HandleInput)
+    def _handle_input(self, message: HandleInput) -> None:
+        """Handle input as if the user had typed it in.
+
+        Args:
+            message: The message requesting the input be handled.
+        """
+        self.query_one(CommandLine).handle_input(message.user_input)
 
     @on(CopyToClipboard)
     def _copy_text_to_clipbaord(self, message: CopyToClipboard) -> None:
