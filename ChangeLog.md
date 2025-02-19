@@ -6,6 +6,8 @@
 
 - Added `changelog` as a command that the command line understands.
 - Added `readme` as a command that the command line understands.
+- Fixed failing when opening a document-relative local non-markdown file
+  from a click.
 
 ## v0.3.0
 

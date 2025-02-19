@@ -412,7 +412,9 @@ class Viewer(Vertical, can_focus=False):
         # A local file relative to the current location?
         if (
             isinstance(self.location, Path)
-            and (local_file := self.location / Path(message.href)).absolute().exists()
+            and (local_file := self.location.parent / Path(message.href))
+            .absolute()
+            .exists()
         ):
             self.post_message(OpenLocation(local_file))
             return
