@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Added `changelog` as a command that the command line understands.
+
 ## v0.3.0
 
 **Released: 2025-02-18**
