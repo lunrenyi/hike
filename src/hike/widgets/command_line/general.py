@@ -24,7 +24,7 @@ from .base_command import InputCommand
 class GeneralCommand(InputCommand):
     """Base class for general commands."""
 
-    MESSAGE: type[Message]
+    MESSAGE: Callable[[], Message]
     """The message to send for the command."""
 
     @classmethod
