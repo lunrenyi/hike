@@ -85,7 +85,7 @@ platformdirs==4.3.6
 pluggy==1.5.0
     # via pytest
 pre-commit==4.1.0
-propcache==0.2.1
+propcache==0.3.0
     # via aiohttp
     # via yarl
 pygments==2.19.1
@@ -109,7 +109,7 @@ textual==1.0.0
 textual-dev==1.7.0
 textual-enhanced==0.6.0
     # via hike
-textual-fspicker==0.2.0
+textual-fspicker==0.4.0
     # via hike
 textual-serve==1.1.1
     # via textual-dev
