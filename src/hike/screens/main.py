@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from argparse import Namespace
+from functools import partial
 
 ##############################################################################
 # Pyperclip imports.
@@ -22,6 +23,7 @@ from textual.widgets import Footer, Header, Markdown
 from textual_enhanced.commands import ChangeTheme, Command, Help, Quit
 from textual_enhanced.dialogs import ModalInput
 from textual_enhanced.screen import EnhancedScreen
+from textual_enhanced.tools import add_key
 
 ##############################################################################
 # Textual fspicker imports.
@@ -259,6 +261,7 @@ class Main(EnhancedScreen[None]):
                     ),
                     ("All files", lambda _: True),
                 ),
+                cancel_button=partial(add_key, key="Esc", context=self),
             )
         ):
             self.post_message(OpenLocation(chosen))
@@ -488,7 +491,12 @@ class Main(EnhancedScreen[None]):
         """Save a copy of the current document to a new file."""
         if (suggested := self.query_one(Viewer).filename) is None:
             return
-        if save_to := await self.app.push_screen_wait(FileSave(default_file=suggested)):
+        if save_to := await self.app.push_screen_wait(
+            FileSave(
+                default_file=suggested,
+                cancel_button=partial(add_key, key="Esc", context=self),
+            )
+        ):
             try:
                 save_to.write_text(self.query_one(Viewer).source, encoding="utf-8")
             except IOError as error:
