@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from argparse import ArgumentParser, Namespace
+from inspect import cleandoc
 
 ##############################################################################
 # Local imports.
@@ -34,6 +35,14 @@ def get_args() -> Namespace:
         version=f"%(prog)s v{__version__}",
     )
 
+    # Add --license
+    parser.add_argument(
+        "--license",
+        "--licence",
+        help="Show license information",
+        action="store_true",
+    )
+
     # The remainder is going to be the initial command.
     parser.add_argument(
         "command",
@@ -48,7 +57,10 @@ def get_args() -> Namespace:
 ##############################################################################
 def main() -> None:
     """The main entry point."""
-    Hike(get_args()).run()
+    if (args := get_args()).license:
+        print(cleandoc(Hike.HELP_LICENSE))
+    else:
+        Hike(args).run()
 
 
 ##############################################################################
