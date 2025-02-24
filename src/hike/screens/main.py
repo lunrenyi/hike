@@ -43,6 +43,7 @@ from ..commands import (
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
+    JumpToDocument,
     JumpToHistory,
     JumpToLocalBrowser,
     JumpToTableOfContents,
@@ -146,6 +147,7 @@ class Main(EnhancedScreen[None]):
         Forward,
         JumpToBookmarks,
         JumpToCommandLine,
+        JumpToDocument,
         JumpToHistory,
         JumpToLocalBrowser,
         JumpToTableOfContents,
@@ -410,6 +412,11 @@ class Main(EnhancedScreen[None]):
         """Jump to the command line."""
         if self.AUTO_FOCUS:
             self.query_one(self.AUTO_FOCUS).focus()
+
+    @on(JumpToDocument)
+    def action_jump_to_document_command(self) -> None:
+        """Jump to the document."""
+        self.query_one(Viewer).focus()
 
     @on(Backward)
     def action_backward_command(self) -> None:

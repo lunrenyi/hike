@@ -29,6 +29,13 @@ class JumpToCommandLine(Command):
 
 
 ##############################################################################
+class JumpToDocument(Command):
+    """Jump to the markdown document"""
+
+    BINDING_KEY = "ctrl+slash"
+
+
+##############################################################################
 class ChangeCommandLineLocation(Command):
     """Swap the position of the command line between top and bottom"""
 

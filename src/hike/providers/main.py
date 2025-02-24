@@ -24,6 +24,7 @@ from ..commands import (
     Forward,
     JumpToBookmarks,
     JumpToCommandLine,
+    JumpToDocument,
     JumpToHistory,
     JumpToLocalBrowser,
     JumpToTableOfContents,
@@ -66,11 +67,12 @@ class MainCommands(CommandsProvider):
         yield from self._maybe(Edit)
         yield from self._maybe(Forward)
         yield Help()
-        yield JumpToCommandLine()
-        yield JumpToTableOfContents()
         yield JumpToBookmarks()
+        yield JumpToCommandLine()
+        yield JumpToDocument()
         yield JumpToHistory()
         yield JumpToLocalBrowser()
+        yield JumpToTableOfContents()
         yield Quit()
         yield from self._maybe(Reload)
         yield from self._maybe(SaveCopy)

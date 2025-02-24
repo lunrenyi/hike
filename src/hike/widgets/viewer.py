@@ -32,6 +32,10 @@ from textual.reactive import var
 from textual.widgets import Label, Markdown, Rule
 
 ##############################################################################
+# Typing extensions imports.
+from typing_extensions import Self
+
+##############################################################################
 # Local imports.
 from .. import USER_AGENT
 from ..commands import JumpToCommandLine
@@ -148,6 +152,18 @@ class Viewer(Vertical, can_focus=False):
                     front_matter.front_matter_plugin
                 ),
             )
+
+    def focus(self, scroll_visible: bool = True) -> Self:
+        """Focus the viewer.
+
+        Args:
+            scroll_visible: Should the widget be scrolled to be visible?
+
+        Returns:
+            Self.
+        """
+        self.query_one("#document").focus(scroll_visible)
+        return self
 
     @property
     def source(self) -> str:
