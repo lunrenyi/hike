@@ -157,7 +157,7 @@ class Viewer(Vertical, can_focus=False):
         """Focus the viewer.
 
         Args:
-            scroll_visible: Should the widget me scrolled to be visible?
+            scroll_visible: Should the widget be scrolled to be visible?
 
         Returns:
             Self.
