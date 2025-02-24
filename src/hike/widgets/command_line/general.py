@@ -18,6 +18,7 @@ from textual_enhanced.commands import Help, Quit
 # Local imports.
 from ...commands import (
     JumpToBookmarks,
+    JumpToDocument,
     JumpToHistory,
     JumpToLocalBrowser,
     JumpToTableOfContents,
@@ -66,6 +67,15 @@ class ContentsCommand(GeneralCommand):
     COMMAND = "`contents`"
     ALIASES = "`c`, `toc`"
     MESSAGE = JumpToTableOfContents
+
+
+##############################################################################
+class DocumentCommand(GeneralCommand):
+    """Jump to the markdown document"""
+
+    COMMAND = "`document`"
+    ALIASES = "`d`, `doc`"
+    MESSAGE = JumpToDocument
 
 
 ##############################################################################

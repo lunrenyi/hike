@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+**Released: WiP**
+
+- Added an application command for jumping to the markdown document viewer.
+- Added `document` as a command that the command line understands.
+
+## v0.4.0
+
 **Released: 2025-02-19**
 
 - Added `changelog` as a command that the command line understands.

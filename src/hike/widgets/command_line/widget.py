@@ -34,6 +34,7 @@ from .general import (
     BookmarksCommand,
     ChangeLogCommand,
     ContentsCommand,
+    DocumentCommand,
     HelpCommand,
     HistoryCommand,
     LocalCommand,
@@ -61,6 +62,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     # Once the above are out of the way the order doesn't matter so much.
     BookmarksCommand,
     ChangeDirectoryCommand,
+    DocumentCommand,
     HelpCommand,
     HistoryCommand,
     LocalCommand,
