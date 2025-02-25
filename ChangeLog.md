@@ -5,7 +5,9 @@
 **Released: WiP**
 
 - Added an application command for jumping to the markdown document viewer.
+  ([#39](https://github.com/davep/hike/pull/39))
 - Added `document` as a command that the command line understands.
+  ([#39](https://github.com/davep/hike/pull/39))
 
 ## v0.4.0
 
