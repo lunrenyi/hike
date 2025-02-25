@@ -1,8 +1,8 @@
 # Hike ChangeLog
 
-## Unreleased
+## v0.5.0
 
-**Released: WiP**
+**Released: 2025-02-25**
 
 - Added an application command for jumping to the markdown document viewer.
   ([#39](https://github.com/davep/hike/pull/39))
