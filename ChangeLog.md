@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: 2025-02-25**
+
+- Added `obsidian` as a command that the command line understands.
+
 ## v0.5.0
 
 **Released: 2025-02-25**

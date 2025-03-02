@@ -42,6 +42,9 @@ class Configuration:
     main_branches: list[str] = field(default_factory=lambda: ["main", "master"])
     """The branches considered to be main branches on forges."""
 
+    obsidian_vaults: str = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents"
+    """The path to the root of all Obsidian vaults."""
+
 
 ##############################################################################
 def configuration_file() -> Path:
