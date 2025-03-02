@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Added `obsidian` as a command that the command line understands.
+  ([#41](https://github.com/davep/hike/pull/41))
 
 ## v0.5.0
 
