@@ -46,7 +46,7 @@ def get_args() -> Namespace:
     # The remainder is going to be the initial command.
     parser.add_argument(
         "command",
-        help=("The initial command; " "can be any valid input to Hike's command line."),
+        help="The initial command; can be any valid input to Hike's command line.",
         nargs="*",
     )
 

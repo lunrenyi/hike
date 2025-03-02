@@ -41,6 +41,7 @@ from .general import (
     QuitCommand,
     ReadMeCommand,
 )
+from .obsidian import ObsidianCommand
 from .open_directory import OpenDirectoryCommand
 from .open_file import OpenFileCommand
 from .open_from_forge import (
@@ -74,6 +75,7 @@ COMMANDS: Final[tuple[type[InputCommand], ...]] = (
     ContentsCommand,
     ReadMeCommand,
     QuitCommand,
+    ObsidianCommand,
 )
 """The commands used for the input."""
 
@@ -132,7 +134,7 @@ class CommandLine(Vertical):
 
     | Command | Aliases | Arguments | Description |
     | --      | --      | --        | --          |
-    {'\n    '.join(sorted(command.help_text() for command in COMMANDS))}
+    {"\n    ".join(sorted(command.help_text() for command in COMMANDS))}
 
     ### ¹Forge support
 

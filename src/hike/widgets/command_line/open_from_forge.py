@@ -51,7 +51,7 @@ class OpenFromForgeCommand(InputCommand):
     | `<owner> <repo>:<branch> <file>` | Open a specific file from a specific branch of a repository |
 
     If `<branch>` is omitted the requested file is looked in the following branches:
-    {', '.join(f'`{branch}`' for branch in load_configuration().main_branches)}.
+    {", ".join(f"`{branch}`" for branch in load_configuration().main_branches)}.
     """
 
     @classmethod
