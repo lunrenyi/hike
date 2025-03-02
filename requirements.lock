@@ -48,9 +48,9 @@ textual==1.0.0
     # via hike
     # via textual-enhanced
     # via textual-fspicker
-textual-enhanced==0.6.0
+textual-enhanced==0.7.0
     # via hike
-textual-fspicker==0.4.0
+textual-fspicker==0.4.1
     # via hike
 typing-extensions==4.12.2
     # via hike
