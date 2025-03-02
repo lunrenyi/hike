@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-**Released: 2025-02-25**
+**Released: WiP**
 
 - Added `obsidian` as a command that the command line understands.
 
