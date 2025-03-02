@@ -134,7 +134,7 @@ class CommandLine(Vertical):
 
     | Command | Aliases | Arguments | Description |
     | --      | --      | --        | --          |
-    {'\n    '.join(sorted(command.help_text() for command in COMMANDS))}
+    {"\n    ".join(sorted(command.help_text() for command in COMMANDS))}
 
     ### ¹Forge support
 
