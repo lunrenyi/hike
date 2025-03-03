@@ -1,8 +1,8 @@
 # Hike ChangeLog
 
-## Unreleased
+## v0.6.0
 
-**Released: WiP**
+**Released: 2025-03-03**
 
 - Added `obsidian` as a command that the command line understands.
   ([#41](https://github.com/davep/hike/pull/41))
