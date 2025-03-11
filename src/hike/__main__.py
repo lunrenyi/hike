@@ -7,7 +7,7 @@ from inspect import cleandoc
 
 ##############################################################################
 # Local imports.
-from . import __version__
+from . import __doc__, __version__
 from .hike import Hike
 
 
@@ -21,8 +21,8 @@ def get_args() -> Namespace:
 
     # Build the parser.
     parser = ArgumentParser(
-        prog="Hike",
-        description="Hike - A Markdown browser for the terminal",
+        prog="hike",
+        description=__doc__,
         epilog=f"v{__version__}",
     )
 
