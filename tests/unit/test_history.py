@@ -175,6 +175,20 @@ def test_goto(desired: int, achieved: int) -> None:
 
 
 ##############################################################################
+def test_goto_end() -> None:
+    """We should be able to go to the end of the history."""
+    history = History[None]((None,) * 100)
+    assert history.goto(0).current_location == 0
+    assert history.goto_end().current_location == 99
+
+
+##############################################################################
+def test_goto_end_of_nothing() -> None:
+    """Going to the end when there is no history should cause no problem."""
+    assert History[None]().goto_end().current_location is None
+
+
+##############################################################################
 def test_goto_empty() -> None:
     """Going to a location in an empty list should keep the location as `None`."""
     assert History[None]().goto(42).current_location is None
