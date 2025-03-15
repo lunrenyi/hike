@@ -243,7 +243,11 @@ class CommandLine(Vertical):
 
     def action_request_exit(self) -> None:
         """Request that the application quits."""
-        self.post_message(Quit())
+        if self.query_one(Input).value:
+            self.query_one(Input).value = ""
+            self.history.goto_end()
+        else:
+            self.post_message(Quit())
 
     def action_history_previous(self) -> None:
         """Move backwards through the command line history."""
