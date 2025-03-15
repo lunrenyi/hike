@@ -4,11 +4,13 @@
 # Python imports.
 from functools import singledispatch
 from pathlib import Path
-from typing import TypeIs
 
 ##############################################################################
 # httpx imports.
 from httpx import URL
+
+##############################################################################
+from typing_extensions import TypeIs
 
 ##############################################################################
 # Local imports.

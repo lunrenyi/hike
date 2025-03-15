@@ -126,7 +126,7 @@ class CommandLine(Vertical):
     }
     """
 
-    HELP = f"""
+    HELP = """
     ## Command Line
 
     Use this command line to enter filenames, directories, URLs or commands. Entering
@@ -135,19 +135,22 @@ class CommandLine(Vertical):
 
     | Command | Aliases | Arguments | Description |
     | --      | --      | --        | --          |
-    {"\n    ".join(sorted(command.help_text() for command in COMMANDS))}
+    {cli_commands}
 
     ### ¹Forge support
 
     The forge-oriented commands listed above accept a number of different
     ways of quickly specifying which file you want to view. Examples include:
 
-    {OpenFromForgeCommand.HELP}
+    {commands}
 
     ### Special keys
 
     Special keys while in the command line:
-    """
+    """.format(
+        cli_commands="\n    ".join(sorted(command.help_text() for command in COMMANDS)),
+        commands=OpenFromForgeCommand.HELP,
+    )
 
     BINDINGS = [
         ("escape", "request_exit"),
