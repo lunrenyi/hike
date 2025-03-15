@@ -23,6 +23,7 @@ from textual.widgets.input import Selection
 
 ##############################################################################
 # Textual enhanced imports.
+from textual_enhanced.binding import HelpfulBinding
 from textual_enhanced.commands import Quit
 
 ##############################################################################
@@ -142,12 +143,24 @@ class CommandLine(Vertical):
     ways of quickly specifying which file you want to view. Examples include:
 
     {OpenFromForgeCommand.HELP}
+
+    ### Special keys
+
+    Special keys while in the command line:
     """
 
     BINDINGS = [
         ("escape", "request_exit"),
-        ("up", "history_previous"),
-        ("down", "history_next"),
+        HelpfulBinding(
+            "up",
+            "history_previous",
+            tooltip="Navigate backwards through the command history",
+        ),
+        HelpfulBinding(
+            "down",
+            "history_next",
+            tooltip="Navigate forward through the command history",
+        ),
     ]
 
     history: var[CommandHistory] = var(CommandHistory)

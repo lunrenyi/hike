@@ -12,11 +12,11 @@ from rich.text import Text
 ##############################################################################
 # Textual imports.
 from textual import on, work
-from textual.binding import Binding
 from textual.widgets.option_list import Option
 
 ##############################################################################
 # Textual-enhanced imports.
+from textual_enhanced.binding import HelpfulBinding
 from textual_enhanced.dialogs import Confirm
 from textual_enhanced.widgets import EnhancedOptionList
 
@@ -68,19 +68,26 @@ class HistoryView(EnhancedOptionList):
     }
     """
 
+    HELP = """
+    ## Documenting viewing history
+
+    This is your document viewing history. Here you can revisit locations
+    you've viewed, and also remove individual or all locations.
+    """
+
     BINDINGS = [
-        Binding(
+        HelpfulBinding(
             "delete",
             "remove",
             "Remove",
-            show=True,
-            tooltip="Remove the current location from history",
+            show=False,
+            tooltip="Remove the highlighted location from history",
         ),
-        Binding(
+        HelpfulBinding(
             "backspace",
             "clear",
             "Clear",
-            show=True,
+            show=False,
             tooltip="Clear all locations from history",
         ),
     ]

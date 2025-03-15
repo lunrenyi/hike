@@ -7,7 +7,7 @@ authors = [
 ]
 dependencies = [
     "textual>=1.0.0,<2",
-    "textual-enhanced>=0.7.0",
+    "textual-enhanced>=0.8.1",
     "textual-fspicker>=0.4.1",
     "xdg-base-dirs>=6.0.2",
     "httpx>=0.28.1",

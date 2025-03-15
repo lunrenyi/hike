@@ -16,12 +16,12 @@ from rich.text import Text
 ##############################################################################
 # Textual imports.
 from textual import on, work
-from textual.binding import Binding
 from textual.message import Message
 from textual.widgets.option_list import Option
 
 ##############################################################################
 # Textual enhanced imports.
+from textual_enhanced.binding import HelpfulBinding
 from textual_enhanced.dialogs import Confirm, ModalInput
 from textual_enhanced.widgets import EnhancedOptionList
 
@@ -67,9 +67,27 @@ class BookmarksView(EnhancedOptionList):
     }
     """
 
+    HELP = """
+    ## Bookmarks
+
+    This panel contains your bookmarks. Here you can visit them and manage them.
+    """
+
     BINDINGS = [
-        Binding("r", "rename", "Rename", show=True, tooltip="Rename the bookmark"),
-        Binding("delete", "delete", "Delete", show=True, tooltip="Delete the bookmark"),
+        HelpfulBinding(
+            "r",
+            "rename",
+            "Rename",
+            show=False,
+            tooltip="Rename the highlighted bookmark",
+        ),
+        HelpfulBinding(
+            "delete",
+            "delete",
+            "Delete",
+            show=False,
+            tooltip="Delete the highlighted bookmark",
+        ),
     ]
 
     def update(self, bookmarks: Bookmarks) -> None:
