@@ -8,6 +8,8 @@
   existing input now clears the input and resets the location in the command
   history; pressing <kbd>Escape</kbd> while there is no input still exits
   the application. ([#47](https://github.com/davep/hike/pull/47))
+- Fixed incompatibilities with older supported versions of Python.
+  ([#48](https://github.com/davep/hike/pull/48))
 
 ## v0.6.0
 
