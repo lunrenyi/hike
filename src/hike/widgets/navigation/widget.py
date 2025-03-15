@@ -20,6 +20,10 @@ from textual.widgets import Markdown, TabbedContent, TabPane, Tabs, Tree
 from textual.widgets.markdown import MarkdownTableOfContents, TableOfContentsType
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.binding import HelpfulBinding
+
+##############################################################################
 # Local imports.
 from ...commands import JumpToCommandLine
 from ...data import Bookmark, Bookmarks
@@ -69,8 +73,16 @@ class Navigation(Vertical):
     BINDINGS = [
         ("escape", "return_to_tabs_or_bounce_out"),
         ("down", "move_into_panel"),
-        ("ctrl+left", "switch('previous_tab')"),
-        ("ctrl+right", "switch('next_tab')"),
+        HelpfulBinding(
+            "ctrl+left",
+            "switch('previous_tab')",
+            tooltip="Move to the previous navigation tab",
+        ),
+        HelpfulBinding(
+            "ctrl+right",
+            "switch('next_tab')",
+            tooltip="Move to the next navigation tab",
+        ),
     ]
 
     HELP = """
@@ -80,6 +92,8 @@ class Navigation(Vertical):
     local file browser (use the `chdir` command in the command line at the
     bottom of the screen to change the root directory); a simple bookmark
     manager and your browsing history.
+
+    ### Useful keys
     """
 
     dock_right: var[bool] = var(False)
