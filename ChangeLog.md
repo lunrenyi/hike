@@ -1,5 +1,14 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Pressing <kbd>Escape</kbd> in the command line input while there is
+  existing input now clears the input and resets the location in the command
+  history; pressing <kbd>Escape</kbd> while there is no input still exits
+  the application. ([#47](https://github.com/davep/hike/pull/47))
+
 ## v0.6.0
 
 **Released: 2025-03-03**

@@ -96,6 +96,11 @@ class History(Generic[HistoryItem]):
         self._current = clamp(location, 0, len(self._history) - 1)
         return self
 
+    def goto_end(self) -> Self:
+        """Go to the end of the history."""
+        self.goto(len(self) - 1)
+        return self
+
     def add(self, item: HistoryItem) -> Self:
         """Add an item to the history.
 
@@ -106,8 +111,7 @@ class History(Generic[HistoryItem]):
             Self.
         """
         self._history.append(item)
-        self._current = len(self._history) - 1
-        return self
+        return self.goto_end()
 
     def __len__(self) -> int:
         """The length of the history."""
