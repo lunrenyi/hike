@@ -1,8 +1,8 @@
 # Hike ChangeLog
 
-## Unreleased
+## v0.7.0
 
-**Released: WiP**
+**Released: 2025-03-16**
 
 - Pressing <kbd>Escape</kbd> in the command line input while there is
   existing input now clears the input and resets the location in the command
