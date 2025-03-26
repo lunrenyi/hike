@@ -485,8 +485,6 @@ class Viewer(Vertical, can_focus=False):
             # Run the editor.
             with self.app.suspend():
                 run((editor, str(self.location)))
-                # Work around https://github.com/Textualize/textual/issues/5528.
-                self.app.refresh()
             # Given we did an edit, we should now reload.
             self.reload()
         else:
