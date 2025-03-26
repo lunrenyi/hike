@@ -1,5 +1,11 @@
 # Hike ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Unpinned Textual. ([#50](https://github.com/davep/hike/pull/50))
+
 ## v0.7.0
 
 **Released: 2025-03-16**
