@@ -40,6 +40,16 @@ $ brew install hike
 
 Once installed run the `hike` command.
 
+### X-CMD
+
+The application can be installed using [`x-cmd`](https://x-cmd.com):
+
+```sh
+$ x install hike
+```
+
+Once installed run the `hike` command.
+
 ## Using Hike
 
 The best way to get to know Hike is to read the help screen. Once in the
